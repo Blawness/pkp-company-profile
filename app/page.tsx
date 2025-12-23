@@ -1,65 +1,96 @@
-import Image from "next/image";
+import { HeroSection } from "@/components/sections/HeroSection";
+import { ServiceCard } from "@/components/sections/ServiceCard";
+import { company } from "@/lib/data/company";
+import { services } from "@/lib/data/services";
+import { searchPexelsPhotos } from "@/lib/api/pexels";
 
 export default function Home() {
+  // Server-side fetch for hero image (pexels); falls back gracefully if no API key.
+  // NOTE: This is a Server Component by default; safe to fetch here.
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <main>
+      {/* @ts-expect-error Async Server Component pattern */}
+      <HomeHero />
+
+      <section className="mx-auto max-w-6xl px-4 py-12 md:py-16">
+        <div className="grid gap-8 md:grid-cols-3 md:items-start">
+          <div className="md:col-span-1">
+            <div className="text-sm font-semibold text-pkp-green-700">
+              Tentang Kami
+            </div>
+            <h2 className="mt-2 text-3xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-100">
+              {company.name}
+            </h2>
+            <p className="mt-4 text-sm leading-7 text-zinc-600 dark:text-zinc-400">
+              {company.description}
+            </p>
+          </div>
+
+          <div className="md:col-span-2 grid gap-4 md:grid-cols-2">
+            {services.map((s) => (
+              <ServiceCard key={s.id} service={s} />
+            ))}
+          </div>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+      </section>
+
+      <section className="border-t border-black/10 bg-zinc-50 dark:border-white/10 dark:bg-zinc-950/40">
+        <div className="mx-auto max-w-6xl px-4 py-12 md:py-16">
+          <div className="grid gap-10 md:grid-cols-2">
+            <div>
+              <div className="text-sm font-semibold text-pkp-green-700 dark:text-pkp-green-400">
+                Visi
+              </div>
+              <p className="mt-3 text-sm leading-7 text-zinc-700 dark:text-zinc-300">
+                {company.vision}
+              </p>
+            </div>
+            <div>
+              <div className="text-sm font-semibold text-pkp-green-700 dark:text-pkp-green-400">
+                Misi
+              </div>
+              <ul className="mt-3 grid gap-2 text-sm text-zinc-700 dark:text-zinc-300">
+                {company.mission.map((m) => (
+                  <li key={m} className="flex gap-2">
+                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-pkp-teal-600" />
+                    <span>{m}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+
+          <div className="mt-10 rounded-2xl bg-pkp-green-900 p-8 text-white shadow-sm">
+            <div className="text-lg font-semibold">{company.tagline}</div>
+            <p className="mt-2 text-sm text-white/80">
+              Konsultasikan kebutuhan Anda—kami bantu dari analisis hingga dokumen siap proses.
+            </p>
+            <div className="mt-6">
+              <a
+                href="/kontak"
+                className="inline-flex items-center justify-center rounded-full bg-pkp-teal-600 px-6 py-3 text-sm font-semibold text-white transition hover:bg-pkp-teal-700"
+              >
+                Hubungi
+              </a>
+            </div>
+          </div>
         </div>
-      </main>
-    </div>
+      </section>
+    </main>
+  );
+}
+
+async function HomeHero() {
+  const data = await searchPexelsPhotos("park trees path", 1);
+  const imageUrl = data.photos[0]?.src?.large2x ?? data.photos[0]?.src?.large;
+
+  return (
+    <HeroSection
+      imageUrl={imageUrl}
+      title="Solusi Presisi untuk Lingkungan Masa Depan"
+      subtitle="Konsultasi hukum pertanahan & pengurusan sertifikat tanah. Akurasi tinggi, proses transparan, dan dokumen siap untuk kebutuhan legalitas."
+      ctaHref="/kontak"
+      ctaLabel="Hubungi"
+    />
   );
 }
