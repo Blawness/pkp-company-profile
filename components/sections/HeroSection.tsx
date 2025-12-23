@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
+import Image from "next/image";
 
 export function HeroSection({
   imageUrl,
@@ -10,6 +11,7 @@ export function HeroSection({
   ctaHref,
   ctaLabel,
   size = "lg",
+  priority = false,
 }: {
   imageUrl?: string;
   title: string;
@@ -17,19 +19,23 @@ export function HeroSection({
   ctaHref?: string;
   ctaLabel?: string;
   size?: "sm" | "lg";
+  priority?: boolean;
 }) {
   return (
     <section className="relative overflow-hidden">
       <div className="absolute inset-0">
-        {/* background */}
-        <div
-          className="h-full w-full bg-center bg-cover"
-          style={{
-            backgroundImage: imageUrl
-              ? `url(${imageUrl})`
-              : "linear-gradient(135deg, #1a4d3a, #0d9488)",
-          }}
-        />
+        {/* Background gradient fallback */}
+        <div className="absolute inset-0 bg-[linear-gradient(135deg,#1a4d3a,#0d9488)]" />
+        {imageUrl ? (
+          <Image
+            src={imageUrl}
+            alt=""
+            fill
+            priority={priority}
+            sizes="100vw"
+            className="object-cover"
+          />
+        ) : null}
         <div className="absolute inset-0 bg-black/55" />
       </div>
 
@@ -55,7 +61,10 @@ export function HeroSection({
 
           {ctaHref && ctaLabel ? (
             <div className="mt-8 flex justify-center">
-              <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.98 }}>
+              <motion.div
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.98 }}
+              >
                 <Link
                   href={ctaHref}
                   className="inline-flex items-center justify-center rounded-full bg-pkp-teal-600 px-7 py-3 text-sm font-semibold text-white shadow-lg shadow-black/20 transition hover:bg-pkp-teal-700"
@@ -70,5 +79,3 @@ export function HeroSection({
     </section>
   );
 }
-
-

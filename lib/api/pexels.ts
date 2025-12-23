@@ -20,7 +20,8 @@ type PexelsSearchResponse = {
 };
 
 function getPexelsKey() {
-  return process.env.PEXELS_API_KEY || process.env.NEXT_PUBLIC_PEXELS_API_KEY || "";
+  // Server-only: do not expose API keys via NEXT_PUBLIC_*
+  return process.env.PEXELS_API_KEY || "";
 }
 
 export async function searchPexelsPhotos(query: string, perPage = 1) {
@@ -42,5 +43,3 @@ export async function searchPexelsPhotos(query: string, perPage = 1) {
   const data = (await res.json()) as PexelsSearchResponse;
   return data;
 }
-
-

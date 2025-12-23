@@ -5,7 +5,12 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { Menu } from "lucide-react";
 import * as Dialog from "@radix-ui/react-dialog";
-import { NavigationMenu, NavigationMenuItem, NavigationMenuLink, NavigationMenuList } from "@/components/ui/NavigationMenu";
+import {
+  NavigationMenu,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+} from "@/components/ui/NavigationMenu";
 import { ThemeToggle } from "@/components/layout/ThemeToggle";
 
 function cn(...classes: Array<string | false | null | undefined>) {
@@ -41,7 +46,9 @@ export function Header() {
             <div className="text-sm font-semibold tracking-wide text-white">
               PT PRESISI KONSULINDO PRIMA
             </div>
-            <div className="text-xs text-white/70">Konsultasi pertanahan & sertifikat tanah</div>
+            <div className="text-xs text-white/70">
+              Konsultasi pertanahan & sertifikat tanah
+            </div>
           </div>
         </Link>
 
@@ -56,7 +63,8 @@ export function Header() {
                       <Link
                         href={item.href}
                         className={cn(
-                          active && "text-white underline underline-offset-8 decoration-white/60",
+                          active &&
+                            "text-white underline underline-offset-8 decoration-white/60",
                         )}
                       >
                         {item.label}
@@ -116,5 +124,3 @@ export function Header() {
     </header>
   );
 }
-
-

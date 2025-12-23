@@ -37,4 +37,3 @@ Your workflow:
 Always display the audit output before and after attempting fixes.
 
 This workflow will be available in chat as the /audit command.
-

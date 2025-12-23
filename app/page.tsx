@@ -62,7 +62,8 @@ export default function Home() {
           <div className="mt-10 rounded-2xl bg-pkp-green-900 p-8 text-white shadow-sm">
             <div className="text-lg font-semibold">{company.tagline}</div>
             <p className="mt-2 text-sm text-white/80">
-              Konsultasikan kebutuhan Anda—kami bantu dari analisis hingga dokumen siap proses.
+              Konsultasikan kebutuhan Anda—kami bantu dari analisis hingga
+              dokumen siap proses.
             </p>
             <div className="mt-6">
               <a
@@ -80,12 +81,16 @@ export default function Home() {
 }
 
 async function HomeHero() {
-  const data = await searchPexelsPhotos("business meeting documents contract", 1);
+  const data = await searchPexelsPhotos(
+    "business meeting documents contract",
+    1,
+  );
   const imageUrl = data.photos[0]?.src?.large2x ?? data.photos[0]?.src?.large;
 
   return (
     <HeroSection
       imageUrl={imageUrl}
+      priority
       title="Konsultasi Pertanahan & Pengurusan Sertifikat Tanah"
       subtitle="Pendampingan legalitas lahan dari analisis dokumen hingga proses sertifikasi. Transparan, sesuai regulasi, dan terukur."
       ctaHref="/kontak"

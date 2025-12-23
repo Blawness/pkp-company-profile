@@ -4,10 +4,17 @@ import tseslint from "typescript-eslint";
 import pluginReact from "eslint-plugin-react";
 import json from "@eslint/json";
 import { defineConfig } from "eslint/config";
+import { FlatCompat } from "@eslint/eslintrc";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 
 const JS_FILES = ["**/*.{js,mjs,cjs,jsx}"];
 const TS_FILES = ["**/*.{ts,mts,cts,tsx}"];
 const JS_TS_FILES = ["**/*.{js,mjs,cjs,jsx,ts,mts,cts,tsx}"];
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const compat = new FlatCompat({ baseDirectory: __dirname });
 
 export default defineConfig([
   {
@@ -21,6 +28,12 @@ export default defineConfig([
       "**/next-env.d.ts",
     ],
   },
+  // Next.js (includes @next/next rules + Core Web Vitals)
+  ...compat
+    .extends("next/core-web-vitals")
+    .map((cfg) =>
+      Object.hasOwn(cfg, "files") ? cfg : { ...cfg, files: JS_TS_FILES },
+    ),
   {
     files: JS_FILES,
     ...js.configs.recommended,

@@ -113,14 +113,14 @@ todos:
 - Overview layanan
 - Dua layanan utama dengan detail lengkap:
 - **Konsultasi Hukum Pertanahan**
-    - Layanan bantuan dan FAQ
-    - Layanan Kajian Hukum
+  - Layanan bantuan dan FAQ
+  - Layanan Kajian Hukum
 - **Jasa Pengurusan Sertifikat Tanah**
-    - Pendaftaran Tanah Pertama Kali
-    - Pengurusan Sertifikat Hak Atas Tanah
-    - Balik Nama Sertifikat
-    - Pemecahan atau Penggabungan Sertifikat
-    - Pengurusan Legalitas Pemanfaatan Tanah LSD
+  - Pendaftaran Tanah Pertama Kali
+  - Pengurusan Sertifikat Hak Atas Tanah
+  - Balik Nama Sertifikat
+  - Pemecahan atau Penggabungan Sertifikat
+  - Pengurusan Legalitas Pemanfaatan Tanah LSD
 
 ### 3. Halaman Tentang Kami (`/tentang-kami`)
 
@@ -213,8 +213,6 @@ pkp-company-profile/
 └── next.config.js
 ```
 
-
-
 ## Implementasi Detail
 
 ### 1. Setup Project (Bun)
@@ -283,8 +281,6 @@ colors: {
   // ... default grays, whites, blacks
 }
 ```
-
-
 
 ### 4. Styling Strategy
 
@@ -375,8 +371,6 @@ NEXT_PUBLIC_EMAILJS_SERVICE_ID=your_emailjs_service_id
 NEXT_PUBLIC_EMAILJS_TEMPLATE_ID=your_emailjs_template_id
 NEXT_PUBLIC_EMAILJS_PUBLIC_KEY=your_emailjs_public_key
 ```
-
-
 
 ## Prioritas Implementasi
 

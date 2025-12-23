@@ -46,7 +46,10 @@ export function ContactForm() {
       setStatus("idle");
       const res = await fetch(action, {
         method: "POST",
-        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
         body: JSON.stringify({
           name: values.name,
           email: values.email,
@@ -62,13 +65,24 @@ export function ContactForm() {
     }
   }
 
+  const nameErrorId = errors.name ? "contact-name-error" : undefined;
+  const emailErrorId = errors.email ? "contact-email-error" : undefined;
+  const messageErrorId = errors.message ? "contact-message-error" : undefined;
+
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="grid gap-4">
       <div className="grid gap-1">
-        <label className="text-sm font-medium text-zinc-900 dark:text-zinc-100">
+        <label
+          htmlFor="contact-name"
+          className="text-sm font-medium text-zinc-900 dark:text-zinc-100"
+        >
           Nama
         </label>
         <input
+          id="contact-name"
+          autoComplete="name"
+          aria-invalid={errors.name ? true : undefined}
+          aria-describedby={nameErrorId}
           className={cn(
             "h-11 rounded-xl border bg-white px-3 text-sm outline-none transition",
             "border-black/10 focus:ring-2 focus:ring-pkp-teal-600/30 dark:bg-zinc-950 dark:border-white/10",
@@ -77,15 +91,26 @@ export function ContactForm() {
           {...register("name")}
         />
         {errors.name ? (
-          <div className="text-xs text-red-600">{errors.name.message}</div>
+          <div id={nameErrorId} className="text-xs text-red-600">
+            {errors.name.message}
+          </div>
         ) : null}
       </div>
 
       <div className="grid gap-1">
-        <label className="text-sm font-medium text-zinc-900 dark:text-zinc-100">
+        <label
+          htmlFor="contact-email"
+          className="text-sm font-medium text-zinc-900 dark:text-zinc-100"
+        >
           Email
         </label>
         <input
+          id="contact-email"
+          type="email"
+          inputMode="email"
+          autoComplete="email"
+          aria-invalid={errors.email ? true : undefined}
+          aria-describedby={emailErrorId}
           className={cn(
             "h-11 rounded-xl border bg-white px-3 text-sm outline-none transition",
             "border-black/10 focus:ring-2 focus:ring-pkp-teal-600/30 dark:bg-zinc-950 dark:border-white/10",
@@ -94,15 +119,24 @@ export function ContactForm() {
           {...register("email")}
         />
         {errors.email ? (
-          <div className="text-xs text-red-600">{errors.email.message}</div>
+          <div id={emailErrorId} className="text-xs text-red-600">
+            {errors.email.message}
+          </div>
         ) : null}
       </div>
 
       <div className="grid gap-1">
-        <label className="text-sm font-medium text-zinc-900 dark:text-zinc-100">
+        <label
+          htmlFor="contact-message"
+          className="text-sm font-medium text-zinc-900 dark:text-zinc-100"
+        >
           Pesan
         </label>
         <textarea
+          id="contact-message"
+          autoComplete="off"
+          aria-invalid={errors.message ? true : undefined}
+          aria-describedby={messageErrorId}
           rows={6}
           className={cn(
             "rounded-xl border bg-white px-3 py-3 text-sm outline-none transition",
@@ -112,7 +146,9 @@ export function ContactForm() {
           {...register("message")}
         />
         {errors.message ? (
-          <div className="text-xs text-red-600">{errors.message.message}</div>
+          <div id={messageErrorId} className="text-xs text-red-600">
+            {errors.message.message}
+          </div>
         ) : null}
       </div>
 
@@ -131,21 +167,23 @@ export function ContactForm() {
         </motion.button>
       </div>
 
-      {status === "missing" ? (
-        <div className="text-xs text-zinc-500">
-          Form belum aktif: set `NEXT_PUBLIC_FORMSPREE_ID` di `.env.local`.
-        </div>
-      ) : null}
-      {status === "success" ? (
-        <div className="text-xs text-emerald-600">Pesan terkirim. Terima kasih!</div>
-      ) : null}
-      {status === "error" ? (
-        <div className="text-xs text-red-600">
-          Gagal mengirim pesan. Coba lagi beberapa saat.
-        </div>
-      ) : null}
+      <div aria-live="polite">
+        {status === "missing" ? (
+          <div className="text-xs text-zinc-500">
+            Form belum aktif: set `NEXT_PUBLIC_FORMSPREE_ID` di `.env.local`.
+          </div>
+        ) : null}
+        {status === "success" ? (
+          <div className="text-xs text-emerald-600">
+            Pesan terkirim. Terima kasih!
+          </div>
+        ) : null}
+        {status === "error" ? (
+          <div className="text-xs text-red-600" role="alert">
+            Gagal mengirim pesan. Coba lagi beberapa saat.
+          </div>
+        ) : null}
+      </div>
     </form>
   );
 }
-
-

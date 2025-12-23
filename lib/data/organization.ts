@@ -19,7 +19,10 @@ export const organization: OrgNode = {
     },
     {
       title: "Divisi Sertifikasi & Perizinan",
-      children: [{ title: "Pengurusan Sertifikat" }, { title: "Perizinan KKPR/LSD" }],
+      children: [
+        { title: "Pengurusan Sertifikat" },
+        { title: "Perizinan KKPR/LSD" },
+      ],
     },
     {
       title: "Divisi Layanan Klien",
@@ -27,5 +30,3 @@ export const organization: OrgNode = {
     },
   ],
 };
-
-

@@ -16,10 +16,7 @@ export const AccordionItem = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <AccordionPrimitive.Item
     ref={ref}
-    className={cn(
-      "border-b border-black/10 dark:border-white/10",
-      className,
-    )}
+    className={cn("border-b border-black/10 dark:border-white/10", className)}
     {...props}
   />
 ));
@@ -62,5 +59,3 @@ export const AccordionContent = React.forwardRef<
   </AccordionPrimitive.Content>
 ));
 AccordionContent.displayName = "AccordionContent";
-
-

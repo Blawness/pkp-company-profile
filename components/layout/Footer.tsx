@@ -10,31 +10,47 @@ export function Footer() {
             PT Presisi Konsulindo Prima
           </div>
           <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
-            Konsultasi pertanahan dan pengurusan sertifikat tanah secara profesional, transparan,
-            dan berintegritas.
+            Konsultasi pertanahan dan pengurusan sertifikat tanah secara
+            profesional, transparan, dan berintegritas.
           </p>
         </div>
 
         <div>
-          <div className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">Menu</div>
+          <div className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">
+            Menu
+          </div>
           <div className="mt-3 grid gap-2 text-sm">
-            <Link className="text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100" href="/">
+            <Link
+              className="text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"
+              href="/"
+            >
               Beranda
             </Link>
-            <Link className="text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100" href="/layanan">
+            <Link
+              className="text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"
+              href="/layanan"
+            >
               Layanan
             </Link>
-            <Link className="text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100" href="/tentang-kami">
+            <Link
+              className="text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"
+              href="/tentang-kami"
+            >
               Tentang Kami
             </Link>
-            <Link className="text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100" href="/kontak">
+            <Link
+              className="text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"
+              href="/kontak"
+            >
               Kontak
             </Link>
           </div>
         </div>
 
         <div>
-          <div className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">Kontak</div>
+          <div className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">
+            Kontak
+          </div>
           <div className="mt-3 grid gap-2 text-sm text-zinc-600 dark:text-zinc-400">
             <div>{company.contact.email}</div>
             <div>{company.contact.phone}</div>
@@ -51,10 +67,9 @@ export function Footer() {
         </div>
       </div>
       <div className="border-t border-black/10 py-4 text-center text-xs text-zinc-500 dark:border-white/10 dark:text-zinc-500">
-        © {new Date().getFullYear()} PT Presisi Konsulindo Prima. All rights reserved.
+        © {new Date().getFullYear()} PT Presisi Konsulindo Prima. All rights
+        reserved.
       </div>
     </footer>
   );
 }
-
-

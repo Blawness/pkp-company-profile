@@ -12,8 +12,8 @@ export default function ArtikelPage() {
             Artikel
           </h1>
           <p className="mt-3 text-sm leading-7 text-zinc-600 dark:text-zinc-400">
-            Halaman artikel akan tersedia segera. Nantinya berisi edukasi singkat seputar pertanahan,
-            sertifikasi, dan update regulasi.
+            Halaman artikel akan tersedia segera. Nantinya berisi edukasi
+            singkat seputar pertanahan, sertifikasi, dan update regulasi.
           </p>
         </div>
 
@@ -40,5 +40,3 @@ async function ArtikelHero() {
     />
   );
 }
-
-
