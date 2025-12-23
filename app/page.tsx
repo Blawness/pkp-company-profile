@@ -9,7 +9,6 @@ export default function Home() {
   // NOTE: This is a Server Component by default; safe to fetch here.
   return (
     <main>
-      {/* @ts-expect-error Async Server Component pattern */}
       <HomeHero />
 
       <section className="mx-auto max-w-6xl px-4 py-12 md:py-16">

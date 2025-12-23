@@ -18,7 +18,8 @@ async function main() {
   canvas.composite(image, x, y);
 
   // Save the square PNG (useful for inspection), then convert to ICO.
-  await canvas.write(squareOut);
+  // Jimp's types require a `${string}.${string}` filename; our path ends with `.png`.
+  await canvas.write(squareOut as `${string}.${string}`);
   const pngSquare = await fs.readFile(squareOut);
   const ico = await pngToIco(pngSquare);
   await fs.writeFile(output, ico);

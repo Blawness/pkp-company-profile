@@ -7,7 +7,6 @@ import { searchPexelsPhotos } from "@/lib/api/pexels";
 export default function TentangKamiPage() {
   return (
     <main>
-      {/* @ts-expect-error Async Server Component pattern */}
       <TentangKamiHero />
 
       <div className="mx-auto max-w-6xl px-4 py-10 md:py-14">
@@ -55,7 +54,7 @@ export default function TentangKamiPage() {
 }
 
 async function TentangKamiHero() {
-  const data = await searchPexelsPhotos("law office meeting documents", 1);
+  const data = await searchPexelsPhotos("legal consultation meeting handshake", 1);
   const imageUrl = data.photos[0]?.src?.large2x ?? data.photos[0]?.src?.large;
 
   return (

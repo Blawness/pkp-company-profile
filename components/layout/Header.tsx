@@ -27,14 +27,16 @@ export function Header() {
     <header className="sticky top-0 z-50 border-b border-white/10 bg-pkp-green-900/95 backdrop-blur">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4">
         <Link href="/" className="flex items-center gap-3">
-          <Image
-            src="/logo.png"
-            alt="PT Presisi Konsulindo Prima"
-            width={128}
-            height={40}
-            priority
-            className="h-9 w-auto"
-          />
+          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white p-1.5">
+            <Image
+              src="/logo-square.png"
+              alt="PT Presisi Konsulindo Prima"
+              width={40}
+              height={40}
+              priority
+              className="h-full w-auto object-contain"
+            />
+          </div>
           <div className="leading-tight">
             <div className="text-sm font-semibold tracking-wide text-white">
               PT PRESISI KONSULINDO PRIMA
