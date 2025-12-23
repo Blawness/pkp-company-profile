@@ -81,14 +81,14 @@ export default function Home() {
 }
 
 async function HomeHero() {
-  const data = await searchPexelsPhotos("park trees path", 1);
+  const data = await searchPexelsPhotos("business meeting documents contract", 1);
   const imageUrl = data.photos[0]?.src?.large2x ?? data.photos[0]?.src?.large;
 
   return (
     <HeroSection
       imageUrl={imageUrl}
-      title="Solusi Presisi untuk Lingkungan Masa Depan"
-      subtitle="Konsultasi hukum pertanahan & pengurusan sertifikat tanah. Akurasi tinggi, proses transparan, dan dokumen siap untuk kebutuhan legalitas."
+      title="Konsultasi Pertanahan & Pengurusan Sertifikat Tanah"
+      subtitle="Pendampingan legalitas lahan dari analisis dokumen hingga proses sertifikasi. Transparan, sesuai regulasi, dan terukur."
       ctaHref="/kontak"
       ctaLabel="Hubungi"
     />

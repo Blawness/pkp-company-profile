@@ -1,19 +1,24 @@
 import { services } from "@/lib/data/services";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/Accordion";
+import { HeroSection } from "@/components/sections/HeroSection";
+import { searchPexelsPhotos } from "@/lib/api/pexels";
 
 export default function LayananPage() {
   return (
-    <main className="mx-auto max-w-6xl px-4 py-10 md:py-14">
-      <div className="max-w-3xl">
-        <h1 className="text-3xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-100 md:text-4xl">
-          Layanan
-        </h1>
-        <p className="mt-3 text-sm leading-7 text-zinc-600 dark:text-zinc-400">
-          Layanan utama PT Presisi Konsulindo Prima untuk kebutuhan konsultasi hukum pertanahan dan pengurusan sertifikat tanah.
-        </p>
-      </div>
+    <main>
+      <LayananHero />
 
-      <div className="mt-10 grid gap-8">
+      <div className="mx-auto max-w-6xl px-4 py-10 md:py-14">
+        <div className="max-w-3xl">
+          <h1 className="text-3xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-100 md:text-4xl">
+            Layanan
+          </h1>
+          <p className="mt-3 text-sm leading-7 text-zinc-600 dark:text-zinc-400">
+            Layanan utama PT Presisi Konsulindo Prima untuk kebutuhan konsultasi hukum pertanahan dan pengurusan sertifikat tanah.
+          </p>
+        </div>
+
+        <div className="mt-10 grid gap-8">
         {services.map((service) => (
           <section
             key={service.id}
@@ -51,7 +56,24 @@ export default function LayananPage() {
           </section>
         ))}
       </div>
+      </div>
     </main>
+  );
+}
+
+async function LayananHero() {
+  const data = await searchPexelsPhotos("documents contract signature", 1);
+  const imageUrl = data.photos[0]?.src?.large2x ?? data.photos[0]?.src?.large;
+
+  return (
+    <HeroSection
+      size="sm"
+      imageUrl={imageUrl}
+      title="Layanan Konsultasi Pertanahan & Sertifikat Tanah"
+      subtitle="Pendampingan legalitas lahan, kajian hukum, dan pengurusan sertifikat—disusun rapi sesuai kebutuhan proses Anda."
+      ctaHref="/kontak"
+      ctaLabel="Konsultasi"
+    />
   );
 }
 

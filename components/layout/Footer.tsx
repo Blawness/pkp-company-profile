@@ -10,8 +10,8 @@ export function Footer() {
             PT Presisi Konsulindo Prima
           </div>
           <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
-            Solusi presisi untuk lingkungan masa depan — konsultasi hukum pertanahan dan
-            pengurusan sertifikat tanah secara profesional, transparan, dan berintegritas.
+            Konsultasi pertanahan dan pengurusan sertifikat tanah secara profesional, transparan,
+            dan berintegritas.
           </p>
         </div>
 
@@ -38,6 +38,15 @@ export function Footer() {
           <div className="mt-3 grid gap-2 text-sm text-zinc-600 dark:text-zinc-400">
             <div>{company.contact.email}</div>
             <div>{company.contact.phone}</div>
+            <div className="leading-6">{company.contact.address}</div>
+            <a
+              className="text-sm font-semibold text-pkp-teal-700 hover:text-pkp-teal-600 dark:text-pkp-teal-600 dark:hover:text-pkp-teal-600/90"
+              href={company.contact.mapsUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Google Maps
+            </a>
           </div>
         </div>
       </div>

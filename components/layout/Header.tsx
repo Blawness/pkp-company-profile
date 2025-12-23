@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { Menu } from "lucide-react";
 import * as Dialog from "@radix-ui/react-dialog";
@@ -26,14 +27,19 @@ export function Header() {
     <header className="sticky top-0 z-50 border-b border-white/10 bg-pkp-green-900/95 backdrop-blur">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4">
         <Link href="/" className="flex items-center gap-3">
-          <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-pkp-teal-600 text-white font-bold">
-            PKP
-          </span>
+          <Image
+            src="/logo.png"
+            alt="PT Presisi Konsulindo Prima"
+            width={128}
+            height={40}
+            priority
+            className="h-9 w-auto"
+          />
           <div className="leading-tight">
             <div className="text-sm font-semibold tracking-wide text-white">
               PT PRESISI KONSULINDO PRIMA
             </div>
-            <div className="text-xs text-white/70">Solusi presisi & legalitas lahan</div>
+            <div className="text-xs text-white/70">Konsultasi pertanahan & sertifikat tanah</div>
           </div>
         </Link>
 

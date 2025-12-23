@@ -1,20 +1,26 @@
 import { company } from "@/lib/data/company";
 import { organization } from "@/lib/data/organization";
 import { OrganizationChart } from "@/components/sections/OrganizationChart";
+import { HeroSection } from "@/components/sections/HeroSection";
+import { searchPexelsPhotos } from "@/lib/api/pexels";
 
 export default function TentangKamiPage() {
   return (
-    <main className="mx-auto max-w-6xl px-4 py-10 md:py-14">
-      <div className="max-w-3xl">
-        <h1 className="text-3xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-100 md:text-4xl">
-          Tentang Kami
-        </h1>
-        <p className="mt-3 text-sm leading-7 text-zinc-600 dark:text-zinc-400">
-          {company.description}
-        </p>
-      </div>
+    <main>
+      {/* @ts-expect-error Async Server Component pattern */}
+      <TentangKamiHero />
 
-      <div className="mt-10 grid gap-8 md:grid-cols-2">
+      <div className="mx-auto max-w-6xl px-4 py-10 md:py-14">
+        <div className="max-w-3xl">
+          <h1 className="text-3xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-100 md:text-4xl">
+            Tentang Kami
+          </h1>
+          <p className="mt-3 text-sm leading-7 text-zinc-600 dark:text-zinc-400">
+            {company.description}
+          </p>
+        </div>
+
+        <div className="mt-10 grid gap-8 md:grid-cols-2">
         <section className="rounded-2xl border border-black/10 bg-white p-6 shadow-sm dark:border-white/10 dark:bg-zinc-950">
           <div className="text-sm font-semibold text-pkp-green-700 dark:text-pkp-green-400">
             Visi
@@ -43,7 +49,24 @@ export default function TentangKamiPage() {
           <OrganizationChart data={organization} />
         </section>
       </div>
+      </div>
     </main>
+  );
+}
+
+async function TentangKamiHero() {
+  const data = await searchPexelsPhotos("law office meeting documents", 1);
+  const imageUrl = data.photos[0]?.src?.large2x ?? data.photos[0]?.src?.large;
+
+  return (
+    <HeroSection
+      size="sm"
+      imageUrl={imageUrl}
+      title="Mitra Konsultasi Pertanahan yang Terukur"
+      subtitle="Berfokus pada kepatuhan regulasi, kualitas dokumen, dan pendampingan yang transparan untuk kebutuhan pertanahan dan sertifikat tanah."
+      ctaHref="/layanan"
+      ctaLabel="Lihat Layanan"
+    />
   );
 }
 
