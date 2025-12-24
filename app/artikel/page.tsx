@@ -1,20 +1,23 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import { HeroSection } from "@/components/sections/HeroSection";
 import { getHeroImageUrl } from "@/lib/api/pexels";
 
 export const metadata: Metadata = {
   title: "Artikel",
   description:
-    "Artikel dan edukasi seputar pertanahan, sertifikasi, dan update regulasi dari PT Presisi Konsulindo Prima.",
+    "Artikel dan edukasi seputar pertanahan, sertifikasi, and update regulasi dari PT Presisi Konsulindo Prima.",
   openGraph: {
     title: "Artikel",
     description:
-      "Artikel dan edukasi seputar pertanahan, sertifikasi, dan update regulasi dari PT Presisi Konsulindo Prima.",
+      "Artikel dan edukasi seputar pertanahan, sertifikasi, and update regulasi dari PT Presisi Konsulindo Prima.",
     url: "/artikel",
   },
 };
 
-export default function ArtikelPage() {
+export default async function ArtikelPage() {
+  const placeholderImageUrl = await getHeroImageUrl("writing documents library office");
+
   return (
     <main>
       <ArtikelHero />
@@ -30,8 +33,21 @@ export default function ArtikelPage() {
           </p>
         </div>
 
-        <div className="mt-10 rounded-2xl border border-dashed border-black/15 bg-zinc-50 p-10 text-center text-sm text-zinc-600 dark:border-white/15 dark:bg-zinc-950/40 dark:text-zinc-400">
-          Coming soon.
+        <div className="mt-10 grid gap-8 md:grid-cols-2">
+          <div className="flex items-center justify-center rounded-2xl border border-dashed border-black/15 bg-zinc-50 p-10 text-center text-sm text-zinc-600 dark:border-white/15 dark:bg-zinc-950/40 dark:text-zinc-400">
+            Coming soon. Kami sedang menyiapkan konten edukasi terbaik untuk Anda.
+          </div>
+
+          <div className="relative aspect-video overflow-hidden rounded-2xl shadow-sm">
+            {placeholderImageUrl && (
+              <Image
+                src={placeholderImageUrl}
+                alt="Artikel Coming Soon"
+                fill
+                className="object-cover"
+              />
+            )}
+          </div>
         </div>
       </div>
     </main>

@@ -10,6 +10,7 @@ export type MainService = {
     | "pengukuran-lahan";
   title: string;
   description: string;
+  imageQuery: string;
   sections: ServiceSection[];
 };
 
@@ -19,6 +20,7 @@ export const services: MainService[] = [
     title: "Konsultasi Hukum Pertanahan",
     description:
       "Ditujukan untuk membantu klien memahami, menganalisa, dan menyelesaikan berbagai permasalahan hukum yang berkaitan dengan tanah dan pemanfaatannya.",
+    imageQuery: "lawyer desk documents",
     sections: [
       {
         title: "Layanan bantuan dan FAQ",
@@ -51,6 +53,7 @@ export const services: MainService[] = [
     title: "Jasa Pengurusan Sertifikat Tanah",
     description:
       "Ditujukan untuk memastikan seluruh proses dilaksanakan sesuai peraturan yang berlaku, secara profesional, transparan, dan berintegritas.",
+    imageQuery: "land certificate map",
     sections: [
       {
         title: "Pendaftaran Tanah Pertama Kali",
@@ -97,6 +100,7 @@ export const services: MainService[] = [
     title: "Pengukuran Lahan",
     description:
       "Ditujukan untuk membantu memastikan data ukur dan batas bidang tanah tersusun jelas sebagai dasar administrasi, perencanaan, maupun proses lanjutan yang diperlukan.",
+    imageQuery: "land surveyor measurement",
     sections: [
       {
         title: "Cakupan Layanan",

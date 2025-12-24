@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import { services } from "@/lib/data/services";
 import {
   Accordion,
@@ -21,7 +22,14 @@ export const metadata: Metadata = {
   },
 };
 
-export default function LayananPage() {
+export default async function LayananPage() {
+  const servicesWithImages = await Promise.all(
+    services.map(async (s) => ({
+      ...s,
+      imageUrl: await getHeroImageUrl(s.imageQuery),
+    })),
+  );
+
   return (
     <main>
       <LayananHero />
@@ -37,54 +45,68 @@ export default function LayananPage() {
           </p>
         </div>
 
-        <div className="mt-10 grid gap-8">
-          {services.map((service) => (
+        <div className="mt-10 grid gap-12">
+          {servicesWithImages.map((service) => (
             <section
               key={service.id}
               id={service.id}
-              className="scroll-mt-24 rounded-2xl border border-black/10 bg-white p-6 shadow-sm dark:border-white/10 dark:bg-zinc-950"
+              className="scroll-mt-24 overflow-hidden rounded-2xl border border-black/10 bg-white shadow-sm dark:border-white/10 dark:bg-zinc-950 md:grid md:grid-cols-2"
             >
-              <div className="flex flex-col gap-2">
-                <h2 className="text-xl font-semibold text-zinc-900 dark:text-zinc-100">
-                  {service.title}
-                </h2>
-                <p className="text-sm leading-7 text-zinc-600 dark:text-zinc-400">
-                  {service.description}
-                </p>
+              <div className="relative h-64 w-full md:h-full">
+                {service.imageUrl && (
+                  <Image
+                    src={service.imageUrl}
+                    alt={service.title}
+                    fill
+                    className="object-cover"
+                  />
+                )}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
               </div>
 
-              <div className="mt-6">
-                <Accordion type="multiple" className="w-full">
-                  {service.sections.map((sec) => (
-                    <AccordionItem key={sec.title} value={sec.title}>
-                      <AccordionTrigger>{sec.title}</AccordionTrigger>
-                      <AccordionContent>
-                        <ul className="grid gap-2">
-                          {sec.items.map((it, idx) => {
-                            if (typeof it === "string") {
+              <div className="flex flex-col p-6 md:p-8">
+                <div className="flex flex-col gap-2">
+                  <h2 className="text-xl font-semibold text-zinc-900 dark:text-zinc-100">
+                    {service.title}
+                  </h2>
+                  <p className="text-sm leading-7 text-zinc-600 dark:text-zinc-400">
+                    {service.description}
+                  </p>
+                </div>
+
+                <div className="mt-6">
+                  <Accordion type="multiple" className="w-full">
+                    {service.sections.map((sec) => (
+                      <AccordionItem key={sec.title} value={sec.title}>
+                        <AccordionTrigger>{sec.title}</AccordionTrigger>
+                        <AccordionContent>
+                          <ul className="grid gap-2">
+                            {sec.items.map((it, idx) => {
+                              if (typeof it === "string") {
+                                return (
+                                  <li key={it} className="flex gap-2">
+                                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-pkp-teal-600" />
+                                    <span>{it}</span>
+                                  </li>
+                                );
+                              }
                               return (
-                                <li key={it} className="flex gap-2">
-                                  <span className="mt-2 h-1.5 w-1.5 rounded-full bg-pkp-teal-600" />
-                                  <span>{it}</span>
+                                <li key={idx} className="space-y-1 py-1">
+                                  <div className="font-medium text-zinc-900 dark:text-zinc-100">
+                                    {it.question}
+                                  </div>
+                                  <div className="text-sm text-zinc-600 dark:text-zinc-400">
+                                    {it.answer}
+                                  </div>
                                 </li>
                               );
-                            }
-                            return (
-                              <li key={idx} className="space-y-1 py-1">
-                                <div className="font-medium text-zinc-900 dark:text-zinc-100">
-                                  {it.question}
-                                </div>
-                                <div className="text-sm text-zinc-600 dark:text-zinc-400">
-                                  {it.answer}
-                                </div>
-                              </li>
-                            );
-                          })}
-                        </ul>
-                      </AccordionContent>
-                    </AccordionItem>
-                  ))}
-                </Accordion>
+                            })}
+                          </ul>
+                        </AccordionContent>
+                      </AccordionItem>
+                    ))}
+                  </Accordion>
+                </div>
               </div>
             </section>
           ))}

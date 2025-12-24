@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import { HeroSection } from "@/components/sections/HeroSection";
 import { ServiceCard } from "@/components/sections/ServiceCard";
 import { company } from "@/lib/data/company";
@@ -17,16 +18,29 @@ export const metadata: Metadata = {
   },
 };
 
-export default function Home() {
-  // Server-side fetch for hero image (pexels); falls back gracefully if no API key.
-  // NOTE: This is a Server Component by default; safe to fetch here.
+export default async function Home() {
+  const aboutImageUrl = await getHeroImageUrl(
+    "modern office building professional environment",
+  );
+
   return (
     <main>
       <HomeHero />
 
       <section className="mx-auto max-w-6xl px-4 py-12 md:py-16">
-        <div className="grid gap-8 md:grid-cols-3 md:items-start">
-          <div className="md:col-span-1">
+        <div className="grid gap-10 md:grid-cols-2 md:items-center">
+          <div className="relative aspect-square overflow-hidden rounded-2xl md:aspect-[4/3]">
+            {aboutImageUrl && (
+              <Image
+                src={aboutImageUrl}
+                alt="Tentang PT Presisi Konsulindo Prima"
+                fill
+                className="object-cover"
+              />
+            )}
+          </div>
+
+          <div>
             <div className="text-sm font-semibold text-pkp-green-700">
               Tentang Kami
             </div>
@@ -36,13 +50,21 @@ export default function Home() {
             <p className="mt-4 text-sm leading-7 text-zinc-600 dark:text-zinc-400">
               {company.description}
             </p>
+            <div className="mt-6">
+              <a
+                href="/tentang-kami"
+                className="text-sm font-semibold text-pkp-teal-700 hover:text-pkp-teal-600 dark:text-pkp-teal-600 dark:hover:text-pkp-teal-600/90"
+              >
+                Selengkapnya tentang kami →
+              </a>
+            </div>
           </div>
+        </div>
 
-          <div className="md:col-span-2 grid gap-4 md:grid-cols-2">
-            {services.map((s) => (
-              <ServiceCard key={s.id} service={s} />
-            ))}
-          </div>
+        <div className="mt-16 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {services.map((s) => (
+            <ServiceCard key={s.id} service={s} />
+          ))}
         </div>
       </section>
 

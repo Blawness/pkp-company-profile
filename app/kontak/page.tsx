@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import { company } from "@/lib/data/company";
 import { ContactForm } from "@/components/forms/ContactForm";
 import { HeroSection } from "@/components/sections/HeroSection";
@@ -16,7 +17,9 @@ export const metadata: Metadata = {
   },
 };
 
-export default function KontakPage() {
+export default async function KontakPage() {
+  const contactImageUrl = await getHeroImageUrl("customer service assistance");
+
   return (
     <main>
       <KontakHero />
@@ -32,8 +35,8 @@ export default function KontakPage() {
           </p>
         </div>
 
-        <div id="info" className="mt-10 grid gap-8 md:grid-cols-2">
-          <section className="rounded-2xl border border-black/10 bg-white p-6 shadow-sm dark:border-white/10 dark:bg-zinc-950">
+        <div id="info" className="mt-10 grid gap-8 lg:grid-cols-3">
+          <section className="rounded-2xl border border-black/10 bg-white p-6 shadow-sm dark:border-white/10 dark:bg-zinc-950 lg:col-span-2">
             <div className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">
               Kirim Permintaan Anda
             </div>
@@ -42,38 +45,51 @@ export default function KontakPage() {
             </div>
           </section>
 
-          <section className="rounded-2xl border border-black/10 bg-zinc-50 p-6 dark:border-white/10 dark:bg-zinc-950/40">
-            <div className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">
-              Informasi Kontak
+          <div className="space-y-8 lg:col-span-1">
+            <section className="rounded-2xl border border-black/10 bg-zinc-50 p-6 dark:border-white/10 dark:bg-zinc-950/40">
+              <div className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">
+                Informasi Kontak
+              </div>
+              <div className="mt-4 grid gap-3 text-sm text-zinc-700 dark:text-zinc-300">
+                <div>
+                  <div className="text-xs text-zinc-500">Email</div>
+                  <div>{company.contact.email}</div>
+                </div>
+                <div>
+                  <div className="text-xs text-zinc-500">Telepon</div>
+                  <div>{company.contact.phone}</div>
+                </div>
+                <div>
+                  <div className="text-xs text-zinc-500">Alamat</div>
+                  <div className="leading-6">{company.contact.address}</div>
+                  <a
+                    className="mt-2 inline-flex text-xs font-semibold text-pkp-teal-700 hover:text-pkp-teal-600 dark:text-pkp-teal-600 dark:hover:text-pkp-teal-600/90"
+                    href={company.contact.mapsUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Buka di Google Maps
+                  </a>
+                </div>
+                <div>
+                  <div className="text-xs text-zinc-500">Operasional</div>
+                  <div>{company.contact.operational.days}</div>
+                  <div>{company.contact.operational.hours}</div>
+                </div>
+              </div>
+            </section>
+
+            <div className="relative aspect-[4/3] overflow-hidden rounded-2xl shadow-sm">
+              {contactImageUrl && (
+                <Image
+                  src={contactImageUrl}
+                  alt="Kontak Kami"
+                  fill
+                  className="object-cover"
+                />
+              )}
             </div>
-            <div className="mt-4 grid gap-3 text-sm text-zinc-700 dark:text-zinc-300">
-              <div>
-                <div className="text-xs text-zinc-500">Email</div>
-                <div>{company.contact.email}</div>
-              </div>
-              <div>
-                <div className="text-xs text-zinc-500">Telepon</div>
-                <div>{company.contact.phone}</div>
-              </div>
-              <div>
-                <div className="text-xs text-zinc-500">Alamat</div>
-                <div className="leading-6">{company.contact.address}</div>
-                <a
-                  className="mt-2 inline-flex text-xs font-semibold text-pkp-teal-700 hover:text-pkp-teal-600 dark:text-pkp-teal-600 dark:hover:text-pkp-teal-600/90"
-                  href={company.contact.mapsUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Buka di Google Maps
-                </a>
-              </div>
-              <div>
-                <div className="text-xs text-zinc-500">Operasional</div>
-                <div>{company.contact.operational.days}</div>
-                <div>{company.contact.operational.hours}</div>
-              </div>
-            </div>
-          </section>
+          </div>
         </div>
       </div>
     </main>
