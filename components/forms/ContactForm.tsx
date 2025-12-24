@@ -10,6 +10,7 @@ import { useTranslations } from "next-intl";
 
 export function ContactForm() {
   const t = useTranslations("Contact.form");
+  const tButtons = useTranslations("Common.buttons");
 
   const ContactSchema = z.object({
     name: z.string().min(2, t("validation.nameMin")),
@@ -163,7 +164,7 @@ export function ContactForm() {
           )}
           type="submit"
         >
-          {isSubmitting ? useTranslations("Common.buttons")("sending") : useTranslations("Common.buttons")("send")}
+          {isSubmitting ? tButtons("sending") : tButtons("send")}
         </motion.button>
       </div>
 

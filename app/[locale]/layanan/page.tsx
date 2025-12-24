@@ -1,7 +1,7 @@
 import { useTranslations } from "next-intl";
 import { getTranslations } from "next-intl/server";
 import Image from "next/image";
-import { services } from "@/lib/data/services";
+import { services, type MainService } from "@/lib/data/services";
 import {
   Accordion,
   AccordionContent,
@@ -57,12 +57,12 @@ export default function LayananPage() {
   );
 }
 
-async function ServiceSection({ service }: { service: any }) {
+async function ServiceSection({ service }: { service: MainService }) {
   const imageUrl = await getHeroImageUrl(service.imageQuery);
   const t = await getTranslations(`Services.list.${service.id}`);
 
   // Get raw sections from translation
-  const sectionsRaw = t.raw("sections");
+  const sectionsRaw = t.raw("sections") as Record<string, { title: string; items: (string | { question: string; answer: string })[] }>;
   const sectionKeys = Object.keys(sectionsRaw);
 
   return (
@@ -101,7 +101,7 @@ async function ServiceSection({ service }: { service: any }) {
                   <AccordionTrigger>{sec.title}</AccordionTrigger>
                   <AccordionContent>
                     <ul className="grid gap-2">
-                      {sec.items.map((it: any, idx: number) => {
+                      {sec.items.map((it, idx) => {
                         if (typeof it === "string") {
                           return (
                             <li key={idx} className="flex gap-2">

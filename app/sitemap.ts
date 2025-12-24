@@ -23,7 +23,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     routing.locales.map((locale) => ({
       url: new URL(`${locale}/${route.path}`, siteUrl).toString(),
       lastModified: stableLastModified,
-      changeFrequency: route.changeFrequency as any,
+      changeFrequency: route.changeFrequency as MetadataRoute.Sitemap[number]["changeFrequency"],
       priority: route.priority,
     }))
   );
