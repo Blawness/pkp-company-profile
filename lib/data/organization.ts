@@ -1,20 +1,33 @@
 export type OrgNode = {
-  titleKey?: string;
+  title: string;
   name?: string;
   children?: OrgNode[];
 };
 
-// This is now mostly structural; actual titles come from translations
+// Organization structure for non-localized pages
 export const organization: OrgNode = {
+  title: "Direktur Utama",
   children: [
     {
-      children: [{}, {}],
+      title: "Divisi Legal & Kepatuhan",
+      children: [
+        { title: "Legal Officer" },
+        { title: "Dokumentasi & Administrasi" },
+      ],
     },
     {
-      children: [{}, {}],
+      title: "Divisi Sertifikasi & Perizinan",
+      children: [
+        { title: "Pengurusan Sertifikat" },
+        { title: "Perizinan KKPR/LSD" },
+      ],
     },
     {
-      children: [{}, {}],
+      title: "Divisi Pengukuran & Survei",
+      children: [
+        { title: "Surveyor" },
+        { title: "Teknisi Pengukuran" },
+      ],
     },
   ],
 };
