@@ -5,6 +5,7 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { Menu } from "lucide-react";
 import * as Dialog from "@radix-ui/react-dialog";
+import { cn } from "@/lib/cn";
 import {
   NavigationMenu,
   NavigationMenuItem,
@@ -12,10 +13,6 @@ import {
   NavigationMenuList,
 } from "@/components/ui/NavigationMenu";
 import { ThemeToggle } from "@/components/layout/ThemeToggle";
-
-function cn(...classes: Array<string | false | null | undefined>) {
-  return classes.filter(Boolean).join(" ");
-}
 
 const navItems = [
   { href: "/", label: "Beranda" },

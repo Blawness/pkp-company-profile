@@ -1,7 +1,20 @@
+import type { Metadata } from "next";
 import { company } from "@/lib/data/company";
 import { ContactForm } from "@/components/forms/ContactForm";
 import { HeroSection } from "@/components/sections/HeroSection";
-import { searchPexelsPhotos } from "@/lib/api/pexels";
+import { getHeroImageUrl } from "@/lib/api/pexels";
+
+export const metadata: Metadata = {
+  title: "Kontak",
+  description:
+    "Hubungi PT Presisi Konsulindo Prima untuk konsultasi pertanahan dan pengurusan sertifikat tanah.",
+  openGraph: {
+    title: "Kontak",
+    description:
+      "Hubungi PT Presisi Konsulindo Prima untuk konsultasi pertanahan dan pengurusan sertifikat tanah.",
+    url: "/kontak",
+  },
+};
 
 export default function KontakPage() {
   return (
@@ -68,8 +81,7 @@ export default function KontakPage() {
 }
 
 async function KontakHero() {
-  const data = await searchPexelsPhotos("customer service office desk", 1);
-  const imageUrl = data.photos[0]?.src?.large2x ?? data.photos[0]?.src?.large;
+  const imageUrl = await getHeroImageUrl("customer service office desk");
 
   return (
     <HeroSection

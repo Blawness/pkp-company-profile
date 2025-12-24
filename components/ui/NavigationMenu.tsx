@@ -2,10 +2,7 @@
 
 import * as React from "react";
 import * as NavigationMenuPrimitive from "@radix-ui/react-navigation-menu";
-
-function cn(...classes: Array<string | false | null | undefined>) {
-  return classes.filter(Boolean).join(" ");
-}
+import { cn } from "@/lib/cn";
 
 export const NavigationMenu = NavigationMenuPrimitive.Root;
 

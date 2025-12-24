@@ -1,5 +1,18 @@
+import type { Metadata } from "next";
 import { HeroSection } from "@/components/sections/HeroSection";
-import { searchPexelsPhotos } from "@/lib/api/pexels";
+import { getHeroImageUrl } from "@/lib/api/pexels";
+
+export const metadata: Metadata = {
+  title: "Artikel",
+  description:
+    "Artikel dan edukasi seputar pertanahan, sertifikasi, dan update regulasi dari PT Presisi Konsulindo Prima.",
+  openGraph: {
+    title: "Artikel",
+    description:
+      "Artikel dan edukasi seputar pertanahan, sertifikasi, dan update regulasi dari PT Presisi Konsulindo Prima.",
+    url: "/artikel",
+  },
+};
 
 export default function ArtikelPage() {
   return (
@@ -26,8 +39,7 @@ export default function ArtikelPage() {
 }
 
 async function ArtikelHero() {
-  const data = await searchPexelsPhotos("reading documents notebook pen", 1);
-  const imageUrl = data.photos[0]?.src?.large2x ?? data.photos[0]?.src?.large;
+  const imageUrl = await getHeroImageUrl("reading documents notebook pen");
 
   return (
     <HeroSection

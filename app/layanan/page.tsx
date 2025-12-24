@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { services } from "@/lib/data/services";
 import {
   Accordion,
@@ -6,7 +7,19 @@ import {
   AccordionTrigger,
 } from "@/components/ui/Accordion";
 import { HeroSection } from "@/components/sections/HeroSection";
-import { searchPexelsPhotos } from "@/lib/api/pexels";
+import { getHeroImageUrl } from "@/lib/api/pexels";
+
+export const metadata: Metadata = {
+  title: "Layanan",
+  description:
+    "Layanan konsultasi hukum pertanahan dan pengurusan sertifikat tanah oleh PT Presisi Konsulindo Prima.",
+  openGraph: {
+    title: "Layanan",
+    description:
+      "Layanan konsultasi hukum pertanahan dan pengurusan sertifikat tanah oleh PT Presisi Konsulindo Prima.",
+    url: "/layanan",
+  },
+};
 
 export default function LayananPage() {
   return (
@@ -68,8 +81,7 @@ export default function LayananPage() {
 }
 
 async function LayananHero() {
-  const data = await searchPexelsPhotos("documents contract signature", 1);
-  const imageUrl = data.photos[0]?.src?.large2x ?? data.photos[0]?.src?.large;
+  const imageUrl = await getHeroImageUrl("documents contract signature");
 
   return (
     <HeroSection

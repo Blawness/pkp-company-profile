@@ -1,8 +1,21 @@
+import type { Metadata } from "next";
 import { company } from "@/lib/data/company";
 import { organization } from "@/lib/data/organization";
 import { OrganizationChart } from "@/components/sections/OrganizationChart";
 import { HeroSection } from "@/components/sections/HeroSection";
-import { searchPexelsPhotos } from "@/lib/api/pexels";
+import { getHeroImageUrl } from "@/lib/api/pexels";
+
+export const metadata: Metadata = {
+  title: "Tentang Kami",
+  description:
+    "Profil PT Presisi Konsulindo Prima: konsultasi pertanahan dan pengurusan sertifikat tanah dengan fokus pada kepatuhan regulasi.",
+  openGraph: {
+    title: "Tentang Kami",
+    description:
+      "Profil PT Presisi Konsulindo Prima: konsultasi pertanahan dan pengurusan sertifikat tanah dengan fokus pada kepatuhan regulasi.",
+    url: "/tentang-kami",
+  },
+};
 
 export default function TentangKamiPage() {
   return (
@@ -54,11 +67,9 @@ export default function TentangKamiPage() {
 }
 
 async function TentangKamiHero() {
-  const data = await searchPexelsPhotos(
+  const imageUrl = await getHeroImageUrl(
     "legal consultation meeting handshake",
-    1,
   );
-  const imageUrl = data.photos[0]?.src?.large2x ?? data.photos[0]?.src?.large;
 
   return (
     <HeroSection

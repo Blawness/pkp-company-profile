@@ -5,6 +5,11 @@ import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { PageTransition } from "@/components/animations/PageTransition";
+import { JsonLd } from "@/components/seo/JsonLd";
+import {
+  buildOrganizationSchema,
+  buildProfessionalServiceSchema,
+} from "@/lib/seo/schema";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -16,7 +21,12 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+const siteUrl =
+  process.env.NEXT_PUBLIC_SITE_URL ?? "https://pkp-company-profile.vercel.app";
+const schemas = [
+  buildOrganizationSchema(siteUrl),
+  buildProfessionalServiceSchema(siteUrl),
+];
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -29,6 +39,9 @@ export const metadata: Metadata = {
     type: "website",
     siteName: "PT Presisi Konsulindo Prima",
     locale: "id_ID",
+    url: siteUrl,
+    title: "PT Presisi Konsulindo Prima",
+    description: "Konsultasi hukum pertanahan & pengurusan sertifikat tanah",
   },
   twitter: {
     card: "summary_large_image",
@@ -45,6 +58,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <JsonLd data={schemas} />
         <ThemeProvider>
           <div className="min-h-dvh bg-white text-zinc-900 dark:bg-black dark:text-zinc-100">
             <Header />

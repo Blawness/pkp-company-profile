@@ -33,13 +33,30 @@ export async function searchPexelsPhotos(query: string, perPage = 1) {
   url.searchParams.set("per_page", String(perPage));
   url.searchParams.set("orientation", "landscape");
 
-  const res = await fetch(url.toString(), {
-    headers: { Authorization: key },
-    // Cache for 12 hours
-    next: { revalidate: 60 * 60 * 12 },
-  });
+  try {
+    const res = await fetch(url.toString(), {
+      headers: { Authorization: key },
+      // Cache for 12 hours
+      next: { revalidate: 60 * 60 * 12 },
+    });
 
-  if (!res.ok) return { photos: [] as PexelsPhoto[] };
-  const data = (await res.json()) as PexelsSearchResponse;
-  return data;
+    if (!res.ok) return { photos: [] as PexelsPhoto[] };
+    const data = (await res.json()) as PexelsSearchResponse;
+    return data;
+  } catch {
+    return { photos: [] as PexelsPhoto[] };
+  }
+}
+
+export async function getHeroImageUrl(
+  query: string,
+): Promise<string | undefined> {
+  const data = await searchPexelsPhotos(query, 1);
+  const photo = data.photos[0];
+  return (
+    photo?.src?.large2x ??
+    photo?.src?.large ??
+    photo?.src?.original ??
+    undefined
+  );
 }

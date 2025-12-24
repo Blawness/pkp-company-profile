@@ -5,6 +5,7 @@ import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { motion } from "framer-motion";
+import { cn } from "@/lib/cn";
 
 const ContactSchema = z.object({
   name: z.string().min(2, "Nama minimal 2 karakter"),
@@ -13,10 +14,6 @@ const ContactSchema = z.object({
 });
 
 type ContactValues = z.infer<typeof ContactSchema>;
-
-function cn(...classes: Array<string | false | null | undefined>) {
-  return classes.filter(Boolean).join(" ");
-}
 
 export function ContactForm() {
   const formspreeId = process.env.NEXT_PUBLIC_FORMSPREE_ID;

@@ -1,8 +1,21 @@
+import type { Metadata } from "next";
 import { HeroSection } from "@/components/sections/HeroSection";
 import { ServiceCard } from "@/components/sections/ServiceCard";
 import { company } from "@/lib/data/company";
 import { services } from "@/lib/data/services";
-import { searchPexelsPhotos } from "@/lib/api/pexels";
+import { getHeroImageUrl } from "@/lib/api/pexels";
+
+export const metadata: Metadata = {
+  title: "Beranda",
+  description:
+    "Konsultasi pertanahan & pengurusan sertifikat tanah secara profesional, transparan, dan sesuai regulasi.",
+  openGraph: {
+    title: "Beranda",
+    description:
+      "Konsultasi pertanahan & pengurusan sertifikat tanah secara profesional, transparan, dan sesuai regulasi.",
+    url: "/",
+  },
+};
 
 export default function Home() {
   // Server-side fetch for hero image (pexels); falls back gracefully if no API key.
@@ -81,11 +94,7 @@ export default function Home() {
 }
 
 async function HomeHero() {
-  const data = await searchPexelsPhotos(
-    "business meeting documents contract",
-    1,
-  );
-  const imageUrl = data.photos[0]?.src?.large2x ?? data.photos[0]?.src?.large;
+  const imageUrl = await getHeroImageUrl("business meeting documents contract");
 
   return (
     <HeroSection
