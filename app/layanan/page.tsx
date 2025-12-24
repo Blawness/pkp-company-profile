@@ -60,12 +60,26 @@ export default function LayananPage() {
                       <AccordionTrigger>{sec.title}</AccordionTrigger>
                       <AccordionContent>
                         <ul className="grid gap-2">
-                          {sec.items.map((it) => (
-                            <li key={it} className="flex gap-2">
-                              <span className="mt-2 h-1.5 w-1.5 rounded-full bg-pkp-teal-600" />
-                              <span>{it}</span>
-                            </li>
-                          ))}
+                          {sec.items.map((it, idx) => {
+                            if (typeof it === "string") {
+                              return (
+                                <li key={it} className="flex gap-2">
+                                  <span className="mt-2 h-1.5 w-1.5 rounded-full bg-pkp-teal-600" />
+                                  <span>{it}</span>
+                                </li>
+                              );
+                            }
+                            return (
+                              <li key={idx} className="space-y-1 py-1">
+                                <div className="font-medium text-zinc-900 dark:text-zinc-100">
+                                  {it.question}
+                                </div>
+                                <div className="text-sm text-zinc-600 dark:text-zinc-400">
+                                  {it.answer}
+                                </div>
+                              </li>
+                            );
+                          })}
                         </ul>
                       </AccordionContent>
                     </AccordionItem>
@@ -87,8 +101,8 @@ async function LayananHero() {
     <HeroSection
       size="sm"
       imageUrl={imageUrl}
-      title="Layanan Konsultasi Pertanahan & Sertifikat Tanah"
-      subtitle="Pendampingan legalitas lahan, kajian hukum, dan pengurusan sertifikat—disusun rapi sesuai kebutuhan proses Anda."
+      title="Layanan Konsultasi dan Pengukuran Tanah"
+      subtitle="Pendampingan konsultasi pertanahan, pengukuran lahan, kajian hukum, dan pengurusan sertifikat—disusun rapi sesuai kebutuhan proses Anda."
       ctaHref="/kontak"
       ctaLabel="Konsultasi"
     />

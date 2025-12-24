@@ -1,10 +1,13 @@
 export type ServiceSection = {
   title: string;
-  items: string[];
+  items: (string | { question: string; answer: string })[];
 };
 
 export type MainService = {
-  id: "konsultasi-hukum-pertanahan" | "pengurusan-sertifikat-tanah";
+  id:
+    | "konsultasi-hukum-pertanahan"
+    | "pengurusan-sertifikat-tanah"
+    | "pengukuran-lahan";
   title: string;
   description: string;
   sections: ServiceSection[];
@@ -20,8 +23,17 @@ export const services: MainService[] = [
       {
         title: "Layanan bantuan dan FAQ",
         items: [
-          "Apa saja persyaratan mengajukan permohonan sertifikat hak guna bangunan untuk pertama kali?",
-          "Bagaimana tata cara permohonan sertifikat yang tepat?",
+          {
+            question:
+              "Apa saja persyaratan mengajukan permohonan sertifikat hak guna bangunan untuk pertama kali?",
+            answer:
+              "Persyaratan umum meliputi KTP, KK, bukti perolehan tanah (seperti Akta Jual Beli), bukti pembayaran PBB tahun terakhir, dan surat pernyataan penguasaan fisik bidang tanah.",
+          },
+          {
+            question: "Bagaimana tata cara permohonan sertifikat yang tepat?",
+            answer:
+              "Proses diawali dengan pengumpulan dokumen alas hak, pendaftaran di kantor pertanahan, dilanjutkan dengan pengukuran fisik oleh petugas, pengumuman data fisik dan yuridis, hingga akhirnya penerbitan sertifikat.",
+          },
         ],
       },
       {
@@ -76,6 +88,30 @@ export const services: MainService[] = [
           "Pemenuhan dokumen perizinan peralihan LSD",
           "Pendampingan perizinan KKPR",
           "Pengurusan penerbitan rekomendasi LSD",
+        ],
+      },
+    ],
+  },
+  {
+    id: "pengukuran-lahan",
+    title: "Pengukuran Lahan",
+    description:
+      "Ditujukan untuk membantu memastikan data ukur dan batas bidang tanah tersusun jelas sebagai dasar administrasi, perencanaan, maupun proses lanjutan yang diperlukan.",
+    sections: [
+      {
+        title: "Cakupan Layanan",
+        items: [
+          "Pengukuran bidang tanah sesuai kebutuhan klien",
+          "Identifikasi dan penegasan batas bidang tanah (berdasarkan dokumen/penunjukan pihak terkait)",
+          "Penyusunan ringkasan hasil pengukuran untuk kebutuhan administrasi",
+        ],
+      },
+      {
+        title: "Dokumen & Data yang Umum Dibutuhkan",
+        items: [
+          "Dokumen kepemilikan/alas hak (jika ada)",
+          "Identitas pemohon/pihak terkait",
+          "Informasi lokasi dan batas-batas yang diketahui",
         ],
       },
     ],
