@@ -7,6 +7,9 @@ export const routing = defineRouting({
 
   // Used when no locale matches
   defaultLocale: "id",
+
+  // Always fall back to Indonesian instead of inferring from the browser
+  localeDetection: false,
 });
 
 // Lightweight wrappers around Next.js' navigation APIs
