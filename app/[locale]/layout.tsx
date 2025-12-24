@@ -1,5 +1,9 @@
 import { NextIntlClientProvider } from "next-intl";
-import { getMessages, setRequestLocale, getTranslations } from "next-intl/server";
+import {
+  getMessages,
+  setRequestLocale,
+  getTranslations,
+} from "next-intl/server";
 import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
 import { Geist, Geist_Mono } from "next/font/google";
@@ -82,9 +86,9 @@ export default async function LocaleLayout({
 
   // Providing all messages to the client side
   const messages = await getMessages();
-  
+
   const tCompany = await getTranslations("Company");
-  
+
   const schemaData = {
     name: tCompany("name"),
     description: tCompany("description"),

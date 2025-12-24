@@ -170,14 +170,10 @@ export function ContactForm() {
 
       <div aria-live="polite">
         {status === "missing" ? (
-          <div className="text-xs text-zinc-500">
-            {t("missing")}
-          </div>
+          <div className="text-xs text-zinc-500">{t("missing")}</div>
         ) : null}
         {status === "success" ? (
-          <div className="text-xs text-emerald-600">
-            {t("success")}
-          </div>
+          <div className="text-xs text-emerald-600">{t("success")}</div>
         ) : null}
         {status === "error" ? (
           <div className="text-xs text-red-600" role="alert">

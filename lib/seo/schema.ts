@@ -13,7 +13,7 @@ export function buildOrganizationSchema(
     phone: string;
     address: string;
     mapsUrl: string;
-  }
+  },
 ): Schema {
   return {
     "@context": "https://schema.org",
@@ -50,7 +50,7 @@ export function buildProfessionalServiceSchema(
     phone: string;
     address: string;
     mapsUrl: string;
-  }
+  },
 ): Schema {
   return {
     "@context": "https://schema.org",

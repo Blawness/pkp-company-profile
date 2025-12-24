@@ -23,7 +23,7 @@ export function LanguageSwitcher() {
         onChange={(e) => onLanguageChange(e.target.value)}
         className={cn(
           "bg-transparent text-sm font-medium text-white/90 outline-none transition hover:text-white",
-          "appearance-none cursor-pointer"
+          "appearance-none cursor-pointer",
         )}
       >
         {routing.locales.map((cur) => (
@@ -35,4 +35,3 @@ export function LanguageSwitcher() {
     </div>
   );
 }
-

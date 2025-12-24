@@ -62,7 +62,10 @@ async function ServiceSection({ service }: { service: MainService }) {
   const t = await getTranslations(`Services.list.${service.id}`);
 
   // Get raw sections from translation
-  const sectionsRaw = t.raw("sections") as Record<string, { title: string; items: (string | { question: string; answer: string })[] }>;
+  const sectionsRaw = t.raw("sections") as Record<
+    string,
+    { title: string; items: (string | { question: string; answer: string })[] }
+  >;
   const sectionKeys = Object.keys(sectionsRaw);
 
   return (
