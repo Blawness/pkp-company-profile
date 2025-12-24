@@ -1,8 +1,8 @@
 "use client";
 
-import Link from "next/link";
 import Image from "next/image";
-import { usePathname } from "next/navigation";
+import { usePathname } from "@/i18n/routing";
+import { Link } from "@/i18n/routing";
 import { Menu } from "lucide-react";
 import * as Dialog from "@radix-ui/react-dialog";
 import { cn } from "@/lib/cn";
@@ -13,17 +13,20 @@ import {
   NavigationMenuList,
 } from "@/components/ui/NavigationMenu";
 import { ThemeToggle } from "@/components/layout/ThemeToggle";
-
-const navItems = [
-  { href: "/", label: "Beranda" },
-  { href: "/tentang-kami", label: "Tentang Kami" },
-  { href: "/kontak", label: "Kontak" },
-  { href: "/artikel", label: "Artikel" },
-  { href: "/layanan", label: "Layanan" },
-] as const;
+import { LanguageSwitcher } from "@/components/layout/LanguageSwitcher";
+import { useTranslations } from "next-intl";
 
 export function Header() {
   const pathname = usePathname();
+  const t = useTranslations("Common.nav");
+
+  const navItems = [
+    { href: "/", label: t("home") },
+    { href: "/tentang-kami", label: t("about") },
+    { href: "/kontak", label: t("contact") },
+    { href: "/artikel", label: t("articles") },
+    { href: "/layanan", label: t("services") },
+  ] as const;
 
   return (
     <header className="sticky top-0 z-50 border-b border-white/10 bg-pkp-green-900/95 backdrop-blur">
@@ -44,12 +47,12 @@ export function Header() {
               PT PRESISI KONSULINDO PRIMA
             </div>
             <div className="text-xs text-white/70">
-              Konsultasi pertanahan & sertifikat tanah
+              {useTranslations("Company")("tagline")}
             </div>
           </div>
         </Link>
 
-        <div className="hidden items-center gap-4 md:flex">
+        <div className="hidden items-center gap-6 md:flex">
           <NavigationMenu>
             <NavigationMenuList>
               {navItems.map((item) => {
@@ -60,6 +63,7 @@ export function Header() {
                       <Link
                         href={item.href}
                         className={cn(
+                          "text-sm font-medium text-white/80 transition hover:text-white",
                           active &&
                             "text-white underline underline-offset-8 decoration-white/60",
                         )}
@@ -72,10 +76,14 @@ export function Header() {
               })}
             </NavigationMenuList>
           </NavigationMenu>
-          <ThemeToggle />
+          <div className="flex items-center gap-4 border-l border-white/20 pl-4">
+            <LanguageSwitcher />
+            <ThemeToggle />
+          </div>
         </div>
 
         <div className="flex items-center gap-3 md:hidden">
+          <LanguageSwitcher />
           <ThemeToggle />
           <Dialog.Root>
             <Dialog.Trigger asChild>

@@ -13,16 +13,17 @@
     "format:check": "prettier --check ."
   },
   "dependencies": {
-    "next": "^15.0.0",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
     "@hookform/resolvers": "^5.2.2",
     "@radix-ui/react-accordion": "^1.2.12",
     "@radix-ui/react-dialog": "^1.1.15",
     "@radix-ui/react-navigation-menu": "^1.2.14",
     "framer-motion": "^12.23.26",
     "lucide-react": "^0.562.0",
+    "next": "^15.0.0",
+    "next-intl": "^4.6.1",
     "next-themes": "^0.4.6",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
     "react-hook-form": "^7.69.0",
     "zod": "^4.2.1"
   },

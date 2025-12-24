@@ -1,0 +1,263 @@
+{
+  "Common": {
+    "title": "PT Presisi Konsulindo Prima",
+    "nav": {
+      "home": "Home",
+      "about": "About Us",
+      "contact": "Contact",
+      "articles": "Articles",
+      "services": "Services"
+    },
+    "buttons": {
+      "contact": "Contact Us",
+      "consultation": "Consultation",
+      "seeDetail": "See detail",
+      "seeDetails": "See Contact Details",
+      "seeServices": "See Services",
+      "moreAboutUs": "More about us",
+      "send": "Send",
+      "sending": "Sending...",
+      "backToHome": "Back to Home"
+    },
+    "footer": {
+      "description": "Land consultancy and land certificate management services professionally, transparently, and with integrity.",
+      "menu": "Menu",
+      "contact": "Contact",
+      "rights": "© {year} PT Presisi Konsulindo Prima. All rights reserved."
+    }
+  },
+  "Company": {
+    "name": "PT Presisi Konsulindo Prima",
+    "tagline": "Land consultancy & land certificate management",
+    "description": "A land consultancy and service company that helps clients understand, analyze, and resolve land legality needs professionally, transparently, and with integrity.",
+    "vision": "To become the most trusted land consultancy and land certificate management partner through professional standards, regulatory compliance, and transparent services.",
+    "mission": [
+      "Providing accountable land law consultancy and land certificate management services.",
+      "Assisting clients from analysis stage to process-ready documents, in accordance with applicable land and spatial planning regulations.",
+      "Prioritizing integrity, legal compliance, and document quality so the process is clear and measurable.",
+      "Improving service quality through continuous improvement and team competence development."
+    ],
+    "operational": {
+      "days": "Monday - Friday",
+      "hours": "09.00 - 17.00"
+    }
+  },
+  "Home": {
+    "title": "Home",
+    "description": "Professional land consultancy & land certificate management, transparent and compliant with regulations.",
+    "hero": {
+      "title": "Land Consultancy & Land Certificate Management",
+      "subtitle": "Land legality assistance from document analysis to certification process. Transparent, compliant, and measurable."
+    },
+    "about": {
+      "label": "About Us",
+      "description": "A land consultancy and service company that helps clients understand, analyze, and resolve land legality needs professionally, transparently, and with integrity."
+    },
+    "visionMission": {
+      "vision": "Vision",
+      "mission": "Mission",
+      "tagline": "Land consultancy & land certificate management",
+      "ctaDescription": "Consult your needs—we help from analysis to process-ready documents."
+    }
+  },
+  "About": {
+    "title": "About Us",
+    "description": "PT Presisi Konsulindo Prima Profile: land consultancy and land certificate management with a focus on regulatory compliance.",
+    "hero": {
+      "title": "Measurable Land Consultancy Partner",
+      "subtitle": "Focusing on regulatory compliance, document quality, and transparent assistance for land and certificate needs."
+    },
+    "visionMission": {
+      "vision": "Vision",
+      "mission": "Mission"
+    },
+    "organization": {
+      "title": "Organizational Structure",
+      "footer": "Organizational structure can be adjusted according to official company documents.",
+      "chart": {
+        "title": "President Director",
+        "children": [
+          {
+            "title": "Legal & Compliance Division",
+            "children": [
+              { "title": "Legal Officer" },
+              { "title": "Documentation & Administration" }
+            ]
+          },
+          {
+            "title": "Certification & Licensing Division",
+            "children": [
+              { "title": "Certificate Management" },
+              { "title": "KKPR/LSD Licensing" }
+            ]
+          },
+          {
+            "title": "Client Services Division",
+            "children": [
+              { "title": "Customer Support" },
+              { "title": "Quality Assurance" }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "Services": {
+    "title": "Services",
+    "description": "Land law consultancy and land certificate management services by PT Presisi Konsulindo Prima.",
+    "hero": {
+      "title": "Land Consultancy and Measurement Services",
+      "subtitle": "Land consultancy assistance, land measurement, legal studies, and certificate management—neatly organized according to your process needs."
+    },
+    "pageDescription": "Primary services of PT Presisi Konsulindo Prima for land law consultancy and land certificate management needs.",
+    "list": {
+      "konsultasi-hukum-pertanahan": {
+        "title": "Land Law Consultancy",
+        "description": "Aimed at helping clients understand, analyze, and resolve various legal issues related to land and its utilization.",
+        "sections": {
+          "faq": {
+            "title": "Assistance Services and FAQ",
+            "items": [
+              {
+                "question": "What are the requirements for applying for a building use rights certificate (HGB) for the first time?",
+                "answer": "General requirements include ID card (KTP), Family Card (KK), proof of land acquisition (such as a Sale and Purchase Deed), proof of the last year's land and building tax (PBB) payment, and a statement of physical control of the land parcel."
+              },
+              {
+                "question": "What is the correct procedure for certificate application?",
+                "answer": "The process begins with the collection of title documents, registration at the land office, followed by physical measurement by officers, announcement of physical and juridical data, and finally the issuance of the certificate."
+              }
+            ]
+          },
+          "legal-study": {
+            "title": "Legal Study Services",
+            "items": [
+              "Legal issue consultancy",
+              "Preparation and provision of land legal opinions",
+              "Consultancy on compliance with applicable land and spatial planning regulations"
+            ]
+          }
+        }
+      },
+      "pengurusan-sertifikat-tanah": {
+        "title": "Land Certificate Management Services",
+        "description": "Aimed at ensuring the entire process is carried out in accordance with applicable regulations, professionally, transparently, and with integrity.",
+        "sections": {
+          "first-time": {
+            "title": "First-Time Land Registration",
+            "items": [
+              "Assistance and physical examination of land parcels",
+              "Validation of land parcel maps",
+              "Assistance in the land certificate issuance process"
+            ]
+          },
+          "rights": {
+            "title": "Land Rights Certificate Management",
+            "items": [
+              "Management of Freehold Title (Hak Milik) certification",
+              "Management of issuance, extension, and renewal of HGB certificates",
+              "Management of issuance, extension, and renewal of HGU certificates",
+              "Management of issuance, extension, and renewal of Right to Use (Hak Pakai) certificates"
+            ]
+          },
+          "transfer": {
+            "title": "Certificate Title Transfer",
+            "items": [
+              "Checking and validation of certificates",
+              "Assistance in the preparation of Land Deed Official (PPAT) deeds",
+              "Assistance in PPH and BPHTB payments"
+            ]
+          },
+          "split-merge": {
+            "title": "Certificate Splitting or Merging",
+            "items": [
+              "Checking and validation of certificates",
+              "Validation of legal documents"
+            ]
+          },
+          "lsd": {
+            "title": "LSD (Protected Rice Field) Certification Assistance",
+            "items": [
+              "Management of Legality for LSD Utilization",
+              "Fulfillment of LSD transfer licensing documents",
+              "Assistance in KKPR licensing",
+              "Management of LSD recommendation issuance"
+            ]
+          }
+        }
+      },
+      "pengukuran-lahan": {
+        "title": "Land Measurement",
+        "description": "Aimed at helping ensure measurement data and land parcel boundaries are clearly structured as a basis for administration, planning, or necessary follow-up processes.",
+        "sections": {
+          "scope": {
+            "title": "Service Scope",
+            "items": [
+              "Land parcel measurement according to client needs",
+              "Identification and affirmation of land parcel boundaries (based on documents/designation of relevant parties)",
+              "Preparation of measurement result summaries for administrative needs"
+            ]
+          },
+          "docs": {
+            "title": "Commonly Needed Documents & Data",
+            "items": [
+              "Ownership/title documents (if any)",
+              "Identity of the applicant/relevant party",
+              "Location information and known boundaries"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "Contact": {
+    "title": "Contact",
+    "description": "Contact PT Presisi Konsulindo Prima for land consultancy and land certificate management.",
+    "hero": {
+      "title": "Contact Us",
+      "subtitle": "Tell us your needs—we'll help with initial evaluation, process estimation, and next steps."
+    },
+    "pageDescription": "Contact us for more information. We will respond as soon as possible.",
+    "form": {
+      "title": "Send Your Request",
+      "name": "Name",
+      "namePlaceholder": "Your Name",
+      "email": "Email",
+      "emailPlaceholder": "name@email.com",
+      "message": "Message",
+      "messagePlaceholder": "Explain your needs...",
+      "success": "Message sent. Thank you!",
+      "error": "Failed to send message. Please try again later.",
+      "missing": "Form not active: set `NEXT_PUBLIC_FORMSPREE_ID` in `.env.local`.",
+      "validation": {
+        "nameMin": "Name must be at least 2 characters",
+        "emailInvalid": "Invalid email",
+        "messageMin": "Message must be at least 10 characters"
+      }
+    },
+    "info": {
+      "title": "Contact Information",
+      "email": "Email",
+      "phone": "Phone",
+      "address": "Address",
+      "maps": "Open in Google Maps",
+      "operational": "Operational"
+    }
+  },
+  "Articles": {
+    "title": "Articles",
+    "description": "Articles and education about land, certification, and regulatory updates from PT Presisi Konsulindo Prima.",
+    "hero": {
+      "title": "Articles & Education",
+      "subtitle": "Summary of important topics regarding land, certification, and legality processes—to help you take the right steps."
+    },
+    "comingSoon": {
+      "title": "Coming soon. We are preparing the best educational content for you.",
+      "description": "The articles page will be available soon. It will contain brief education about land, certification, and regulatory updates."
+    }
+  },
+  "NotFound": {
+    "title": "Page Not Found",
+    "description": "The link you opened is not available."
+  }
+}
+

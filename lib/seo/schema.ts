@@ -1,57 +1,73 @@
-import { company } from "@/lib/data/company";
-
 type Schema = Record<string, unknown>;
 
 function absoluteUrl(path: string, siteUrl: string) {
   return new URL(path, siteUrl).toString();
 }
 
-export function buildOrganizationSchema(siteUrl: string): Schema {
+export function buildOrganizationSchema(
+  siteUrl: string,
+  data: {
+    name: string;
+    description: string;
+    email: string;
+    phone: string;
+    address: string;
+    mapsUrl: string;
+  }
+): Schema {
   return {
     "@context": "https://schema.org",
     "@type": "Organization",
     "@id": `${siteUrl}/#organization`,
-    name: company.name,
+    name: data.name,
     url: siteUrl,
     logo: absoluteUrl("/logo.png", siteUrl),
-    description: company.description,
+    description: data.description,
     contactPoint: [
       {
         "@type": "ContactPoint",
         contactType: "customer support",
-        email: company.contact.email,
-        telephone: company.contact.phone,
+        email: data.email,
+        telephone: data.phone,
         areaServed: "ID",
-        availableLanguage: ["id"],
+        availableLanguage: ["id", "en"],
       },
     ],
     address: {
       "@type": "PostalAddress",
-      streetAddress: company.contact.address,
+      streetAddress: data.address,
       addressCountry: "ID",
     },
-    sameAs: [company.contact.mapsUrl],
+    sameAs: [data.mapsUrl],
   };
 }
 
-export function buildProfessionalServiceSchema(siteUrl: string): Schema {
+export function buildProfessionalServiceSchema(
+  siteUrl: string,
+  data: {
+    name: string;
+    description: string;
+    phone: string;
+    address: string;
+    mapsUrl: string;
+  }
+): Schema {
   return {
     "@context": "https://schema.org",
     "@type": ["LocalBusiness", "ProfessionalService"],
     "@id": `${siteUrl}/#professional-service`,
-    name: company.name,
+    name: data.name,
     url: siteUrl,
     image: absoluteUrl("/logo.png", siteUrl),
-    description: company.description,
-    telephone: company.contact.phone,
+    description: data.description,
+    telephone: data.phone,
     priceRange: "$$",
     address: {
       "@type": "PostalAddress",
-      streetAddress: company.contact.address,
+      streetAddress: data.address,
       addressCountry: "ID",
     },
     openingHours: ["Mo-Fr 09:00-17:00"],
-    hasMap: company.contact.mapsUrl,
+    hasMap: data.mapsUrl,
   };
 }
-

@@ -1,4 +1,10 @@
-import type { OrgNode } from "@/lib/data/organization";
+import { useTranslations } from "next-intl";
+
+export type OrgNode = {
+  title: string;
+  name?: string;
+  children?: OrgNode[];
+};
 
 function NodeCard({ node }: { node: OrgNode }) {
   return (
@@ -21,8 +27,8 @@ function renderTree(node: OrgNode) {
       <NodeCard node={node} />
       {node.children?.length ? (
         <div className="grid gap-4 pl-4 md:pl-6">
-          {node.children.map((c) => (
-            <div key={c.title} className="grid gap-3">
+          {node.children.map((c, idx) => (
+            <div key={idx} className="grid gap-3">
               {renderTree(c)}
             </div>
           ))}
@@ -33,11 +39,13 @@ function renderTree(node: OrgNode) {
 }
 
 export function OrganizationChart({ data }: { data: OrgNode }) {
+  const t = useTranslations("About.organization");
+
   return (
     <div className="rounded-2xl border border-black/10 bg-zinc-50 p-6 dark:border-white/10 dark:bg-zinc-950/40">
       {renderTree(data)}
       <div className="mt-4 text-xs text-zinc-500 dark:text-zinc-500">
-        Struktur organisasi dapat disesuaikan sesuai dokumen resmi perusahaan.
+        {t("footer")}
       </div>
     </div>
   );

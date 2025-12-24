@@ -1,0 +1,263 @@
+{
+  "Common": {
+    "title": "PT Presisi Konsulindo Prima",
+    "nav": {
+      "home": "Beranda",
+      "about": "Tentang Kami",
+      "contact": "Kontak",
+      "articles": "Artikel",
+      "services": "Layanan"
+    },
+    "buttons": {
+      "contact": "Hubungi",
+      "consultation": "Konsultasi",
+      "seeDetail": "Lihat detail",
+      "seeDetails": "Lihat Detail Kontak",
+      "seeServices": "Lihat Layanan",
+      "moreAboutUs": "Selengkapnya tentang kami",
+      "send": "Kirim",
+      "sending": "Mengirim...",
+      "backToHome": "Kembali ke Beranda"
+    },
+    "footer": {
+      "description": "Konsultasi pertanahan dan pengurusan sertifikat tanah secara profesional, transparan, dan berintegritas.",
+      "menu": "Menu",
+      "contact": "Kontak",
+      "rights": "© {year} PT Presisi Konsulindo Prima. All rights reserved."
+    }
+  },
+  "Company": {
+    "name": "PT Presisi Konsulindo Prima",
+    "tagline": "Konsultasi pertanahan & pengurusan sertifikat tanah",
+    "description": "Perusahaan jasa konsultasi dan layanan pertanahan yang membantu klien memahami, menganalisa, dan menyelesaikan kebutuhan legalitas tanah secara profesional, transparan, dan berintegritas.",
+    "vision": "Menjadi mitra konsultasi pertanahan dan pengurusan sertifikat tanah yang paling terpercaya melalui standar profesional, kepatuhan regulasi, dan layanan yang transparan.",
+    "mission": [
+      "Memberikan layanan konsultasi hukum pertanahan dan pengurusan sertifikat tanah secara akuntabel.",
+      "Mendampingi klien dari tahap analisis hingga dokumen siap proses, sesuai regulasi pertanahan dan tata ruang yang berlaku.",
+      "Mengutamakan integritas, kepatuhan hukum, dan kualitas dokumen agar proses berjalan jelas dan terukur.",
+      "Meningkatkan kualitas layanan melalui perbaikan berkelanjutan dan pengembangan kompetensi tim."
+    ],
+    "operational": {
+      "days": "Senin - Jumat",
+      "hours": "09.00 - 17.00"
+    }
+  },
+  "Home": {
+    "title": "Beranda",
+    "description": "Konsultasi pertanahan & pengurusan sertifikat tanah secara profesional, transparan, dan berintegritas.",
+    "hero": {
+      "title": "Konsultasi Pertanahan & Pengurusan Sertifikat Tanah",
+      "subtitle": "Pendampingan legalitas lahan dari analisis dokumen hingga proses sertifikasi. Transparan, sesuai regulasi, dan terukur."
+    },
+    "about": {
+      "label": "Tentang Kami",
+      "description": "Perusahaan jasa konsultasi dan layanan pertanahan yang membantu klien memahami, menganalisa, dan menyelesaikan kebutuhan legalitas tanah secara profesional, transparan, dan berintegritas."
+    },
+    "visionMission": {
+      "vision": "Visi",
+      "mission": "Misi",
+      "tagline": "Konsultasi pertanahan & pengurusan sertifikat tanah",
+      "ctaDescription": "Konsultasikan kebutuhan Anda—kami bantu dari analisis hingga dokumen siap proses."
+    }
+  },
+  "About": {
+    "title": "Tentang Kami",
+    "description": "Profil PT Presisi Konsulindo Prima: konsultasi pertanahan dan pengurusan sertifikat tanah dengan fokus pada kepatuhan regulasi.",
+    "hero": {
+      "title": "Mitra Konsultasi Pertanahan yang Terukur",
+      "subtitle": "Berfokus pada kepatuhan regulasi, kualitas dokumen, dan pendampingan yang transparan untuk kebutuhan pertanahan dan sertifikat tanah."
+    },
+    "visionMission": {
+      "vision": "Visi",
+      "mission": "Misi"
+    },
+    "organization": {
+      "title": "Struktur Organisasi",
+      "footer": "Struktur organisasi dapat disesuaikan sesuai dokumen resmi perusahaan.",
+      "chart": {
+        "title": "Direktur Utama",
+        "children": [
+          {
+            "title": "Divisi Legal & Kepatuhan",
+            "children": [
+              { "title": "Legal Officer" },
+              { "title": "Dokumentasi & Administrasi" }
+            ]
+          },
+          {
+            "title": "Divisi Sertifikasi & Perizinan",
+            "children": [
+              { "title": "Pengurusan Sertifikat" },
+              { "title": "Perizinan KKPR/LSD" }
+            ]
+          },
+          {
+            "title": "Divisi Layanan Klien",
+            "children": [
+              { "title": "Customer Support" },
+              { "title": "Quality Assurance" }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "Services": {
+    "title": "Layanan",
+    "description": "Layanan konsultasi hukum pertanahan dan pengurusan sertifikat tanah oleh PT Presisi Konsulindo Prima.",
+    "hero": {
+      "title": "Layanan Konsultasi dan Pengukuran Tanah",
+      "subtitle": "Pendampingan konsultasi pertanahan, pengukuran lahan, kajian hukum, dan pengurusan sertifikat—disusun rapi sesuai kebutuhan proses Anda."
+    },
+    "pageDescription": "Layanan utama PT Presisi Konsulindo Prima untuk kebutuhan konsultasi hukum pertanahan dan pengurusan sertifikat tanah.",
+    "list": {
+      "konsultasi-hukum-pertanahan": {
+        "title": "Konsultasi Hukum Pertanahan",
+        "description": "Ditujukan untuk membantu klien memahami, menganalisa, dan menyelesaikan berbagai permasalahan hukum yang berkaitan dengan tanah dan pemanfaatannya.",
+        "sections": {
+          "faq": {
+            "title": "Layanan bantuan dan FAQ",
+            "items": [
+              {
+                "question": "Apa saja persyaratan mengajukan permohonan sertifikat hak guna bangunan untuk pertama kali?",
+                "answer": "Persyaratan umum meliputi KTP, KK, bukti perolehan tanah (seperti Akta Jual Beli), bukti pembayaran PBB tahun terakhir, dan surat pernyataan penguasaan fisik bidang tanah."
+              },
+              {
+                "question": "Bagaimana tata cara permohonan sertifikat yang tepat?",
+                "answer": "Proses diawali dengan pengumpulan dokumen alas hak, pendaftaran di kantor pertanahan, dilanjutkan dengan pengukuran fisik oleh petugas, pengumuman data fisik dan yuridis, hingga akhirnya penerbitan sertifikat."
+              }
+            ]
+          },
+          "legal-study": {
+            "title": "Layanan Kajian Hukum",
+            "items": [
+              "Konsultasi permasalahan hukum",
+              "Penyusunan dan pemberian legal opinion pertanahan",
+              "Konsultasi kepatuhan terhadap peraturan pertanahan dan tata ruang yang berlaku"
+            ]
+          }
+        }
+      },
+      "pengurusan-sertifikat-tanah": {
+        "title": "Jasa Pengurusan Sertifikat Tanah",
+        "description": "Ditujukan untuk memastikan seluruh proses dilaksanakan sesuai peraturan yang berlaku, secara profesional, transparan, dan berintegritas.",
+        "sections": {
+          "first-time": {
+            "title": "Pendaftaran Tanah Pertama Kali",
+            "items": [
+              "Pendampingan dan pemeriksaan fisik bidang tanah",
+              "Validasi peta bidang tanah",
+              "Pendampingan proses penerbitan sertifikat tanah"
+            ]
+          },
+          "rights": {
+            "title": "Pengurusan Sertifikat Hak Atas Tanah",
+            "items": [
+              "Pengurusan sertifikasi Hak Milik",
+              "Pengurusan penerbitan, perpanjangan dan pembaruan sertifikat HGB",
+              "Pengurusan penerbitan, perpanjangan dan pembaruan sertifikat HGU",
+              "Pengurusan penerbitan, perpanjangan dan pembaruan sertifikat Hak Pakai"
+            ]
+          },
+          "transfer": {
+            "title": "Balik Nama Sertifikat",
+            "items": [
+              "Pengecekan dan validasi sertifikat",
+              "Pendampingan pembuatan akta PPAT",
+              "Pendampingan pembayaran PPH dan BPHTB"
+            ]
+          },
+          "split-merge": {
+            "title": "Pemecahan atau Penggabungan Sertifikat",
+            "items": [
+              "Pengecekan dan validasi sertifikat",
+              "Validasi dokumen hukum"
+            ]
+          },
+          "lsd": {
+            "title": "Pendampingan Sertifikasi LSD (Lahan Sawah yang Dilindungi)",
+            "items": [
+              "Pengurusan Legalitas Pemanfaatan Tanah Lahan Sawah yang Dilindungi (LSD)",
+              "Pemenuhan dokumen perizinan peralihan LSD",
+              "Pendampingan perizinan KKPR",
+              "Pengurusan penerbitan rekomendasi LSD"
+            ]
+          }
+        }
+      },
+      "pengukuran-lahan": {
+        "title": "Pengukuran Lahan",
+        "description": "Ditujukan untuk membantu memastikan data ukur dan batas bidang tanah tersusun jelas sebagai dasar administrasi, perencanaan, maupun proses lanjutan yang diperlukan.",
+        "sections": {
+          "scope": {
+            "title": "Cakupan Layanan",
+            "items": [
+              "Pengukuran bidang tanah sesuai kebutuhan klien",
+              "Identifikasi dan penegasan batas bidang tanah (berdasarkan dokumen/penunjukan pihak terkait)",
+              "Penyusunan ringkasan hasil pengukuran untuk kebutuhan administrasi"
+            ]
+          },
+          "docs": {
+            "title": "Dokumen & Data yang Umum Dibutuhkan",
+            "items": [
+              "Dokumen kepemilikan/alas hak (jika ada)",
+              "Identitas pemohon/pihak terkait",
+              "Informasi lokasi dan batas-batas yang diketahui"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "Contact": {
+    "title": "Kontak",
+    "description": "Hubungi PT Presisi Konsulindo Prima untuk konsultasi pertanahan dan pengurusan sertifikat tanah.",
+    "hero": {
+      "title": "Hubungi Kami",
+      "subtitle": "Sampaikan kebutuhan Anda—kami bantu evaluasi awal, estimasi proses, dan langkah berikutnya."
+    },
+    "pageDescription": "Hubungi kami untuk informasi lebih lanjut. Kami akan merespons secepat mungkin.",
+    "form": {
+      "title": "Kirim Permintaan Anda",
+      "name": "Nama",
+      "namePlaceholder": "Nama Anda",
+      "email": "Email",
+      "emailPlaceholder": "nama@email.com",
+      "message": "Pesan",
+      "messagePlaceholder": "Jelaskan kebutuhan Anda...",
+      "success": "Pesan terkirim. Terima kasih!",
+      "error": "Gagal mengirim pesan. Coba lagi beberapa saat.",
+      "missing": "Form belum aktif: set `NEXT_PUBLIC_FORMSPREE_ID` di `.env.local`.",
+      "validation": {
+        "nameMin": "Nama minimal 2 karakter",
+        "emailInvalid": "Email tidak valid",
+        "messageMin": "Pesan minimal 10 karakter"
+      }
+    },
+    "info": {
+      "title": "Informasi Kontak",
+      "email": "Email",
+      "phone": "Telepon",
+      "address": "Alamat",
+      "maps": "Buka di Google Maps",
+      "operational": "Operasional"
+    }
+  },
+  "Articles": {
+    "title": "Artikel",
+    "description": "Artikel dan edukasi seputar pertanahan, sertifikasi, and update regulasi dari PT Presisi Konsulindo Prima.",
+    "hero": {
+      "title": "Artikel & Edukasi",
+      "subtitle": "Ringkasan topik penting seputar pertanahan, sertifikasi, dan proses legalitas—untuk membantu Anda mengambil langkah yang tepat."
+    },
+    "comingSoon": {
+      "title": "Coming soon. Kami sedang menyiapkan konten edukasi terbaik untuk Anda.",
+      "description": "Halaman artikel akan tersedia segera. Nantinya berisi edukasi singkat seputar pertanahan, sertifikasi, dan update regulasi."
+    }
+  },
+  "NotFound": {
+    "title": "Halaman tidak ditemukan",
+    "description": "Tautan yang Anda buka tidak tersedia."
+  }
+}
+

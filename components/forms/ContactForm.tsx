@@ -6,16 +6,19 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/cn";
-
-const ContactSchema = z.object({
-  name: z.string().min(2, "Nama minimal 2 karakter"),
-  email: z.string().email("Email tidak valid"),
-  message: z.string().min(10, "Pesan minimal 10 karakter"),
-});
-
-type ContactValues = z.infer<typeof ContactSchema>;
+import { useTranslations } from "next-intl";
 
 export function ContactForm() {
+  const t = useTranslations("Contact.form");
+
+  const ContactSchema = z.object({
+    name: z.string().min(2, t("validation.nameMin")),
+    email: z.string().email(t("validation.emailInvalid")),
+    message: z.string().min(10, t("validation.messageMin")),
+  });
+
+  type ContactValues = z.infer<typeof ContactSchema>;
+
   const formspreeId = process.env.NEXT_PUBLIC_FORMSPREE_ID;
   const action = formspreeId ? `https://formspree.io/f/${formspreeId}` : "";
 
@@ -73,7 +76,7 @@ export function ContactForm() {
           htmlFor="contact-name"
           className="text-sm font-medium text-zinc-900 dark:text-zinc-100"
         >
-          Nama
+          {t("name")}
         </label>
         <input
           id="contact-name"
@@ -84,7 +87,7 @@ export function ContactForm() {
             "h-11 rounded-xl border bg-white px-3 text-sm outline-none transition",
             "border-black/10 focus:ring-2 focus:ring-pkp-teal-600/30 dark:bg-zinc-950 dark:border-white/10",
           )}
-          placeholder="Nama Anda"
+          placeholder={t("namePlaceholder")}
           {...register("name")}
         />
         {errors.name ? (
@@ -99,7 +102,7 @@ export function ContactForm() {
           htmlFor="contact-email"
           className="text-sm font-medium text-zinc-900 dark:text-zinc-100"
         >
-          Email
+          {t("email")}
         </label>
         <input
           id="contact-email"
@@ -112,7 +115,7 @@ export function ContactForm() {
             "h-11 rounded-xl border bg-white px-3 text-sm outline-none transition",
             "border-black/10 focus:ring-2 focus:ring-pkp-teal-600/30 dark:bg-zinc-950 dark:border-white/10",
           )}
-          placeholder="nama@email.com"
+          placeholder={t("emailPlaceholder")}
           {...register("email")}
         />
         {errors.email ? (
@@ -127,7 +130,7 @@ export function ContactForm() {
           htmlFor="contact-message"
           className="text-sm font-medium text-zinc-900 dark:text-zinc-100"
         >
-          Pesan
+          {t("message")}
         </label>
         <textarea
           id="contact-message"
@@ -139,7 +142,7 @@ export function ContactForm() {
             "rounded-xl border bg-white px-3 py-3 text-sm outline-none transition",
             "border-black/10 focus:ring-2 focus:ring-pkp-teal-600/30 dark:bg-zinc-950 dark:border-white/10",
           )}
-          placeholder="Jelaskan kebutuhan Anda..."
+          placeholder={t("messagePlaceholder")}
           {...register("message")}
         />
         {errors.message ? (
@@ -160,24 +163,24 @@ export function ContactForm() {
           )}
           type="submit"
         >
-          {isSubmitting ? "Mengirim..." : "Kirim"}
+          {isSubmitting ? useTranslations("Common.buttons")("sending") : useTranslations("Common.buttons")("send")}
         </motion.button>
       </div>
 
       <div aria-live="polite">
         {status === "missing" ? (
           <div className="text-xs text-zinc-500">
-            Form belum aktif: set `NEXT_PUBLIC_FORMSPREE_ID` di `.env.local`.
+            {t("missing")}
           </div>
         ) : null}
         {status === "success" ? (
           <div className="text-xs text-emerald-600">
-            Pesan terkirim. Terima kasih!
+            {t("success")}
           </div>
         ) : null}
         {status === "error" ? (
           <div className="text-xs text-red-600" role="alert">
-            Gagal mengirim pesan. Coba lagi beberapa saat.
+            {t("error")}
           </div>
         ) : null}
       </div>
