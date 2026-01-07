@@ -13,17 +13,17 @@ type ArticlePayload = {
 
 // Build a Sanity client with optional write token from env
 const buildSanityClient = () => {
-  const projectId = process.env.SANITY_PROJECT_ID;
-  const dataset = process.env.SANITY_DATASET;
+  const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID;
+  const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET;
   
   if (!projectId || !dataset) {
-    throw new Error("SANITY_PROJECT_ID and SANITY_DATASET must be set");
+    throw new Error("NEXT_PUBLIC_SANITY_PROJECT_ID and NEXT_PUBLIC_SANITY_DATASET must be set");
   }
   
   const config: ClientConfig = {
     projectId,
     dataset,
-    apiVersion: process.env.SANITY_API_VERSION ?? "2023-11-01",
+    apiVersion: process.env.NEXT_PUBLIC_SANITY_API_VERSION ?? "2023-11-01",
     useCdn: false,
     token: process.env.SANITY_WRITE_TOKEN
   };

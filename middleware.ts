@@ -5,5 +5,5 @@ export default createMiddleware(routing);
 
 export const config = {
   // Apply the locale middleware to all pages (but not static assets)
-  matcher: ["/((?!api|_next|_vercel|.*\\..*).*)"],
+  matcher: ["/((?!api|studio|_next|_vercel|.*\\..*).*)"],
 };

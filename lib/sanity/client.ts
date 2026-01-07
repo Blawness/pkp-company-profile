@@ -6,8 +6,8 @@ import type { ClientConfig } from "@sanity/client";
  * If preview mode is enabled, a read token may be required.
  */
 export const getSanityClient = (preview: boolean) => {
-  const projectId = process.env.SANITY_PROJECT_ID;
-  const dataset = process.env.SANITY_DATASET;
+  const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID;
+  const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET;
 
   if (!projectId || !dataset) {
     // Jika sedang dalam proses build, jangan throw error agar build tidak gagal di CI
@@ -22,7 +22,7 @@ export const getSanityClient = (preview: boolean) => {
     }
 
     throw new Error(
-      "Missing Sanity configuration. Please check SANITY_PROJECT_ID and SANITY_DATASET environment variables."
+      "Missing Sanity configuration. Please check NEXT_PUBLIC_SANITY_PROJECT_ID and NEXT_PUBLIC_SANITY_DATASET environment variables."
     );
   }
 
@@ -30,7 +30,7 @@ export const getSanityClient = (preview: boolean) => {
   const config: EnrichedConfig = {
     projectId,
     dataset,
-    apiVersion: process.env.SANITY_API_VERSION ?? "2023-11-01",
+    apiVersion: process.env.NEXT_PUBLIC_SANITY_API_VERSION ?? "2023-11-01",
     useCdn: !preview,
   };
 
