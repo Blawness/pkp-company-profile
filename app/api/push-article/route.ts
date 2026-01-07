@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import sanityClient from "@sanity/client";
+import { createClient, type ClientConfig } from "@sanity/client";
 import path from "path";
 
 type ArticlePayload = {
@@ -12,13 +12,6 @@ type ArticlePayload = {
 };
 
 // Build a Sanity client with optional write token from env
-type SanityClientConfigType = {
-  projectId: string;
-  dataset: string;
-  apiVersion: string;
-  useCdn: boolean;
-  token?: string;
-};
 const buildSanityClient = () => {
   const projectId = process.env.SANITY_PROJECT_ID;
   const dataset = process.env.SANITY_DATASET;
@@ -27,17 +20,15 @@ const buildSanityClient = () => {
     throw new Error("SANITY_PROJECT_ID and SANITY_DATASET must be set");
   }
   
-  const config: SanityClientConfigType = {
+  const config: ClientConfig = {
     projectId,
     dataset,
     apiVersion: process.env.SANITY_API_VERSION ?? "2023-11-01",
-    useCdn: false
+    useCdn: false,
+    token: process.env.SANITY_WRITE_TOKEN
   };
-  const writeToken = process.env.SANITY_WRITE_TOKEN;
-  if (writeToken) {
-    config.token = writeToken;
-  }
-  return sanityClient(config as any);
+  
+  return createClient(config);
 };
 
 export async function POST(req: Request) {
@@ -93,17 +84,17 @@ export async function POST(req: Request) {
       const imageBuffer = Buffer.from(arrayBuffer);
       // Upload asset to Sanity
       // Asset upload to Sanity (type-safe approach)
-      const asset = await (client as any).assets.upload("image", imageBuffer, {
+      const asset = await client.assets.upload("image", imageBuffer, {
         filename: path.basename(coverImageUrl),
         contentType,
       });
       uploadedCoverAssetRef = asset?._id;
-    } catch (_) {
+    } catch {
       // ignore image upload failure; proceed without coverImage
       uploadedCoverAssetRef = undefined;
     }
   }
-  const doc: any = {
+  const doc: Record<string, unknown> = {
     _type: "post",
     title,
     slug: { current: slug },
@@ -120,7 +111,7 @@ export async function POST(req: Request) {
   }
 
   const created = await client.create(doc);
-  return NextResponse.json({ ok: true, id: created._id, slug: created.slug?.current ?? slug });
+  return NextResponse.json({ ok: true, id: created._id, slug: (created.slug as { current: string })?.current ?? slug });
 }
 
 

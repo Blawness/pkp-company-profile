@@ -32,7 +32,7 @@ export default async function ArtikelDetailPage({ params }: { params: Promise<{ 
       const b = blk as { _type?: string; children?: { text?: string }[] };
       if (b._type === "block") {
         const textParts = (b.children ?? []).map((c) =>
-          typeof c === "object" && c && "text" in (c as any) ? (c as any).text : ""
+          typeof c === "object" && c && "text" in c ? (c as { text: string }).text : ""
         );
         const text = textParts.join("");
         return (

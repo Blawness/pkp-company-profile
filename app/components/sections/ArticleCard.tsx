@@ -1,5 +1,6 @@
 import Link from "next/link";
 import React from "react";
+import Image from "next/image";
 
 type CoverImage = { asset?: { url?: string } };
 type PostPreview = {
@@ -21,11 +22,12 @@ export const ArticleCard: React.FC<{ post: PostPreview; locale: string }> = ({
     <article className="rounded-lg border border-gray-200 p-4 hover:shadow-sm">
       <Link href={href} className="block no-underline">
         {post.coverImage?.asset?.url ? (
-          <div className="h-40 w-full rounded-md overflow-hidden mb-3 bg-gray-100">
-            <img
+          <div className="relative h-40 w-full rounded-md overflow-hidden mb-3 bg-gray-100">
+            <Image
               src={post.coverImage.asset.url}
               alt={post.title ?? "Artikel cover"}
-              style={{ width: "100%", height: "100%", objectFit: "cover" }}
+              fill
+              className="object-cover"
             />
           </div>
         ) : null}

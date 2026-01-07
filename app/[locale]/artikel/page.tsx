@@ -1,12 +1,12 @@
 import React from "react";
-import { getSanityClient } from "@/lib/sanity/client";
+import { getSanityClient, type SanityPostPreview } from "@/lib/sanity/client";
 import { postsQuery } from "@/lib/sanity/queries";
 import { ArticleCard } from "../../components/sections/ArticleCard";
 
 export default async function ArtikelIndexPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
   const client = getSanityClient(false);
-  const posts: any[] = await client.fetch(postsQuery);
+  const posts: SanityPostPreview[] = await client.fetch(postsQuery);
 
   if (!posts || posts.length === 0) {
     return (

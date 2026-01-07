@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import Link from "next/link";
 import { HeroSection } from "@/components/sections/HeroSection";
 import { ServiceCard } from "@/components/sections/ServiceCard";
 import { company } from "@/lib/data/company";
@@ -51,12 +52,12 @@ export default async function Home() {
               {company.description}
             </p>
             <div className="mt-6">
-              <a
+              <Link
                 href="/tentang-kami"
                 className="text-sm font-semibold text-pkp-teal-700 hover:text-pkp-teal-600 dark:text-pkp-teal-600 dark:hover:text-pkp-teal-600/90"
               >
                 Selengkapnya tentang kami →
-              </a>
+              </Link>
             </div>
           </div>
         </div>
@@ -101,12 +102,12 @@ export default async function Home() {
               dokumen siap proses.
             </p>
             <div className="mt-6">
-              <a
+              <Link
                 href="/kontak"
                 className="inline-flex items-center justify-center rounded-full bg-pkp-teal-600 px-6 py-3 text-sm font-semibold text-white transition hover:bg-pkp-teal-700"
               >
                 Hubungi
-              </a>
+              </Link>
             </div>
           </div>
         </div>

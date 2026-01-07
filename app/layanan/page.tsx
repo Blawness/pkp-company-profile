@@ -1,12 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import { services } from "@/lib/data/services";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/Accordion";
 import { HeroSection } from "@/components/sections/HeroSection";
 import { getHeroImageUrl } from "@/lib/api/pexels";
 
