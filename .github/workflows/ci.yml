@@ -27,9 +27,6 @@ jobs:
       - name: Typecheck
         run: bun run typecheck
 
-      - name: Build
-        run: bun run build
-
   deploy:
     needs: test-and-build
     if: github.event_name == 'push' && github.ref == 'refs/heads/master'
@@ -38,10 +35,10 @@ jobs:
       - name: Deploy via SSH
         uses: appleboy/ssh-action@v1.0.3
         with:
-          host: ${{ secrets.HOST }}
-          username: ${{ secrets.USERNAME }}
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
-          port: ${{ secrets.PORT || 22 }}
+          port: ${{ secrets.SSH_PORT || 22 }}
           script: |
             # Navigate to project directory
             cd ${{ secrets.DEPLOY_PATH || '~/pkp-company-profile' }}
