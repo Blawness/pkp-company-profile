@@ -13,11 +13,12 @@ export const getSanityClient = (preview: boolean) => {
     // Jika sedang dalam proses build, jangan throw error agar build tidak gagal di CI
     if (process.env.NEXT_PHASE === "phase-production-build" || process.env.NODE_ENV === "test") {
       console.warn("Sanity configuration missing. Skipping client creation during build/test.");
-      // Return dummy client atau handle di tempat lain
+      // Return a minimal mock client to avoid build errors
       return {
         fetch: async () => [],
         assets: { upload: async () => ({ _id: "dummy" }) },
-      } as any;
+        create: async () => ({ _id: "dummy", slug: { current: "" } }),
+      } as unknown as ReturnType<typeof createClient>;
     }
 
     throw new Error(
