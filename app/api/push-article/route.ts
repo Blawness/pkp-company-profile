@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { createClient, type ClientConfig } from "@sanity/client";
+import { createClient, type ClientConfig, type SanityDocumentStub } from "@sanity/client";
 import path from "path";
 
 type ArticlePayload = {
@@ -94,7 +94,7 @@ export async function POST(req: Request) {
       uploadedCoverAssetRef = undefined;
     }
   }
-  const doc: Record<string, unknown> = {
+  const doc: SanityDocumentStub = {
     _type: "post",
     title,
     slug: { current: slug },

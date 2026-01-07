@@ -36,7 +36,7 @@ export type SanityPostPreview = {
   title?: string;
   slug?: { current?: string };
   excerpt?: string;
-  coverImage?: { asset?: { _ref?: string; _id?: string } };
+  coverImage?: { asset?: { url?: string } };
   publishedAt?: string;
   body?: unknown[];
 };

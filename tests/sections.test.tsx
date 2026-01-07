@@ -3,11 +3,12 @@ import { render, screen } from "./test-utils";
 import React from "react";
 import { ServiceCard } from "@/components/sections/ServiceCard";
 import { HeroSection } from "@/components/sections/HeroSection";
+import type { MainService } from "@/lib/data/services";
 
 describe("Section Components", () => {
   describe("ServiceCard", () => {
     test("renders service card with title and link", () => {
-      const service = {
+      const service: MainService = {
         id: "konsultasi-hukum-pertanahan",
         imageQuery: "test",
         sectionIds: ["faq"],
