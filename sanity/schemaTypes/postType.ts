@@ -24,7 +24,14 @@ export const postType = defineType({
       to: {type: 'author'},
     }),
     defineField({
-      name: 'mainImage',
+      name: 'excerpt',
+      type: 'text',
+      rows: 3,
+      description: 'Ringkasan singkat artikel untuk preview',
+    }),
+    defineField({
+      name: 'coverImage',
+      title: 'Gambar Cover',
       type: 'image',
       options: {
         hotspot: true,
@@ -55,7 +62,7 @@ export const postType = defineType({
     select: {
       title: 'title',
       author: 'author.name',
-      media: 'mainImage',
+      media: 'coverImage',
     },
     prepare(selection) {
       const {author} = selection
