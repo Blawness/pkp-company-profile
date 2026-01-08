@@ -19,7 +19,10 @@ export const ArticleCard: React.FC<{ post: PostPreview; locale: string }> = ({
 }) => {
   const slug = post.slug?.current ?? "";
   const href = `/${locale}/artikel/${slug}`;
-  const imageUrl = post.coverImage ? urlFor(post.coverImage).url() : null;
+  const imageUrl =
+    post.coverImage && (post.coverImage as any).asset
+      ? urlFor(post.coverImage).url()
+      : null;
 
   return (
     <article className="rounded-lg border border-gray-200 p-4 hover:shadow-sm">

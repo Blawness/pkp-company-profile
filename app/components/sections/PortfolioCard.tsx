@@ -10,7 +10,10 @@ export const PortfolioCard: React.FC<{ portfolio: SanityPortfolioPreview; locale
 }) => {
   const slug = portfolio.slug?.current ?? "";
   const href = `/${locale}/portofolio/${slug}`;
-  const imageUrl = portfolio.coverImage ? urlFor(portfolio.coverImage).width(800).height(500).url() : null;
+  const imageUrl =
+    portfolio.coverImage && (portfolio.coverImage as any).asset
+      ? urlFor(portfolio.coverImage).width(800).height(500).url()
+      : null;
 
   return (
     <article className="group rounded-2xl border border-zinc-200 dark:border-white/10 overflow-hidden bg-white dark:bg-zinc-900 transition hover:shadow-md">

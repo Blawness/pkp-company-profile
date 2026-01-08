@@ -92,7 +92,10 @@ const portableTextComponents: PortableTextComponents = {
   },
   types: {
     image: ({ value }) => {
-      const src = value ? urlFor(value).width(1400).quality(80).url() : "";
+      const src =
+        value && (value as any).asset
+          ? urlFor(value).width(1400).quality(80).url()
+          : "";
       const alt = typeof value?.alt === "string" ? value.alt : "";
       if (!src) return null;
       return (
@@ -155,7 +158,10 @@ export default async function ArtikelDetailPage({ params }: { params: Promise<{ 
               "@type": "Article",
               "headline": post.title,
               "description": post.excerpt,
-              "image": post.coverImage ? urlFor(post.coverImage).url() : "",
+              "image":
+                post.coverImage && (post.coverImage as any).asset
+                  ? urlFor(post.coverImage).url()
+                  : "",
               "datePublished": post.publishedAt,
               "author": { "@type": "Person", "name": "PKP" }
             })

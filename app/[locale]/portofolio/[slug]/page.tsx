@@ -30,7 +30,10 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     openGraph: {
       title: portfolio.title,
       description: portfolio.excerpt,
-      images: portfolio.coverImage ? [urlFor(portfolio.coverImage).width(1200).height(630).url()] : [],
+      images:
+        portfolio.coverImage && (portfolio.coverImage as any).asset
+          ? [urlFor(portfolio.coverImage).width(1200).height(630).url()]
+          : [],
     },
   };
 }
@@ -115,7 +118,10 @@ export default async function PortofolioDetailPage({ params }: { params: Promise
   }
 
   const bodyBlocks: TypedObject[] = Array.isArray(portfolio.body) ? (portfolio.body as TypedObject[]) : [];
-  const imageUrl = portfolio.coverImage ? urlFor(portfolio.coverImage).width(1200).height(600).url() : null;
+  const imageUrl =
+    portfolio.coverImage && (portfolio.coverImage as any).asset
+      ? urlFor(portfolio.coverImage).width(1200).height(600).url()
+      : null;
 
   return (
     <main className="mx-auto max-w-6xl px-4 py-12 md:py-16">
@@ -165,24 +171,31 @@ export default async function PortofolioDetailPage({ params }: { params: Promise
               <div className="mt-16">
                 <h2 className="text-2xl font-semibold mb-6 text-zinc-900 dark:text-zinc-100">Galeri Proyek</h2>
                 <div className="grid gap-6 sm:grid-cols-2">
-                  {portfolio.gallery.map((img, idx) => {
-                    const galleryImgUrl = urlFor(img).width(800).height(600).url();
-                    return (
-                      <div key={img._key || idx} className="space-y-2">
-                        <div className="relative aspect-[4/3] overflow-hidden rounded-2xl border border-black/5 dark:border-white/5 shadow-sm">
-                          <Image
-                            src={galleryImgUrl}
-                            alt={img.alt || `Gallery image ${idx + 1}`}
-                            fill
-                            className="object-cover transition duration-300 hover:scale-105"
-                          />
+                  {portfolio.gallery
+                    .filter((img) => (img as any).asset)
+                    .map((img, idx) => {
+                      const galleryImgUrl = urlFor(img)
+                        .width(800)
+                        .height(600)
+                        .url();
+                      return (
+                        <div key={img._key || idx} className="space-y-2">
+                          <div className="relative aspect-[4/3] overflow-hidden rounded-2xl border border-black/5 dark:border-white/5 shadow-sm">
+                            <Image
+                              src={galleryImgUrl}
+                              alt={img.alt || `Gallery image ${idx + 1}`}
+                              fill
+                              className="object-cover transition duration-300 hover:scale-105"
+                            />
+                          </div>
+                          {img.caption && (
+                            <p className="text-sm text-zinc-500 dark:text-zinc-400 px-1">
+                              {img.caption}
+                            </p>
+                          )}
                         </div>
-                        {img.caption && (
-                          <p className="text-sm text-zinc-500 dark:text-zinc-400 px-1">{img.caption}</p>
-                        )}
-                      </div>
-                    );
-                  })}
+                      );
+                    })}
                 </div>
               </div>
             )}

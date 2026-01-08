@@ -33,7 +33,7 @@ export function Header() {
     <header className="sticky top-0 z-50 border-b border-white/10 bg-pkp-green-900/95 backdrop-blur">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4">
         <Link href="/" className="flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white p-1.5">
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white p-1.5">
             <Image
               src="/logo-square.png"
               alt="PT Presisi Konsulindo Prima"
