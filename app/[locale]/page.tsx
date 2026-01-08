@@ -115,11 +115,8 @@ export default function Home() {
   );
 }
 
-async function AboutImage() {
-  const imageUrl = await getHeroImageUrl(
-    "modern office building professional environment",
-  );
-  if (!imageUrl) return null;
+function AboutImage() {
+  const imageUrl = "https://i.imgur.com/exlWDil.png";
   return (
     <Image
       src={imageUrl}

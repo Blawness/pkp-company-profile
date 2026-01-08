@@ -20,9 +20,7 @@ export const metadata: Metadata = {
 };
 
 export default async function Home() {
-  const aboutImageUrl = await getHeroImageUrl(
-    "modern office building professional environment",
-  );
+  const aboutImageUrl = "https://i.imgur.com/exlWDil.png";
 
   return (
     <main>
@@ -31,14 +29,12 @@ export default async function Home() {
       <section className="mx-auto max-w-6xl px-4 py-12 md:py-16">
         <div className="grid gap-10 md:grid-cols-2 md:items-center">
           <div className="relative aspect-square overflow-hidden rounded-2xl md:aspect-[4/3]">
-            {aboutImageUrl && (
-              <Image
-                src={aboutImageUrl}
-                alt="Tentang PT Presisi Konsulindo Prima"
-                fill
-                className="object-cover"
-              />
-            )}
+            <Image
+              src={aboutImageUrl}
+              alt="Tentang PT Presisi Konsulindo Prima"
+              fill
+              className="object-cover"
+            />
           </div>
 
           <div>
