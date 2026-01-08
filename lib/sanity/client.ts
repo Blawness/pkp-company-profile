@@ -1,6 +1,6 @@
 import { createClient } from "@sanity/client";
 import type { ClientConfig } from "@sanity/client";
-import imageUrlBuilder from "@sanity/image-url";
+import type { SanityImageSource } from "@sanity/image-url/lib/types/types";
 
 /**
  * Returns a configured Sanity client.
@@ -52,9 +52,21 @@ export type SanityPostPreview = {
   title?: string;
   slug?: { current?: string };
   excerpt?: string;
-  coverImage?: any;
+  coverImage?: SanityImageSource;
   publishedAt?: string;
   body?: unknown[];
+};
+
+export type SanityPortfolioPreview = {
+  _id: string;
+  title?: string;
+  slug?: { current?: string };
+  excerpt?: string;
+  coverImage?: SanityImageSource;
+  publishedAt?: string;
+  client?: string;
+  year?: string;
+  tags?: string[];
 };
 
 

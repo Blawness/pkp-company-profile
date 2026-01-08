@@ -23,9 +23,10 @@ export function Header() {
   const navItems = [
     { href: "/", label: t("home") },
     { href: "/tentang-kami", label: t("about") },
-    { href: "/kontak", label: t("contact") },
-    { href: "/artikel", label: t("articles") },
     { href: "/layanan", label: t("services") },
+    { href: "/portofolio", label: t("portfolio") },
+    { href: "/artikel", label: t("articles") },
+    { href: "/kontak", label: t("contact") },
   ] as const;
 
   return (

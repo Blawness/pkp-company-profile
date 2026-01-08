@@ -2,6 +2,7 @@ import Link from "next/link";
 import React from "react";
 import Image from "next/image";
 import { urlFor } from "@/sanity/lib/image";
+import type { SanityImageSource } from "@sanity/image-url/lib/types/types";
 
 type PostPreview = {
   _id: string;
@@ -9,7 +10,7 @@ type PostPreview = {
   slug?: { current?: string };
   excerpt?: string;
   publishedAt?: string;
-  coverImage?: any;
+  coverImage?: SanityImageSource;
 };
 
 export const ArticleCard: React.FC<{ post: PostPreview; locale: string }> = ({
