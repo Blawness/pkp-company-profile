@@ -3,6 +3,10 @@ import { getSanityClient, type SanityPostPreview } from "@/lib/sanity/client";
 import { postsQuery } from "@/lib/sanity/queries";
 import { ArticleCard } from "../../components/sections/ArticleCard";
 
+// This route lives under the statically-rendered `[locale]` layout.
+// Enable ISR so newly published articles appear in production without a redeploy.
+export const revalidate = 60;
+
 export default async function ArtikelIndexPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
   const client = getSanityClient(false);

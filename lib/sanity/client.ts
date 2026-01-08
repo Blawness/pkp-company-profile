@@ -32,6 +32,10 @@ export const getSanityClient = (preview: boolean) => {
     dataset,
     apiVersion: process.env.NEXT_PUBLIC_SANITY_API_VERSION ?? "2023-11-01",
     useCdn: !preview,
+    // Be explicit to avoid environment-dependent defaults.
+    // - published: production pages
+    // - drafts: preview mode (requires token and useCdn: false)
+    perspective: preview ? "drafts" : "published",
   };
 
   const token = process.env.SANITY_READ_TOKEN;

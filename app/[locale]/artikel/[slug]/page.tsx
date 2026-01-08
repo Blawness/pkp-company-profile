@@ -6,6 +6,10 @@ import { PortableText, type PortableTextComponents } from "next-sanity";
 import { urlFor } from "@/sanity/lib/image";
 import type { TypedObject } from "@portabletext/types";
 
+// This route lives under the statically-rendered `[locale]` layout.
+// Enable ISR so newly published/updated articles appear in production without a redeploy.
+export const revalidate = 60;
+
 type Post = {
   _id: string;
   title?: string;
