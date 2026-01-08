@@ -20,7 +20,9 @@ export const ArticleCard: React.FC<{ post: PostPreview; locale: string }> = ({
   const slug = post.slug?.current ?? "";
   const href = `/${locale}/artikel/${slug}`;
   const imageUrl =
-    post.coverImage && (post.coverImage as any).asset
+    post.coverImage &&
+    typeof post.coverImage === "object" &&
+    "asset" in post.coverImage
       ? urlFor(post.coverImage).url()
       : null;
 

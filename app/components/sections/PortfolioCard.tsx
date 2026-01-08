@@ -11,7 +11,9 @@ export const PortfolioCard: React.FC<{ portfolio: SanityPortfolioPreview; locale
   const slug = portfolio.slug?.current ?? "";
   const href = `/${locale}/portofolio/${slug}`;
   const imageUrl =
-    portfolio.coverImage && (portfolio.coverImage as any).asset
+    portfolio.coverImage &&
+    typeof portfolio.coverImage === "object" &&
+    "asset" in portfolio.coverImage
       ? urlFor(portfolio.coverImage).width(800).height(500).url()
       : null;
 

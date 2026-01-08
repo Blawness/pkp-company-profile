@@ -31,7 +31,9 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       title: portfolio.title,
       description: portfolio.excerpt,
       images:
-        portfolio.coverImage && (portfolio.coverImage as any).asset
+        portfolio.coverImage &&
+        typeof portfolio.coverImage === "object" &&
+        "asset" in portfolio.coverImage
           ? [urlFor(portfolio.coverImage).width(1200).height(630).url()]
           : [],
     },
@@ -119,7 +121,9 @@ export default async function PortofolioDetailPage({ params }: { params: Promise
 
   const bodyBlocks: TypedObject[] = Array.isArray(portfolio.body) ? (portfolio.body as TypedObject[]) : [];
   const imageUrl =
-    portfolio.coverImage && (portfolio.coverImage as any).asset
+    portfolio.coverImage &&
+    typeof portfolio.coverImage === "object" &&
+    "asset" in portfolio.coverImage
       ? urlFor(portfolio.coverImage).width(1200).height(600).url()
       : null;
 
@@ -172,7 +176,10 @@ export default async function PortofolioDetailPage({ params }: { params: Promise
                 <h2 className="text-2xl font-semibold mb-6 text-zinc-900 dark:text-zinc-100">Galeri Proyek</h2>
                 <div className="grid gap-6 sm:grid-cols-2">
                   {portfolio.gallery
-                    .filter((img) => (img as any).asset)
+                    .filter(
+                      (img) =>
+                        img && typeof img === "object" && "asset" in img
+                    )
                     .map((img, idx) => {
                       const galleryImgUrl = urlFor(img)
                         .width(800)

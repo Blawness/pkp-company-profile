@@ -93,7 +93,7 @@ const portableTextComponents: PortableTextComponents = {
   types: {
     image: ({ value }) => {
       const src =
-        value && (value as any).asset
+        value && typeof value === "object" && "asset" in value
           ? urlFor(value).width(1400).quality(80).url()
           : "";
       const alt = typeof value?.alt === "string" ? value.alt : "";
@@ -159,7 +159,9 @@ export default async function ArtikelDetailPage({ params }: { params: Promise<{ 
               "headline": post.title,
               "description": post.excerpt,
               "image":
-                post.coverImage && (post.coverImage as any).asset
+                post.coverImage &&
+                typeof post.coverImage === "object" &&
+                "asset" in post.coverImage
                   ? urlFor(post.coverImage).url()
                   : "",
               "datePublished": post.publishedAt,
