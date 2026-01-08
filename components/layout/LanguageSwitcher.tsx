@@ -16,8 +16,8 @@ export function LanguageSwitcher() {
   }
 
   return (
-    <div className="flex items-center gap-2">
-      <Languages className="h-4 w-4 text-white/70" />
+    <div className="flex items-center gap-1 sm:gap-2">
+      <Languages className="hidden h-4 w-4 text-white/70 sm:block" />
       <select
         value={locale}
         onChange={(e) => onLanguageChange(e.target.value)}

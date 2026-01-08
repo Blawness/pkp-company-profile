@@ -43,19 +43,19 @@ export function Header() {
               className="h-full w-auto object-contain"
             />
           </div>
-          <div className="leading-tight">
-            <div className="text-sm font-semibold tracking-wide text-white">
+          <div className="leading-tight min-w-0">
+            <div className="truncate text-[13px] font-semibold tracking-wide text-white sm:text-sm lg:whitespace-nowrap">
               PT PRESISI KONSULINDO PRIMA
             </div>
-            <div className="text-xs text-white/70">
+            <div className="hidden text-[11px] text-white/70 md:block">
               {useTranslations("Company")("tagline")}
             </div>
           </div>
         </Link>
 
-        <div className="hidden items-center gap-6 md:flex">
+        <div className="hidden items-center gap-4 lg:flex xl:gap-6">
           <NavigationMenu>
-            <NavigationMenuList>
+            <NavigationMenuList className="gap-4 xl:gap-6">
               {navItems.map((item) => {
                 const active = pathname === item.href;
                 return (
@@ -64,7 +64,7 @@ export function Header() {
                       <Link
                         href={item.href}
                         className={cn(
-                          "text-sm font-medium text-white/80 transition hover:text-white",
+                          "whitespace-nowrap text-sm font-medium text-white/80 transition hover:text-white",
                           active &&
                             "text-white underline underline-offset-8 decoration-white/60",
                         )}
@@ -83,7 +83,7 @@ export function Header() {
           </div>
         </div>
 
-        <div className="flex items-center gap-3 md:hidden">
+        <div className="flex items-center gap-3 lg:hidden">
           <LanguageSwitcher />
           <ThemeToggle />
           <Dialog.Root>
@@ -99,9 +99,12 @@ export function Header() {
             <Dialog.Portal>
               <Dialog.Overlay className="fixed inset-0 bg-black/50" />
               <Dialog.Content className="fixed right-0 top-0 h-full w-[85%] max-w-sm bg-white p-6 shadow-xl outline-none dark:bg-zinc-950">
-                <div className="mb-6 text-sm font-semibold text-zinc-900 dark:text-zinc-100">
+                <Dialog.Title className="mb-6 text-sm font-semibold text-zinc-900 dark:text-zinc-100">
                   Menu
-                </div>
+                </Dialog.Title>
+                <Dialog.Description className="sr-only">
+                  Navigasi menu untuk perangkat seluler
+                </Dialog.Description>
                 <nav className="flex flex-col gap-2">
                   {navItems.map((item) => {
                     const active = pathname === item.href;
