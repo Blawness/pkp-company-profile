@@ -1,5 +1,6 @@
 import { createClient } from "@sanity/client";
 import type { ClientConfig } from "@sanity/client";
+import imageUrlBuilder from "@sanity/image-url";
 
 /**
  * Returns a configured Sanity client.
@@ -51,7 +52,7 @@ export type SanityPostPreview = {
   title?: string;
   slug?: { current?: string };
   excerpt?: string;
-  coverImage?: { asset?: { url?: string } };
+  coverImage?: any;
   publishedAt?: string;
   body?: unknown[];
 };

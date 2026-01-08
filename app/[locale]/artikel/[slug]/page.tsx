@@ -155,7 +155,7 @@ export default async function ArtikelDetailPage({ params }: { params: Promise<{ 
               "@type": "Article",
               "headline": post.title,
               "description": post.excerpt,
-              "image": post.coverImage?.asset?.url ?? "",
+              "image": post.coverImage ? urlFor(post.coverImage).url() : "",
               "datePublished": post.publishedAt,
               "author": { "@type": "Person", "name": "PKP" }
             })

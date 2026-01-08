@@ -3,11 +3,7 @@ export const postsQuery = `*[_type == "post" && defined(slug.current)] | order(p
   title,
   slug,
   excerpt,
-  "coverImage": coverImage {
-    asset->{
-      url
-    }
-  },
+  coverImage,
   publishedAt
 }[0...12]`;
 
@@ -16,11 +12,7 @@ export const postBySlugQuery = `*[_type == "post" && slug.current == $slug][0]{
   title,
   slug,
   excerpt,
-  "coverImage": coverImage {
-    asset->{
-      url
-    }
-  },
+  coverImage,
   publishedAt,
   body
 }`;

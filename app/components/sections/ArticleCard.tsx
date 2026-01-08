@@ -1,15 +1,15 @@
 import Link from "next/link";
 import React from "react";
 import Image from "next/image";
+import { urlFor } from "@/sanity/lib/image";
 
-type CoverImage = { asset?: { url?: string } };
 type PostPreview = {
   _id: string;
   title?: string;
   slug?: { current?: string };
   excerpt?: string;
   publishedAt?: string;
-  coverImage?: CoverImage;
+  coverImage?: any;
 };
 
 export const ArticleCard: React.FC<{ post: PostPreview; locale: string }> = ({
@@ -18,13 +18,15 @@ export const ArticleCard: React.FC<{ post: PostPreview; locale: string }> = ({
 }) => {
   const slug = post.slug?.current ?? "";
   const href = `/${locale}/artikel/${slug}`;
+  const imageUrl = post.coverImage ? urlFor(post.coverImage).url() : null;
+
   return (
     <article className="rounded-lg border border-gray-200 p-4 hover:shadow-sm">
       <Link href={href} className="block no-underline">
-        {post.coverImage?.asset?.url ? (
+        {imageUrl ? (
           <div className="relative h-40 w-full rounded-md overflow-hidden mb-3 bg-gray-100">
             <Image
-              src={post.coverImage.asset.url}
+              src={imageUrl}
               alt={post.title ?? "Artikel cover"}
               fill
               className="object-cover"
