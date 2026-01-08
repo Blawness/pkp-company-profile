@@ -1,24 +1,19 @@
 import React from "react";
 import { getSanityClient, type SanityPortfolioPreview } from "@/lib/sanity/client";
 import { portfoliosQuery } from "@/lib/sanity/queries";
-import { PortfolioCard } from "../../components/sections/PortfolioCard";
-import { getTranslations } from "next-intl/server";
+import { PortfolioCard } from "../components/sections/PortfolioCard";
 
 // Enable ISR so newly published portfolios appear in production without a redeploy.
 export const revalidate = 60;
 
-export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
-  const { locale } = await params;
-  const t = await getTranslations({ locale, namespace: "Common.nav" });
-  
+export async function generateMetadata() {
   return {
-    title: t("portfolio"),
+    title: "Portofolio",
     description: "Daftar portofolio dan proyek yang telah diselesaikan oleh PT Presisi Konsulindo Prima.",
   };
 }
 
-export default async function PortofolioIndexPage({ params }: { params: Promise<{ locale: string }> }) {
-  const { locale } = await params;
+export default async function PortofolioIndexPage() {
   const client = getSanityClient(false);
   const portfolios: SanityPortfolioPreview[] = await client.fetch(portfoliosQuery);
 
@@ -40,7 +35,7 @@ export default async function PortofolioIndexPage({ params }: { params: Promise<
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {portfolios.map((item) => (
-            <PortfolioCard key={item._id} portfolio={item} locale={locale} />
+            <PortfolioCard key={item._id} portfolio={item} />
           ))}
         </div>
       )}

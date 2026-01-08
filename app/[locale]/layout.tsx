@@ -1,24 +1,10 @@
-import { NextIntlClientProvider } from "next-intl";
-import {
-  getMessages,
-  setRequestLocale,
-  getTranslations,
-} from "next-intl/server";
 import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
 import { Geist, Geist_Mono } from "next/font/google";
 import "../globals.css";
-import { ThemeProvider } from "@/components/providers/ThemeProvider";
-import { Header } from "@/components/layout/Header";
-import { Footer } from "@/components/layout/Footer";
-import { PageTransition } from "@/components/animations/PageTransition";
-import { JsonLd } from "@/components/seo/JsonLd";
-import {
-  buildOrganizationSchema,
-  buildProfessionalServiceSchema,
-} from "@/lib/seo/schema";
-import { company } from "@/lib/data/company";
+import { getTranslations } from "next-intl/server";
 import type { Metadata } from "next";
+import { BaseLayout } from "@/components/layout/BaseLayout";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -81,43 +67,12 @@ export default async function LocaleLayout({
     notFound();
   }
 
-  // Enable static rendering
-  setRequestLocale(locale);
-
-  // Providing all messages to the client side
-  const messages = await getMessages();
-
-  const tCompany = await getTranslations("Company");
-
-  const schemaData = {
-    name: tCompany("name"),
-    description: tCompany("description"),
-    email: company.contact.email,
-    phone: company.contact.phone,
-    address: company.contact.address,
-    mapsUrl: company.contact.mapsUrl,
-  };
-
-  const schemas = [
-    buildOrganizationSchema(siteUrl, schemaData),
-    buildProfessionalServiceSchema(siteUrl, schemaData),
-  ];
-
   return (
     <html lang={locale} suppressHydrationWarning>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <JsonLd data={schemas} />
-        <NextIntlClientProvider messages={messages}>
-          <ThemeProvider>
-            <div className="min-h-dvh bg-white text-zinc-900 dark:bg-black dark:text-zinc-100">
-              <Header />
-              <PageTransition>{children}</PageTransition>
-              <Footer />
-            </div>
-          </ThemeProvider>
-        </NextIntlClientProvider>
+        <BaseLayout locale={locale}>{children}</BaseLayout>
       </body>
     </html>
   );

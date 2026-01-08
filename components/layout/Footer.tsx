@@ -1,3 +1,4 @@
+import NextLink from "next/link";
 import { Link } from "@/i18n/routing";
 import { company } from "@/lib/data/company";
 import { useTranslations } from "next-intl";
@@ -6,6 +7,15 @@ export function Footer() {
   const tCommon = useTranslations("Common");
   const tCompany = useTranslations("Company");
   const tFooter = useTranslations("Common.footer");
+
+  const menuItems = [
+    { href: "/", label: tCommon("nav.home") },
+    { href: "/layanan", label: tCommon("nav.services") },
+    { href: "/tentang-kami", label: tCommon("nav.about") },
+    { href: "/portofolio", label: tCommon("nav.portfolio"), unlocalized: true },
+    { href: "/artikel", label: tCommon("nav.articles"), unlocalized: true },
+    { href: "/kontak", label: tCommon("nav.contact") },
+  ];
 
   return (
     <footer className="border-t border-black/10 bg-white dark:border-white/10 dark:bg-black">
@@ -24,30 +34,18 @@ export function Footer() {
             {tFooter("menu")}
           </div>
           <div className="mt-3 grid gap-2 text-sm">
-            <Link
-              className="text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"
-              href="/"
-            >
-              {tCommon("nav.home")}
-            </Link>
-            <Link
-              className="text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"
-              href="/layanan"
-            >
-              {tCommon("nav.services")}
-            </Link>
-            <Link
-              className="text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"
-              href="/tentang-kami"
-            >
-              {tCommon("nav.about")}
-            </Link>
-            <Link
-              className="text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"
-              href="/kontak"
-            >
-              {tCommon("nav.contact")}
-            </Link>
+            {menuItems.map((item) => {
+              const LinkComponent = item.unlocalized ? NextLink : Link;
+              return (
+                <LinkComponent
+                  key={item.href}
+                  className="text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"
+                  href={item.href}
+                >
+                  {item.label}
+                </LinkComponent>
+              );
+            })}
           </div>
         </div>
 

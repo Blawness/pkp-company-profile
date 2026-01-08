@@ -11,6 +11,12 @@ export function LanguageSwitcher() {
   const router = useRouter();
   const pathname = usePathname();
 
+  const isUnlocalized = pathname.startsWith("/artikel") || pathname.startsWith("/portofolio");
+
+  if (isUnlocalized) {
+    return null;
+  }
+
   function onLanguageChange(newLocale: string) {
     router.replace(pathname, { locale: newLocale });
   }

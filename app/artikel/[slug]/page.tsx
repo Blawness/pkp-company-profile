@@ -6,7 +6,6 @@ import { PortableText, type PortableTextComponents } from "next-sanity";
 import { urlFor } from "@/sanity/lib/image";
 import type { TypedObject } from "@portabletext/types";
 
-// This route lives under the statically-rendered `[locale]` layout.
 // Enable ISR so newly published/updated articles appear in production without a redeploy.
 export const revalidate = 60;
 
@@ -119,7 +118,7 @@ const portableTextComponents: PortableTextComponents = {
   },
 };
 
-export default async function ArtikelDetailPage({ params }: { params: Promise<{ slug: string; locale: string }> }) {
+export default async function ArtikelDetailPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const client = getSanityClient(false);
   const post = (await client.fetch(postBySlugQuery, { slug })) as Post | null;
@@ -173,5 +172,3 @@ export default async function ArtikelDetailPage({ params }: { params: Promise<{ 
     </main>
   );
 }
-
-

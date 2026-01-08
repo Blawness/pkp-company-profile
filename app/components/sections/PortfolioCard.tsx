@@ -4,12 +4,11 @@ import Image from "next/image";
 import { urlFor } from "@/sanity/lib/image";
 import { SanityPortfolioPreview } from "@/lib/sanity/client";
 
-export const PortfolioCard: React.FC<{ portfolio: SanityPortfolioPreview; locale: string }> = ({
+export const PortfolioCard: React.FC<{ portfolio: SanityPortfolioPreview }> = ({
   portfolio,
-  locale,
 }) => {
   const slug = portfolio.slug?.current ?? "";
-  const href = `/${locale}/portofolio/${slug}`;
+  const href = `/portofolio/${slug}`;
   const imageUrl =
     portfolio.coverImage &&
     typeof portfolio.coverImage === "object" &&

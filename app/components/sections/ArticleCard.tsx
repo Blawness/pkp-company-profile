@@ -13,12 +13,11 @@ type PostPreview = {
   coverImage?: SanityImageSource;
 };
 
-export const ArticleCard: React.FC<{ post: PostPreview; locale: string }> = ({
+export const ArticleCard: React.FC<{ post: PostPreview }> = ({
   post,
-  locale,
 }) => {
   const slug = post.slug?.current ?? "";
-  const href = `/${locale}/artikel/${slug}`;
+  const href = `/artikel/${slug}`;
   const imageUrl =
     post.coverImage &&
     typeof post.coverImage === "object" &&

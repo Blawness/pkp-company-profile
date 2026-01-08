@@ -1,70 +1,31 @@
-import type { Metadata } from "next";
-import Image from "next/image";
-import { HeroSection } from "@/components/sections/HeroSection";
-import { getHeroImageUrl } from "@/lib/api/pexels";
+import React from "react";
+import { getSanityClient, type SanityPostPreview } from "@/lib/sanity/client";
+import { postsQuery } from "@/lib/sanity/queries";
+import { ArticleCard } from "../components/sections/ArticleCard";
 
-export const metadata: Metadata = {
-  title: "Artikel",
-  description:
-    "Artikel dan edukasi seputar pertanahan, sertifikasi, and update regulasi dari PT Presisi Konsulindo Prima.",
-  openGraph: {
-    title: "Artikel",
-    description:
-      "Artikel dan edukasi seputar pertanahan, sertifikasi, and update regulasi dari PT Presisi Konsulindo Prima.",
-    url: "/artikel",
-  },
-};
+// Enable ISR so newly published articles appear in production without a redeploy.
+export const revalidate = 60;
 
-export default async function ArtikelPage() {
-  const placeholderImageUrl = await getHeroImageUrl("writing documents library office");
+export default async function ArtikelIndexPage() {
+  const client = getSanityClient(false);
+  const posts: SanityPostPreview[] = await client.fetch(postsQuery);
+
+  if (!posts || posts.length === 0) {
+    return (
+      <main className="mx-auto max-w-6xl px-4 py-8">
+        <p>Artikel belum tersedia.</p>
+      </main>
+    );
+  }
 
   return (
-    <main>
-      <ArtikelHero />
-
-      <div className="mx-auto max-w-6xl px-4 py-10 md:py-14">
-        <div className="max-w-3xl">
-          <h1 className="text-3xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-100 md:text-4xl">
-            Artikel
-          </h1>
-          <p className="mt-3 text-sm leading-7 text-zinc-600 dark:text-zinc-400">
-            Halaman artikel akan tersedia segera. Nantinya berisi edukasi
-            singkat seputar pertanahan, sertifikasi, dan update regulasi.
-          </p>
-        </div>
-
-        <div className="mt-10 grid gap-8 md:grid-cols-2">
-          <div className="flex items-center justify-center rounded-2xl border border-dashed border-black/15 bg-zinc-50 p-10 text-center text-sm text-zinc-600 dark:border-white/15 dark:bg-zinc-950/40 dark:text-zinc-400">
-            Coming soon. Kami sedang menyiapkan konten edukasi terbaik untuk Anda.
-          </div>
-
-          <div className="relative aspect-video overflow-hidden rounded-2xl shadow-sm">
-            {placeholderImageUrl && (
-              <Image
-                src={placeholderImageUrl}
-                alt="Artikel Coming Soon"
-                fill
-                className="object-cover"
-              />
-            )}
-          </div>
-        </div>
+    <main className="mx-auto max-w-6xl px-4 py-8">
+      <h1 className="text-2xl font-semibold mb-4 text-zinc-900 dark:text-zinc-100">Artikel</h1>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {posts.map((post) => (
+          <ArticleCard key={post._id} post={post} />
+        ))}
       </div>
     </main>
-  );
-}
-
-async function ArtikelHero() {
-  const imageUrl = await getHeroImageUrl("reading documents notebook pen");
-
-  return (
-    <HeroSection
-      size="sm"
-      imageUrl={imageUrl}
-      title="Artikel & Edukasi"
-      subtitle="Ringkasan topik penting seputar pertanahan, sertifikasi, dan proses legalitas—untuk membantu Anda mengambil langkah yang tepat."
-      ctaHref="/layanan"
-      ctaLabel="Lihat Layanan"
-    />
   );
 }

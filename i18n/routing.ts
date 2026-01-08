@@ -8,6 +8,9 @@ export const routing = defineRouting({
   // Used when no locale matches
   defaultLocale: "id",
 
+  // Don't use a prefix for the default locale
+  localePrefix: "as-needed",
+
   // Always fall back to Indonesian instead of inferring from the browser
   localeDetection: false,
 });
