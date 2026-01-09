@@ -13,6 +13,7 @@ import {media} from 'sanity-plugin-media'
 import {apiVersion, dataset, projectId} from './sanity/env'
 import {schema} from './sanity/schemaTypes'
 import {structure} from './sanity/structure'
+import {AiGenerateAction} from './sanity/actions/ai-generate-action'
 
 export default defineConfig({
   basePath: '/studio',
@@ -20,6 +21,14 @@ export default defineConfig({
   dataset,
   // Add and edit the content schema in the './sanity/schemaTypes' folder
   schema,
+  document: {
+    actions: (prev, context) => {
+      if (context.schemaType === 'post') {
+        return [...prev, AiGenerateAction]
+      }
+      return prev
+    },
+  },
   plugins: [
     structureTool({structure}),
     // Vision is for querying with GROQ from inside the Studio
