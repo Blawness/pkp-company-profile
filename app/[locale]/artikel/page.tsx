@@ -1,7 +1,7 @@
 import React from "react";
 import { getSanityClient, type SanityPostPreview } from "@/lib/sanity/client";
 import { postsQuery } from "@/lib/sanity/queries";
-import { ArticleCard } from "../components/sections/ArticleCard";
+import { ArticleCard } from "../../components/sections/ArticleCard";
 
 // Enable ISR so newly published articles appear in production without a redeploy.
 export const revalidate = 60;

@@ -1,4 +1,3 @@
-import NextLink from "next/link";
 import { Link } from "@/i18n/routing";
 import { company } from "@/lib/data/company";
 import { useTranslations } from "next-intl";
@@ -12,8 +11,8 @@ export function Footer() {
     { href: "/", label: tCommon("nav.home") },
     { href: "/layanan", label: tCommon("nav.services") },
     { href: "/tentang-kami", label: tCommon("nav.about") },
-    { href: "/portofolio", label: tCommon("nav.portfolio"), unlocalized: true },
-    { href: "/artikel", label: tCommon("nav.articles"), unlocalized: true },
+    { href: "/portofolio", label: tCommon("nav.portfolio") },
+    { href: "/artikel", label: tCommon("nav.articles") },
     { href: "/kontak", label: tCommon("nav.contact") },
   ];
 
@@ -35,15 +34,14 @@ export function Footer() {
           </div>
           <div className="mt-3 grid gap-2 text-sm">
             {menuItems.map((item) => {
-              const LinkComponent = item.unlocalized ? NextLink : Link;
               return (
-                <LinkComponent
+                <Link
                   key={item.href}
                   className="text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"
                   href={item.href}
                 >
                   {item.label}
-                </LinkComponent>
+                </Link>
               );
             })}
           </div>

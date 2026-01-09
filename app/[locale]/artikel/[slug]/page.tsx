@@ -118,7 +118,7 @@ const portableTextComponents: PortableTextComponents = {
   },
 };
 
-export default async function ArtikelDetailPage({ params }: { params: Promise<{ slug: string }> }) {
+export default async function ArtikelDetailPage({ params }: { params: Promise<{ slug: string; locale: string }> }) {
   const { slug } = await params;
   const client = getSanityClient(false);
   const post = (await client.fetch(postBySlugQuery, { slug })) as Post | null;

@@ -17,7 +17,7 @@ type PortfolioGalleryImage = SanityImageSource & {
   caption?: string;
 };
 
-export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
+export async function generateMetadata({ params }: { params: Promise<{ slug: string; locale: string }> }) {
   const { slug } = await params;
   const client = getSanityClient(false);
   const portfolio = (await client.fetch(portfolioBySlugQuery, { slug })) as Portfolio | null;
@@ -106,7 +106,7 @@ const portableTextComponents: PortableTextComponents = {
   },
 };
 
-export default async function PortofolioDetailPage({ params }: { params: Promise<{ slug: string }> }) {
+export default async function PortofolioDetailPage({ params }: { params: Promise<{ slug: string; locale: string }> }) {
   const { slug } = await params;
   const client = getSanityClient(false);
   const portfolio = (await client.fetch(portfolioBySlugQuery, { slug })) as Portfolio | null;

@@ -1,7 +1,7 @@
 import React from "react";
 import { getSanityClient, type SanityPortfolioPreview } from "@/lib/sanity/client";
 import { portfoliosQuery } from "@/lib/sanity/queries";
-import { PortfolioCard } from "../components/sections/PortfolioCard";
+import { PortfolioCard } from "../../components/sections/PortfolioCard";
 
 // Enable ISR so newly published portfolios appear in production without a redeploy.
 export const revalidate = 60;

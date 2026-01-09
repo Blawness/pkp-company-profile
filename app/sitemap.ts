@@ -15,6 +15,7 @@ const routes = [
   { path: "tentang-kami", changeFrequency: "monthly", priority: 0.7 },
   { path: "layanan", changeFrequency: "monthly", priority: 0.9 },
   { path: "kontak", changeFrequency: "monthly", priority: 0.8 },
+  { path: "portofolio", changeFrequency: "monthly", priority: 0.7 },
   { path: "artikel", changeFrequency: "weekly", priority: 0.6 },
 ];
 

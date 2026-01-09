@@ -1,7 +1,6 @@
 "use client";
 
 import Image from "next/image";
-import NextLink from "next/link";
 import { usePathname } from "@/i18n/routing";
 import { Link } from "@/i18n/routing";
 import { Menu } from "lucide-react";
@@ -59,13 +58,11 @@ export function Header() {
             <NavigationMenuList className="gap-4 xl:gap-6">
               {navItems.map((item) => {
                 const active = pathname === item.href;
-                const isUnlocalized = item.href === "/artikel" || item.href === "/portofolio";
-                const LinkComponent = isUnlocalized ? NextLink : Link;
 
                 return (
                   <NavigationMenuItem key={item.href}>
                     <NavigationMenuLink asChild>
-                      <LinkComponent
+                      <Link
                         href={item.href}
                         className={cn(
                           "whitespace-nowrap text-sm font-medium text-white/80 transition hover:text-white",
@@ -74,7 +71,7 @@ export function Header() {
                         )}
                       >
                         {item.label}
-                      </LinkComponent>
+                      </Link>
                     </NavigationMenuLink>
                   </NavigationMenuItem>
                 );
@@ -112,12 +109,10 @@ export function Header() {
                 <nav className="flex flex-col gap-2">
                   {navItems.map((item) => {
                     const active = pathname === item.href;
-                    const isUnlocalized = item.href === "/artikel" || item.href === "/portofolio";
-                    const LinkComponent = isUnlocalized ? NextLink : Link;
 
                     return (
                       <Dialog.Close asChild key={item.href}>
-                        <LinkComponent
+                        <Link
                           href={item.href}
                           className={cn(
                             "rounded-lg px-3 py-2 text-sm font-medium",
@@ -127,7 +122,7 @@ export function Header() {
                           )}
                         >
                           {item.label}
-                        </LinkComponent>
+                        </Link>
                       </Dialog.Close>
                     );
                   })}
