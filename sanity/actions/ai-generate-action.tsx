@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react'
 import { DocumentActionComponent, DocumentActionDescription, useDocumentOperation, useClient } from 'sanity'
-import { MagicIcon } from '@sanity/icons'
+import { SparklesIcon } from '@sanity/icons'
 import { Box, Button, Dialog, Stack, Text, TextArea, TextInput, Label, Card, Flex } from '@sanity/ui'
 
 export const AiGenerateAction: DocumentActionComponent = (props) => {
@@ -78,11 +78,11 @@ export const AiGenerateAction: DocumentActionComponent = (props) => {
     } finally {
       setLoading(false)
     }
-  }, [prompt, patch, onComplete])
+  }, [prompt, patch, onComplete, client])
 
   const description: DocumentActionDescription = {
     label: 'Generate with AI',
-    icon: MagicIcon,
+    icon: SparklesIcon,
     onHandle: () => setDialogOpen(true),
     shortcut: 'ctrl+alt+g',
   }
