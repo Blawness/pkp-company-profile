@@ -7,7 +7,6 @@ import { PageTransition } from "@/components/animations/PageTransition";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { buildOrganizationSchema, buildProfessionalServiceSchema } from "@/lib/seo/schema";
 import { company } from "@/lib/data/company";
-import { routing } from "@/i18n/routing";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://pkp-company-profile.vercel.app";
 
