@@ -1,10 +1,11 @@
+/* eslint-disable react/prop-types */
 import { useState, useCallback } from 'react'
 import { DocumentActionComponent, DocumentActionDescription, useDocumentOperation, useClient } from 'sanity'
 import { SparklesIcon } from '@sanity/icons'
-import { Box, Button, Dialog, Stack, Text, TextArea, TextInput, Label, Card, Flex } from '@sanity/ui'
+import { Box, Button, Stack, Text, TextArea, Label, Card, Flex } from '@sanity/ui'
 
 export const AiGenerateAction: DocumentActionComponent = (props) => {
-  const { id, type, published, draft, onComplete } = props
+  const { id, type, onComplete } = props
   const [isDialogOpen, setDialogOpen] = useState(false)
   const [prompt, setPrompt] = useState('')
   const [loading, setLoading] = useState(false)
@@ -33,7 +34,7 @@ export const AiGenerateAction: DocumentActionComponent = (props) => {
       const data = await response.json()
 
       // 1. Prepare patches for text fields
-      const patches: any[] = [
+      const patches: Array<{ set: Record<string, unknown> }> = [
         { set: { title: data.title } },
         { set: { excerpt: data.excerpt } },
         { set: { body: data.body } },
@@ -48,7 +49,7 @@ export const AiGenerateAction: DocumentActionComponent = (props) => {
             filename: `ai-${Date.now()}.jpg`,
             contentType: blob.type || 'image/jpeg',
           })
-          
+
           patches.push({
             set: {
               coverImage: {
@@ -72,9 +73,9 @@ export const AiGenerateAction: DocumentActionComponent = (props) => {
 
       setDialogOpen(false)
       onComplete()
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error(err)
-      setError(err.message)
+      setError(err instanceof Error ? err.message : 'An unknown error occurred')
     } finally {
       setLoading(false)
     }

@@ -13,7 +13,7 @@ export async function POST(req: Request) {
   }
 
   try {
-    const { prompt, type } = await req.json();
+    const { prompt } = await req.json();
 
     if (!prompt) {
       return NextResponse.json({ error: "Prompt is required" }, { status: 400 });
@@ -66,10 +66,11 @@ export async function POST(req: Request) {
     }
 
     return NextResponse.json({ ...data, imageUrl });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("AI Generation Error:", error);
+    const errorMessage = error instanceof Error ? error.message : "Unknown error occurred";
     return NextResponse.json(
-      { error: "Failed to generate content: " + error.message },
+      { error: "Failed to generate content: " + errorMessage },
       { status: 500 }
     );
   }
