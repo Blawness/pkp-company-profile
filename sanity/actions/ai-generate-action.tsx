@@ -2,7 +2,7 @@
 import { useState, useCallback } from 'react'
 import { DocumentActionComponent, DocumentActionDescription, useDocumentOperation, useClient } from 'sanity'
 import { SparklesIcon } from '@sanity/icons'
-import { Box, Button, Stack, Text, TextArea, Label, Card, Flex } from '@sanity/ui'
+import { Box, Button, Stack, Text, TextArea, Label, Card, Flex, Spinner } from '@sanity/ui'
 
 export const AiGenerateAction: DocumentActionComponent = (props) => {
   const { id, type, onComplete } = props
@@ -108,6 +108,17 @@ export const AiGenerateAction: DocumentActionComponent = (props) => {
                 rows={4}
               />
             </Box>
+            {loading && (
+              <Card padding={3} tone="primary" radius={2}>
+                <Flex align="center" gap={3}>
+                  <Spinner muted />
+                  <Stack space={2}>
+                    <Text size={1} weight="semibold">Generating content with AI...</Text>
+                    <Text size={1} muted>This may take a few moments</Text>
+                  </Stack>
+                </Flex>
+              </Card>
+            )}
             {error && (
               <Card padding={3} tone="critical" radius={2}>
                 <Text size={1}>{error}</Text>
@@ -119,6 +130,7 @@ export const AiGenerateAction: DocumentActionComponent = (props) => {
                 tone="primary"
                 onClick={handleGenerate}
                 disabled={loading || !prompt}
+                icon={loading ? Spinner : undefined}
               />
             </Flex>
           </Stack>
