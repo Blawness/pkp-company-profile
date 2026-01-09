@@ -49,8 +49,9 @@ export async function searchPexelsPhotos(query: string, perPage = 1) {
 }
 
 export async function getHeroImageUrl(
-  query: string,
+  query: string | undefined,
 ): Promise<string | undefined> {
+  if (!query) return undefined;
   const data = await searchPexelsPhotos(query, 1);
   const photo = data.photos[0];
   return (
