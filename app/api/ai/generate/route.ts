@@ -20,7 +20,7 @@ export async function POST(req: Request) {
     }
 
     const model = genAI.getGenerativeModel({ model: "gemini-3-flash-preview" });
-
+8
     const systemPrompt = `
       Anda adalah asisten penulis artikel profesional untuk profil perusahaan PKP (Prasasti Kusuma Pelangi).
       Buatlah artikel dalam Bahasa Indonesia berdasarkan topik yang diberikan.
