@@ -1,32 +1,12 @@
 #!/bin/bash
 set -e
 
-# Configuration
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
-APP_DIR="${DEPLOY_PATH:-$PROJECT_ROOT}"
-BRANCH="${DEPLOY_BRANCH:-master}"
-
-echo "🚀 Starting deployment..."
-
-# Navigate to project directory
-if [ -d "$APP_DIR" ]; then
-  cd "$APP_DIR"
-  echo "📂 Changed directory to $(pwd)"
-else
-  echo "❌ Directory $APP_DIR does not exist"
-  exit 1
-fi
-
-# Pull latest changes
-echo "📥 Pulling latest changes from $BRANCH..."
-git fetch origin
-git reset --hard origin/$BRANCH
+echo "🚀 Starting deployment process..."
 
 # Install dependencies
 echo "📦 Installing dependencies..."
 if command -v bun &> /dev/null; then
-  bun install --frozen-lockfile
+  bun ci
 else
   echo "⚠️ Bun not found, falling back to npm..."
   npm ci
