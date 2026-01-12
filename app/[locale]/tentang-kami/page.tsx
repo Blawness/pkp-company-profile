@@ -32,7 +32,7 @@ export default function TentangKamiPage() {
       <TentangKamiHero />
 
       <div className="mx-auto max-w-6xl px-4 py-10 md:py-14">
-        <div className="max-w-3xl">
+        <div className="w-full">
           <h1 className="text-3xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-100 md:text-4xl">
             {t("title")}
           </h1>
@@ -42,7 +42,7 @@ export default function TentangKamiPage() {
         </div>
 
         <div className="mt-10">
-          <section className="space-y-8 max-w-3xl">
+          <section className="space-y-8 w-full">
             <div className="rounded-2xl border border-black/10 bg-white p-6 shadow-sm dark:border-white/10 dark:bg-zinc-950">
               <div className="text-sm font-semibold text-pkp-green-700 dark:text-pkp-green-400">
                 {t("visionMission.vision")}
@@ -72,15 +72,11 @@ export default function TentangKamiPage() {
   );
 }
 
-async function AboutImage() {
-  const profileImageUrl = await getHeroImageUrl(
-    "office group meeting professional",
-  );
-  if (!profileImageUrl) return null;
+function AboutImage() {
   return (
-    <div className="relative aspect-video overflow-hidden rounded-2xl">
+    <div className="relative aspect-video overflow-hidden rounded-2xl w-full">
       <Image
-        src={profileImageUrl}
+        src="https://i.imgur.com/zWVfFts.png"
         alt="Tim PT Presisi Konsulindo Prima"
         fill
         className="object-cover"
