@@ -41,21 +41,44 @@ jobs:
           port: ${{ secrets.SSH_PORT || 22 }}
           script: |
             export DEPLOY_PATH="${{ secrets.DEPLOY_PATH }}"
+            export REPO_URL="https://github.com/${{ github.repository }}.git"
             
             # Determine the deployment directory
             if [ -n "$DEPLOY_PATH" ]; then
-              TARGET_DIR="$DEPLOY_PATH"
+              # Expand ~ to $HOME if present
+              TARGET_DIR="${DEPLOY_PATH/#\~/$HOME}"
             else
-              TARGET_DIR="$HOME/htdocs/www.presisikonsulindoprima.com"
+              # Fallback to the path confirmed in the screenshot
+              TARGET_DIR="/home/www-pkp-ssh/htdocs/www.presisikonsulindoprima.com"
             fi
 
-            echo "📂 Deploying to: $TARGET_DIR"
+            echo "📂 Target directory: $TARGET_DIR"
 
-            if [ -d "$TARGET_DIR" ]; then
+            # If the determined path doesn't exist, try common CloudPanel home path
+            if [ ! -d "$TARGET_DIR" ]; then
+               ALT_DIR="$HOME/htdocs/www.presisikonsulindoprima.com"
+               if [ -d "$ALT_DIR" ]; then
+                  TARGET_DIR="$ALT_DIR"
+                  echo "💡 Found directory at: $TARGET_DIR"
+               fi
+            fi
+              echo "⚠️ Directory $TARGET_DIR not found. Attempting initial setup..."
+              mkdir -p "$TARGET_DIR"
               cd "$TARGET_DIR"
-              chmod +x scripts/deploy.sh
-              ./scripts/deploy.sh
+              echo "📥 Cloning repository..."
+              if ! git clone "$REPO_URL" .; then
+                echo "❌ Failed to clone repository. Please ensure the directory exists and is a valid git repo, or that the server has access to the repository."
+                exit 1
+              fi
             else
-              echo "❌ Directory $TARGET_DIR does not exist."
+              cd "$TARGET_DIR"
+            fi
+
+            # Double check we are in a git repo
+            if [ ! -d ".git" ]; then
+              echo "❌ $TARGET_DIR is not a git repository. Please initialize it manually."
               exit 1
             fi
+
+            chmod +x scripts/deploy.sh
+            ./scripts/deploy.sh
