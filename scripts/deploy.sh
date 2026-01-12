@@ -2,7 +2,7 @@
 set -e
 
 # Configuration
-APP_DIR="${DEPLOY_PATH:-$HOME/pkp-company-profile}"
+APP_DIR="${DEPLOY_PATH:-$HOME/htdocs/www.presisikonsulindoprima.com}"
 BRANCH="${DEPLOY_BRANCH:-master}"
 
 echo "🚀 Starting deployment..."

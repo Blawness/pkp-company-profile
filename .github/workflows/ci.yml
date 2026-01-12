@@ -43,6 +43,6 @@ jobs:
             export DEPLOY_PATH="${{ secrets.DEPLOY_PATH }}"
             
             # Ensure the script is executable and run it
-            cd "${DEPLOY_PATH:-$HOME/pkp-company-profile}"
+            cd "${DEPLOY_PATH:-$HOME/htdocs/www.presisikonsulindoprima.com}"
             chmod +x scripts/deploy.sh
             ./scripts/deploy.sh
