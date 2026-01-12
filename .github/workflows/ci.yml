@@ -40,48 +40,26 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.SSH_PORT || 22 }}
           script: |
-            export DEPLOY_PATH="${{ secrets.DEPLOY_PATH }}"
-            export REPO_URL="https://github.com/${{ github.repository }}.git"
+            # Tentukan path project
+            TARGET_DIR="${{ secrets.DEPLOY_PATH }}"
+            TARGET_DIR="${TARGET_DIR/#\~/$HOME}"
             
-            # Determine the deployment directory
-            if [ -n "$DEPLOY_PATH" ]; then
-              # Expand ~ to $HOME if present
-              TARGET_DIR="${DEPLOY_PATH/#\~/$HOME}"
-            else
-              # Fallback to the path confirmed in the screenshot
-              TARGET_DIR="/home/www-pkp-ssh/htdocs/www.presisikonsulindoprima.com"
+            # Jika secret kosong, gunakan default path CloudPanel
+            if [ -z "$TARGET_DIR" ]; then
+              TARGET_DIR="$HOME/htdocs/www.presisikonsulindoprima.com"
             fi
 
-            echo "📂 Target directory: $TARGET_DIR"
-
-            # If the determined path doesn't exist, try common CloudPanel home path
-            if [ ! -d "$TARGET_DIR" ]; then
-               ALT_DIR="$HOME/htdocs/www.presisikonsulindoprima.com"
-               if [ -d "$ALT_DIR" ]; then
-                  TARGET_DIR="$ALT_DIR"
-                  echo "💡 Found directory at: $TARGET_DIR"
-               fi
-            fi
-
-            # Final check and action
-            if [ ! -d "$TARGET_DIR" ]; then
-              echo "⚠️ Directory $TARGET_DIR not found. Attempting initial setup..."
-              mkdir -p "$TARGET_DIR"
-              cd "$TARGET_DIR"
-              echo "📥 Cloning repository..."
-              if ! git clone "$REPO_URL" .; then
-                echo "❌ Failed to clone repository. Please ensure the server has access to the repository."
-                exit 1
-              fi
-            else
-              cd "$TARGET_DIR"
-            fi
-
-            # Double check we are in a git repo
-            if [ ! -d ".git" ]; then
-              echo "❌ $TARGET_DIR is not a git repository. Please initialize it manually."
-              exit 1
-            fi
-
+            echo "📂 Navigating to: $TARGET_DIR"
+            cd "$TARGET_DIR" || { echo "❌ Folder tidak ditemukan!"; exit 1; }
+            
+            # Update source code
+            echo "📥 Fetching latest changes..."
+            git fetch origin master
+            
+            echo "🔄 Resetting to latest version..."
+            git reset --hard origin/master
+            
+            # Jalankan script deployment
+            echo "🚀 Starting deployment script..."
             chmod +x scripts/deploy.sh
             ./scripts/deploy.sh
