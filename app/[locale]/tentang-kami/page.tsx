@@ -1,7 +1,6 @@
 import { useTranslations } from "next-intl";
 import { getTranslations } from "next-intl/server";
 import Image from "next/image";
-import { OrganizationChart } from "@/components/sections/OrganizationChart";
 import { HeroSection } from "@/components/sections/HeroSection";
 import { getHeroImageUrl } from "@/lib/api/pexels";
 
@@ -42,8 +41,8 @@ export default function TentangKamiPage() {
           </p>
         </div>
 
-        <div className="mt-10 grid gap-10 md:grid-cols-2">
-          <section className="space-y-8">
+        <div className="mt-10">
+          <section className="space-y-8 max-w-3xl">
             <div className="rounded-2xl border border-black/10 bg-white p-6 shadow-sm dark:border-white/10 dark:bg-zinc-950">
               <div className="text-sm font-semibold text-pkp-green-700 dark:text-pkp-green-400">
                 {t("visionMission.vision")}
@@ -66,13 +65,6 @@ export default function TentangKamiPage() {
             </div>
 
             <AboutImage />
-          </section>
-
-          <section>
-            <div className="mb-3 text-sm font-semibold text-zinc-900 dark:text-zinc-100">
-              {t("organization.title")}
-            </div>
-            <OrganizationChart data={t.raw("organization.chart")} />
           </section>
         </div>
       </div>
