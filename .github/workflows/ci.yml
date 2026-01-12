@@ -62,12 +62,15 @@ jobs:
                   echo "💡 Found directory at: $TARGET_DIR"
                fi
             fi
+
+            # Final check and action
+            if [ ! -d "$TARGET_DIR" ]; then
               echo "⚠️ Directory $TARGET_DIR not found. Attempting initial setup..."
               mkdir -p "$TARGET_DIR"
               cd "$TARGET_DIR"
               echo "📥 Cloning repository..."
               if ! git clone "$REPO_URL" .; then
-                echo "❌ Failed to clone repository. Please ensure the directory exists and is a valid git repo, or that the server has access to the repository."
+                echo "❌ Failed to clone repository. Please ensure the server has access to the repository."
                 exit 1
               fi
             else
