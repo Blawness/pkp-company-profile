@@ -40,19 +40,9 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.SSH_PORT || 22 }}
           script: |
-            set -e
-            # Navigate to project directory
-            cd ${{ secrets.DEPLOY_PATH || '~/pkp-company-profile' }}
+            export DEPLOY_PATH="${{ secrets.DEPLOY_PATH }}"
             
-            # Pull latest changes
-            git pull origin master
-            
-            # Install dependencies and build on server
-            bun ci
-            bun run build
-            
-            # Restart application with PM2
-            pm2 restart ecosystem.config.js || pm2 start ecosystem.config.js
-            
-            # Save PM2 state
-            pm2 save
+            # Ensure the script is executable and run it
+            cd "${DEPLOY_PATH:-$HOME/pkp-company-profile}"
+            chmod +x scripts/deploy.sh
+            ./scripts/deploy.sh
