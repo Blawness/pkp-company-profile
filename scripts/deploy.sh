@@ -2,7 +2,9 @@
 set -e
 
 # Configuration
-APP_DIR="${DEPLOY_PATH:-$HOME/htdocs/www.presisikonsulindoprima.com}"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
+APP_DIR="${DEPLOY_PATH:-$PROJECT_ROOT}"
 BRANCH="${DEPLOY_BRANCH:-master}"
 
 echo "🚀 Starting deployment..."
@@ -10,7 +12,7 @@ echo "🚀 Starting deployment..."
 # Navigate to project directory
 if [ -d "$APP_DIR" ]; then
   cd "$APP_DIR"
-  echo "📂 Changed directory to $APP_DIR"
+  echo "📂 Changed directory to $(pwd)"
 else
   echo "❌ Directory $APP_DIR does not exist"
   exit 1

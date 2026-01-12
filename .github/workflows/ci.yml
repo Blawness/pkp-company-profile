@@ -42,7 +42,20 @@ jobs:
           script: |
             export DEPLOY_PATH="${{ secrets.DEPLOY_PATH }}"
             
-            # Ensure the script is executable and run it
-            cd "${DEPLOY_PATH:-$HOME/htdocs/www.presisikonsulindoprima.com}"
-            chmod +x scripts/deploy.sh
-            ./scripts/deploy.sh
+            # Determine the deployment directory
+            if [ -n "$DEPLOY_PATH" ]; then
+              TARGET_DIR="$DEPLOY_PATH"
+            else
+              TARGET_DIR="$HOME/htdocs/www.presisikonsulindoprima.com"
+            fi
+
+            echo "📂 Deploying to: $TARGET_DIR"
+
+            if [ -d "$TARGET_DIR" ]; then
+              cd "$TARGET_DIR"
+              chmod +x scripts/deploy.sh
+              ./scripts/deploy.sh
+            else
+              echo "❌ Directory $TARGET_DIR does not exist."
+              exit 1
+            fi
