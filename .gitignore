@@ -46,3 +46,6 @@ next-env.d.ts
 
 # gemini
 .gemini-clipboard/
+
+# pdf output
+/pdf-output/
