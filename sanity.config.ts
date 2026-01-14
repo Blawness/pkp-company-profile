@@ -23,7 +23,7 @@ export default defineConfig({
   schema,
   document: {
     actions: (prev, context) => {
-      if (context.schemaType === 'post') {
+      if (context.schemaType === 'post' || context.schemaType === 'portfolio') {
         return [...prev, AiGenerateAction]
       }
       return prev

@@ -4,6 +4,43 @@ import { DocumentActionComponent, DocumentActionDescription, useDocumentOperatio
 import { SparklesIcon } from '@sanity/icons'
 import { Box, Button, Stack, Text, TextArea, Label, Card, Flex, Spinner } from '@sanity/ui'
 
+type ActionConfig = {
+  endpoint: string
+  header: string
+  label: string
+  placeholder: string
+  patches: (data: Record<string, unknown>) => Array<{ set: Record<string, unknown> }>
+}
+
+const actionConfigs: Record<string, ActionConfig> = {
+  post: {
+    endpoint: '/api/ai/generate',
+    header: 'Generate Article with AI',
+    label: 'What is this article about?',
+    placeholder: 'e.g. Inovasi konstruksi ramah lingkungan di Indonesia...',
+    patches: (data) => [
+      { set: { title: data.title } },
+      { set: { excerpt: data.excerpt } },
+      { set: { body: data.body } },
+    ],
+  },
+  portfolio: {
+    endpoint: '/api/ai/generate-portfolio',
+    header: 'Generate Portfolio with AI',
+    label: 'What is this portfolio about?',
+    placeholder: 'e.g. Proyek sertifikasi tanah kawasan industri...',
+    patches: (data) => [
+      { set: { title: data.title } },
+      { set: { excerpt: data.excerpt } },
+      { set: { body: data.body } },
+      { set: { client: data.client } },
+      { set: { location: data.location } },
+      { set: { year: data.year } },
+      { set: { tags: data.tags } },
+    ],
+  },
+}
+
 export const AiGenerateAction: DocumentActionComponent = (props) => {
   const { id, type, onComplete } = props
   const [isDialogOpen, setDialogOpen] = useState(false)
@@ -12,6 +49,7 @@ export const AiGenerateAction: DocumentActionComponent = (props) => {
   const [error, setError] = useState<string | null>(null)
   const { patch } = useDocumentOperation(id, type)
   const client = useClient({ apiVersion: '2023-11-01' })
+  const config = actionConfigs[type]
 
   const handleGenerate = useCallback(async () => {
     if (!prompt) return
@@ -20,7 +58,11 @@ export const AiGenerateAction: DocumentActionComponent = (props) => {
     setError(null)
 
     try {
-      const response = await fetch('/api/ai/generate', {
+      if (!config) {
+        throw new Error('Unsupported document type')
+      }
+
+      const response = await fetch(config.endpoint, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ prompt }),
@@ -34,11 +76,7 @@ export const AiGenerateAction: DocumentActionComponent = (props) => {
       const data = await response.json()
 
       // 1. Prepare patches for text fields
-      const patches: Array<{ set: Record<string, unknown> }> = [
-        { set: { title: data.title } },
-        { set: { excerpt: data.excerpt } },
-        { set: { body: data.body } },
-      ]
+      const patches: Array<{ set: Record<string, unknown> }> = config.patches(data)
 
       // 2. Handle image if present
       if (data.imageUrl) {
@@ -79,7 +117,7 @@ export const AiGenerateAction: DocumentActionComponent = (props) => {
     } finally {
       setLoading(false)
     }
-  }, [prompt, patch, onComplete, client])
+  }, [prompt, patch, onComplete, client, config])
 
   const description: DocumentActionDescription = {
     label: 'Generate with AI',
@@ -88,21 +126,21 @@ export const AiGenerateAction: DocumentActionComponent = (props) => {
     shortcut: 'ctrl+alt+g',
   }
 
-  if (type !== 'post') return null
+  if (!config) return null
 
   return {
     ...description,
     dialog: isDialogOpen && {
       type: 'dialog',
       onClose: () => setDialogOpen(false),
-      header: 'Generate Article with AI',
+      header: config.header,
       content: (
         <Box padding={4}>
           <Stack space={4}>
             <Box>
-              <Label>What is this article about?</Label>
+              <Label>{config.label}</Label>
               <TextArea
-                placeholder="e.g. Inovasi konstruksi ramah lingkungan di Indonesia..."
+                placeholder={config.placeholder}
                 value={prompt}
                 onChange={(event) => setPrompt(event.currentTarget.value)}
                 rows={4}
