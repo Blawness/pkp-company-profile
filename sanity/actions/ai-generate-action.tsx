@@ -12,6 +12,29 @@ type ActionConfig = {
   patches: (data: Record<string, unknown>) => Array<{ set: Record<string, unknown> }>
 }
 
+const createKey = () =>
+  globalThis.crypto?.randomUUID?.() ?? `key_${Date.now()}_${Math.random().toString(36).slice(2, 10)}`
+
+const addKeysToPortableText = (value: unknown) => {
+  if (!Array.isArray(value)) return value
+
+  return value.map((block) => {
+    if (!block || typeof block !== 'object') return block
+    const blockRecord = block as Record<string, unknown>
+    const children = Array.isArray(blockRecord.children)
+      ? blockRecord.children.map((child) => {
+          if (!child || typeof child !== 'object') return child
+          const childRecord = child as Record<string, unknown>
+          return childRecord._key ? childRecord : { ...childRecord, _key: createKey() }
+        })
+      : blockRecord.children
+
+    return blockRecord._key
+      ? { ...blockRecord, children }
+      : { ...blockRecord, _key: createKey(), children }
+  })
+}
+
 const actionConfigs: Record<string, ActionConfig> = {
   post: {
     endpoint: '/api/ai/generate',
@@ -21,7 +44,7 @@ const actionConfigs: Record<string, ActionConfig> = {
     patches: (data) => [
       { set: { title: data.title } },
       { set: { excerpt: data.excerpt } },
-      { set: { body: data.body } },
+      { set: { body: addKeysToPortableText(data.body) } },
     ],
   },
   portfolio: {
@@ -32,7 +55,7 @@ const actionConfigs: Record<string, ActionConfig> = {
     patches: (data) => [
       { set: { title: data.title } },
       { set: { excerpt: data.excerpt } },
-      { set: { body: data.body } },
+      { set: { body: addKeysToPortableText(data.body) } },
       { set: { client: data.client } },
       { set: { location: data.location } },
       { set: { year: data.year } },
