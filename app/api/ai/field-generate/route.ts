@@ -1,6 +1,7 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { NextResponse } from "next/server";
 import { findFieldOverride, getAiSettings } from "@/lib/ai/aiSettings";
+import { generateTextWithRetry, parseJsonResponse } from "@/lib/ai/gemini";
 
 const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY || "");
 
@@ -84,6 +85,7 @@ export async function POST(req: Request) {
       generationConfig: {
         temperature: settings.temperature,
         maxOutputTokens: settings.maxTokens,
+        responseMimeType: "application/json",
       },
     });
 
@@ -117,11 +119,8 @@ Return valid JSON with the following shape:
 }
     `.trim();
 
-    const result = await model.generateContent(systemPrompt);
-    const response = await result.response;
-    let text = response.text();
-    text = text.replace(/```json/g, "").replace(/```/g, "").trim();
-    const data = JSON.parse(text) as { value?: unknown };
+    const text = await generateTextWithRetry(() => model.generateContent(systemPrompt));
+    const data = parseJsonResponse<{ value?: unknown }>(text);
 
     if (data.value === undefined) {
       return NextResponse.json(

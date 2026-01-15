@@ -2,6 +2,7 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 import { NextResponse } from "next/server";
 import { getHeroImageUrl } from "@/lib/api/pexels";
 import { getAiSettings } from "@/lib/ai/aiSettings";
+import { generateTextWithRetry, parseJsonResponse } from "@/lib/ai/gemini";
 
 const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY || "");
 
@@ -30,6 +31,7 @@ export async function POST(req: Request) {
       generationConfig: {
         temperature: settings.temperature,
         maxOutputTokens: settings.maxTokens,
+        responseMimeType: "application/json",
       },
     });
 
@@ -75,14 +77,10 @@ export async function POST(req: Request) {
       3. Tulis profesional dan relevan dengan layanan konsultasi pertanahan.
     `;
 
-    const result = await model.generateContent([systemPrompt, `Brief: ${prompt}`]);
-    const response = await result.response;
-    let text = response.text();
-
-    // Clean up markdown code blocks if Gemini returns them
-    text = text.replace(/```json/g, "").replace(/```/g, "").trim();
-
-    const data = JSON.parse(text) as Record<string, unknown>;
+    const text = await generateTextWithRetry(() =>
+      model.generateContent([systemPrompt, `Brief: ${prompt}`])
+    );
+    const data = parseJsonResponse<Record<string, unknown>>(text);
 
     if (typeof data.tags === "string") {
       data.tags = data.tags
