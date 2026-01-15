@@ -1,6 +1,7 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { NextResponse } from "next/server";
 import { getHeroImageUrl } from "@/lib/api/pexels";
+import { getAiSettings } from "@/lib/ai/aiSettings";
 
 const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY || "");
 
@@ -13,17 +14,37 @@ export async function POST(req: Request) {
   }
 
   try {
-    const { prompt } = await req.json();
+    const { prompt, context } = await req.json();
 
     if (!prompt) {
       return NextResponse.json({ error: "Prompt is required" }, { status: 400 });
     }
 
-    const model = genAI.getGenerativeModel({ model: "gemini-3-flash-preview" });
+    const settings = await getAiSettings();
+    if (!settings.enabled) {
+      return NextResponse.json({ error: "AI is disabled in settings" }, { status: 403 });
+    }
+
+    const model = genAI.getGenerativeModel({
+      model: settings.model,
+      generationConfig: {
+        temperature: settings.temperature,
+        maxOutputTokens: settings.maxTokens,
+      },
+    });
+
+    const language = settings.defaultLanguage === "en" ? "English" : "Bahasa Indonesia";
+    const companyContext = settings.companyContext ? `\nContext perusahaan:\n${settings.companyContext}` : "";
+    const styleGuide = settings.styleGuide ? `\nPanduan gaya:\n${settings.styleGuide}` : "";
+    const draftContext = context ? `\nKonteks draft (JSON):\n${JSON.stringify(context, null, 2)}` : "";
 
     const systemPrompt = `
       Anda adalah asisten penulis artikel profesional untuk profil perusahaan PKP (Prasasti Kusuma Pelangi).
-      Buatlah artikel dalam Bahasa Indonesia berdasarkan topik yang diberikan.
+      Buatlah artikel dalam ${language} berdasarkan topik yang diberikan.
+      Nada tulisan: ${settings.tone}.
+      ${companyContext}
+      ${styleGuide}
+      ${draftContext}
       
       Respon harus dalam format JSON yang valid dengan struktur berikut:
       {
@@ -61,7 +82,7 @@ export async function POST(req: Request) {
 
     // Fetch a relevant image from Pexels if imagePrompt is present
     let imageUrl = undefined;
-    if (data.imagePrompt) {
+    if (data.imagePrompt && settings.imageSearchEnabled !== false) {
       imageUrl = await getHeroImageUrl(data.imagePrompt);
     }
 

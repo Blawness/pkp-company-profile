@@ -1,5 +1,6 @@
 import {DocumentTextIcon} from '@sanity/icons'
 import {defineArrayMember, defineField, defineType} from 'sanity'
+import {AiFieldInput} from '../components/AiFieldInput'
 
 export const postType = defineType({
   name: 'post',
@@ -10,6 +11,7 @@ export const postType = defineType({
     defineField({
       name: 'title',
       type: 'string',
+      components: {input: AiFieldInput},
     }),
     defineField({
       name: 'slug',
@@ -17,6 +19,7 @@ export const postType = defineType({
       options: {
         source: 'title',
       },
+      components: {input: AiFieldInput},
     }),
     defineField({
       name: 'author',
@@ -28,6 +31,7 @@ export const postType = defineType({
       type: 'text',
       rows: 3,
       description: 'Ringkasan singkat artikel untuk preview',
+      components: {input: AiFieldInput},
     }),
     defineField({
       name: 'coverImage',
@@ -56,6 +60,7 @@ export const postType = defineType({
     defineField({
       name: 'body',
       type: 'blockContent',
+      components: {input: AiFieldInput},
     }),
   ],
   preview: {

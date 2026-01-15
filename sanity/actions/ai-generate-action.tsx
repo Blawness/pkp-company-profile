@@ -6,7 +6,9 @@ import { Box, Button, Stack, Text, TextArea, Label, Card, Flex, Spinner } from '
 
 type ActionConfig = {
   endpoint: string
+  planEndpoint?: string
   header: string
+  planHeader?: string
   label: string
   placeholder: string
   patches: (data: Record<string, unknown>) => Array<{ set: Record<string, unknown> }>
@@ -38,7 +40,9 @@ const addKeysToPortableText = (value: unknown) => {
 const actionConfigs: Record<string, ActionConfig> = {
   post: {
     endpoint: '/api/ai/generate',
+    planEndpoint: '/api/ai/plan-post-ideas',
     header: 'Generate Article with AI',
+    planHeader: 'Plan Article Ideas',
     label: 'What is this article about?',
     placeholder: 'e.g. Inovasi konstruksi ramah lingkungan di Indonesia...',
     patches: (data) => [
@@ -68,11 +72,17 @@ export const AiGenerateAction: DocumentActionComponent = (props) => {
   const { id, type, onComplete } = props
   const [isDialogOpen, setDialogOpen] = useState(false)
   const [prompt, setPrompt] = useState('')
+  const [seed, setSeed] = useState('')
+  const [ideas, setIdeas] = useState<Array<{ title?: string; angle?: string }>>([])
   const [loading, setLoading] = useState(false)
+  const [planLoading, setPlanLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [planError, setPlanError] = useState<string | null>(null)
+  const [mode, setMode] = useState<'generate' | 'plan'>('generate')
   const { patch } = useDocumentOperation(id, type)
   const client = useClient({ apiVersion: '2023-11-01' })
   const config = actionConfigs[type]
+  const draftContext = props.draft ?? props.published
 
   const handleGenerate = useCallback(async () => {
     if (!prompt) return
@@ -88,7 +98,7 @@ export const AiGenerateAction: DocumentActionComponent = (props) => {
       const response = await fetch(config.endpoint, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ prompt }),
+        body: JSON.stringify({ prompt, context: draftContext }),
       })
 
       if (!response.ok) {
@@ -140,7 +150,32 @@ export const AiGenerateAction: DocumentActionComponent = (props) => {
     } finally {
       setLoading(false)
     }
-  }, [prompt, patch, onComplete, client, config])
+  }, [prompt, patch, onComplete, client, config, draftContext])
+
+  const handlePlanIdeas = useCallback(async () => {
+    if (!config?.planEndpoint) return
+    setPlanLoading(true)
+    setPlanError(null)
+
+    try {
+      const response = await fetch(config.planEndpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ seed }),
+      })
+
+      const data = await response.json()
+      if (!response.ok) {
+        throw new Error(data?.error || 'Failed to plan ideas')
+      }
+
+      setIdeas(Array.isArray(data?.ideas) ? data.ideas : [])
+    } catch (err: unknown) {
+      setPlanError(err instanceof Error ? err.message : 'An unknown error occurred')
+    } finally {
+      setPlanLoading(false)
+    }
+  }, [config, seed])
 
   const description: DocumentActionDescription = {
     label: 'Generate with AI',
@@ -156,44 +191,117 @@ export const AiGenerateAction: DocumentActionComponent = (props) => {
     dialog: isDialogOpen && {
       type: 'dialog',
       onClose: () => setDialogOpen(false),
-      header: config.header,
+      header: mode === 'plan' && config.planHeader ? config.planHeader : config.header,
       content: (
         <Box padding={4}>
           <Stack space={4}>
-            <Box>
-              <Label>{config.label}</Label>
-              <TextArea
-                placeholder={config.placeholder}
-                value={prompt}
-                onChange={(event) => setPrompt(event.currentTarget.value)}
-                rows={4}
-              />
-            </Box>
-            {loading && (
-              <Card padding={3} tone="primary" radius={2}>
-                <Flex align="center" gap={3}>
-                  <Spinner muted />
-                  <Stack space={2}>
-                    <Text size={1} weight="semibold">Generating content with AI...</Text>
-                    <Text size={1} muted>This may take a few moments</Text>
-                  </Stack>
+            {config.planEndpoint && (
+              <Flex gap={2}>
+                <Button
+                  mode={mode === 'generate' ? 'default' : 'ghost'}
+                  text="Generate"
+                  onClick={() => setMode('generate')}
+                />
+                <Button
+                  mode={mode === 'plan' ? 'default' : 'ghost'}
+                  text="Plan ideas"
+                  onClick={() => setMode('plan')}
+                />
+              </Flex>
+            )}
+            {mode === 'generate' ? (
+              <>
+                <Box>
+                  <Label>{config.label}</Label>
+                  <TextArea
+                    placeholder={config.placeholder}
+                    value={prompt}
+                    onChange={(event) => setPrompt(event.currentTarget.value)}
+                    rows={4}
+                  />
+                </Box>
+                {loading && (
+                  <Card padding={3} tone="primary" radius={2}>
+                    <Flex align="center" gap={3}>
+                      <Spinner muted />
+                      <Stack space={2}>
+                        <Text size={1} weight="semibold">Generating content with AI...</Text>
+                        <Text size={1} muted>This may take a few moments</Text>
+                      </Stack>
+                    </Flex>
+                  </Card>
+                )}
+                {error && (
+                  <Card padding={3} tone="critical" radius={2}>
+                    <Text size={1}>{error}</Text>
+                  </Card>
+                )}
+                <Flex justify="flex-end">
+                  <Button
+                    text={loading ? 'Generating...' : 'Generate'}
+                    tone="primary"
+                    onClick={handleGenerate}
+                    disabled={loading || !prompt}
+                    icon={loading ? Spinner : undefined}
+                  />
                 </Flex>
-              </Card>
+              </>
+            ) : (
+              <>
+                <Box>
+                  <Label>Seed idea (optional)</Label>
+                  <TextArea
+                    placeholder="Contoh: Legalitas tanah untuk proyek perumahan"
+                    value={seed}
+                    onChange={(event) => setSeed(event.currentTarget.value)}
+                    rows={3}
+                  />
+                </Box>
+                {planLoading && (
+                  <Card padding={3} tone="primary" radius={2}>
+                    <Flex align="center" gap={3}>
+                      <Spinner muted />
+                      <Text size={1} weight="semibold">Generating article ideas...</Text>
+                    </Flex>
+                  </Card>
+                )}
+                {planError && (
+                  <Card padding={3} tone="critical" radius={2}>
+                    <Text size={1}>{planError}</Text>
+                  </Card>
+                )}
+                {ideas.length > 0 && (
+                  <Stack space={3}>
+                    {ideas.map((idea, index) => (
+                      <Card key={`${idea.title ?? 'idea'}-${index}`} padding={3} radius={2} tone="transparent">
+                        <Stack space={2}>
+                          <Text weight="semibold">{idea.title ?? 'Untitled idea'}</Text>
+                          {idea.angle && <Text size={1} muted>{idea.angle}</Text>}
+                          <Flex justify="flex-end">
+                            <Button
+                              text="Use this idea"
+                              mode="ghost"
+                              onClick={() => {
+                                setPrompt(idea.title ?? '')
+                                setMode('generate')
+                              }}
+                            />
+                          </Flex>
+                        </Stack>
+                      </Card>
+                    ))}
+                  </Stack>
+                )}
+                <Flex justify="flex-end">
+                  <Button
+                    text={planLoading ? 'Planning...' : 'Get ideas'}
+                    tone="primary"
+                    onClick={handlePlanIdeas}
+                    disabled={planLoading}
+                  />
+                </Flex>
+              </>
             )}
-            {error && (
-              <Card padding={3} tone="critical" radius={2}>
-                <Text size={1}>{error}</Text>
-              </Card>
-            )}
-            <Flex justify="flex-end">
-              <Button
-                text={loading ? 'Generating...' : 'Generate'}
-                tone="primary"
-                onClick={handleGenerate}
-                disabled={loading || !prompt}
-                icon={loading ? Spinner : undefined}
-              />
-            </Flex>
           </Stack>
         </Box>
       ),

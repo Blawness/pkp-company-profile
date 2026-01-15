@@ -1,5 +1,6 @@
 import { CaseIcon } from '@sanity/icons'
 import { defineArrayMember, defineField, defineType } from 'sanity'
+import {AiFieldInput} from '../components/AiFieldInput'
 
 export const portfolioType = defineType({
   name: 'portfolio',
@@ -12,6 +13,7 @@ export const portfolioType = defineType({
       title: 'Judul Proyek',
       type: 'string',
       validation: (Rule) => Rule.required(),
+      components: {input: AiFieldInput},
     }),
     defineField({
       name: 'slug',
@@ -22,6 +24,7 @@ export const portfolioType = defineType({
         maxLength: 96,
       },
       validation: (Rule) => Rule.required(),
+      components: {input: AiFieldInput},
     }),
     defineField({
       name: 'excerpt',
@@ -29,6 +32,7 @@ export const portfolioType = defineType({
       type: 'text',
       rows: 3,
       description: 'Ringkasan singkat portofolio untuk preview',
+      components: {input: AiFieldInput},
     }),
     defineField({
       name: 'coverImage',
@@ -72,16 +76,19 @@ export const portfolioType = defineType({
       name: 'client',
       title: 'Klien',
       type: 'string',
+      components: {input: AiFieldInput},
     }),
     defineField({
       name: 'location',
       title: 'Lokasi',
       type: 'string',
+      components: {input: AiFieldInput},
     }),
     defineField({
       name: 'year',
       title: 'Tahun',
       type: 'string',
+      components: {input: AiFieldInput},
     }),
     defineField({
       name: 'tags',
@@ -91,6 +98,7 @@ export const portfolioType = defineType({
       options: {
         layout: 'tags',
       },
+      components: {input: AiFieldInput},
     }),
     defineField({
       name: 'publishedAt',
@@ -102,6 +110,7 @@ export const portfolioType = defineType({
       name: 'body',
       title: 'Detail Proyek',
       type: 'blockContent',
+      components: {input: AiFieldInput},
     }),
   ],
   preview: {
