@@ -11,6 +11,9 @@ import type { SanityImageSource } from "@sanity/image-url/lib/types/types";
 // Enable ISR so newly published/updated portfolios appear in production without a redeploy.
 export const revalidate = 60;
 
+// Force dynamic rendering to avoid build-time issues
+export const dynamic = 'force-dynamic';
+
 type PortfolioGalleryImage = SanityImageSource & {
   _key?: string;
   alt?: string;

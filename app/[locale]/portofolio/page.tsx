@@ -6,6 +6,9 @@ import { PortfolioCard } from "../../components/sections/PortfolioCard";
 // Enable ISR so newly published portfolios appear in production without a redeploy.
 export const revalidate = 60;
 
+// Force dynamic rendering to avoid build-time issues
+export const dynamic = 'force-dynamic';
+
 export async function generateMetadata() {
   return {
     title: "Portofolio",

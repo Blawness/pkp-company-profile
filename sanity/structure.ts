@@ -5,6 +5,11 @@ export const structure: StructureResolver = (S) =>
   S.list()
     .title('Content')
     .items([
+      S.listItem()
+        .title('AI Settings')
+        .id('aiSettings')
+        .child(S.document().schemaType('aiSettings').documentId('aiSettings')),
+      S.divider(),
       S.documentTypeListItem('post').title('Posts'),
       S.documentTypeListItem('portfolio').title('Portfolios'),
       S.divider(),
@@ -12,6 +17,8 @@ export const structure: StructureResolver = (S) =>
       S.documentTypeListItem('author').title('Authors'),
       S.divider(),
       ...S.documentTypeListItems().filter(
-        (item) => item.getId() && !['post', 'portfolio', 'category', 'author'].includes(item.getId()!),
+        (item) =>
+          item.getId() &&
+          !['aiSettings', 'post', 'portfolio', 'category', 'author'].includes(item.getId()!),
       ),
     ])

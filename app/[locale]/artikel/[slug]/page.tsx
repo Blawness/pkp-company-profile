@@ -9,6 +9,9 @@ import type { TypedObject } from "@portabletext/types";
 // Enable ISR so newly published/updated articles appear in production without a redeploy.
 export const revalidate = 60;
 
+// Force dynamic rendering to avoid build-time issues
+export const dynamic = 'force-dynamic';
+
 type Post = {
   _id: string;
   title?: string;

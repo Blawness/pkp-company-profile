@@ -6,6 +6,9 @@ import { ArticleCard } from "../../components/sections/ArticleCard";
 // Enable ISR so newly published articles appear in production without a redeploy.
 export const revalidate = 60;
 
+// Force dynamic rendering to avoid build-time issues
+export const dynamic = 'force-dynamic';
+
 export default async function ArtikelIndexPage() {
   const client = getSanityClient(false);
   const posts: SanityPostPreview[] = await client.fetch(postsQuery);

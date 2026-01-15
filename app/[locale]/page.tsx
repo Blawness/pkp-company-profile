@@ -128,7 +128,10 @@ function AboutImage() {
 }
 
 async function HomeHero() {
-  const imageUrl = await getHeroImageUrl("business meeting documents contract");
+  // Use a fallback image during build time to avoid API calls
+  const imageUrl = await getHeroImageUrl("business meeting documents contract").catch(() =>
+    "https://images.pexels.com/photos/3184338/pexels-photo-3184338.jpeg"
+  );
   const t = await getTranslations("Home.hero");
   const tButtons = await getTranslations("Common.buttons");
 

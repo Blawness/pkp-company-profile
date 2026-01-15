@@ -12,7 +12,7 @@ export const getSanityClient = (preview: boolean) => {
 
   if (!projectId || !dataset) {
     // Jika sedang dalam proses build, jangan throw error agar build tidak gagal di CI
-    if (process.env.NEXT_PHASE === "phase-production-build" || process.env.NODE_ENV === "test") {
+    if (process.env.NEXT_PHASE === "phase-production-build" || process.env.NODE_ENV === "test" || process.env.CI) {
       console.warn("Sanity configuration missing. Skipping client creation during build/test.");
       // Return a minimal mock client to avoid build errors
       return {
@@ -37,6 +37,8 @@ export const getSanityClient = (preview: boolean) => {
     // - published: production pages
     // - drafts: preview mode (requires token and useCdn: false)
     perspective: preview ? "drafts" : "published",
+    // Add timeout to prevent hanging during build
+    timeout: 10000, // 10 seconds
   };
 
   const token = process.env.SANITY_READ_TOKEN;
