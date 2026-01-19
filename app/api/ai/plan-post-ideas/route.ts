@@ -3,13 +3,14 @@ import { NextResponse } from "next/server";
 import { getAiSettings } from "@/lib/ai/aiSettings";
 import { generateTextWithRetry, parseJsonResponse } from "@/lib/ai/gemini";
 import { getSanityClient } from "@/lib/sanity/client";
+import { z } from "zod";
 
 const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY || "");
 
-type PlanIdeasPayload = {
-  count?: number;
-  seed?: string;
-};
+const planIdeasSchema = z.object({
+  count: z.number().min(1).max(10).optional(),
+  seed: z.string().max(500, "Seed idea is too long").optional(),
+});
 
 const normalizeTitle = (value: string) =>
   value
@@ -26,7 +27,18 @@ export async function POST(req: Request) {
   }
 
   try {
-    const { count = 6, seed } = (await req.json()) as PlanIdeasPayload;
+    const body = await req.json();
+    const result = planIdeasSchema.safeParse(body);
+
+    if (!result.success) {
+      return NextResponse.json(
+        { error: result.error.issues[0].message },
+        { status: 400 }
+      );
+    }
+
+    const { count = 6, seed } = result.data;
+
     const settings = await getAiSettings();
     if (!settings.enabled) {
       return NextResponse.json({ error: "AI is disabled in settings" }, { status: 403 });
@@ -97,9 +109,9 @@ Return valid JSON with shape:
     return NextResponse.json({ ideas: uniqueIdeas.slice(0, count) });
   } catch (error: unknown) {
     console.error("AI Plan Ideas Error:", error);
-    const errorMessage = error instanceof Error ? error.message : "Unknown error occurred";
+    // Secure error handling
     return NextResponse.json(
-      { error: "Failed to plan ideas: " + errorMessage },
+      { error: "Failed to plan ideas. Please try again later." },
       { status: 500 }
     );
   }
