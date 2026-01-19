@@ -66,7 +66,7 @@ const validateUrl = async (urlStr: string) => {
             console.warn(`Blocked resolved private IP: ${address} for host ${url.hostname}`);
             return false;
         }
-    } catch (e) {
+    } catch {
         // DNS failure (or maybe it's an IP already?)
         // If lookup fails, we can't trust it.
         return false;

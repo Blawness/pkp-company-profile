@@ -47,7 +47,7 @@ describe("Push Article API Security", () => {
     global.fetch = originalFetch;
   });
 
-  const createRequest = (payload: any) => new Request("http://localhost/api/push-article", {
+  const createRequest = (payload: unknown) => new Request("http://localhost/api/push-article", {
     method: "POST",
     headers: {
       "Authorization": "Bearer valid-token",
