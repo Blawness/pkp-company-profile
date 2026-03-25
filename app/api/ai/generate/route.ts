@@ -81,7 +81,7 @@ export async function POST(req: Request) {
     // Fetch a relevant image from Pexels if imagePrompt is present
     let imageUrl = undefined;
     if (data.imagePrompt && settings.imageSearchEnabled !== false) {
-      imageUrl = await getHeroImageUrl(data.imagePrompt);
+      imageUrl = await getHeroImageUrl(String(data.imagePrompt));
     }
 
     return NextResponse.json({ ...data, imageUrl });
