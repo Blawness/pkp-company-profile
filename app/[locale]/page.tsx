@@ -2,7 +2,7 @@ import { useTranslations } from "next-intl";
 import { getTranslations } from "next-intl/server";
 import Image from "next/image";
 import { Link } from "@/i18n/routing";
-import { HeroSection } from "@/components/sections/HeroSection";
+import { HomeHeroSection } from "@/components/sections/HomeHeroSection";
 import { ServiceCard } from "@/components/sections/ServiceCard";
 import { services } from "@/lib/data/services";
 import { getHeroImageUrl } from "@/lib/api/pexels";
@@ -129,20 +129,22 @@ function AboutImage() {
 
 async function HomeHero() {
   // Use a fallback image during build time to avoid API calls
-  const imageUrl = await getHeroImageUrl("business meeting documents contract").catch(() =>
-    "https://images.pexels.com/photos/3184338/pexels-photo-3184338.jpeg"
-  );
+  const imageUrl =
+    (await getHeroImageUrl("business meeting documents contract").catch(() => undefined)) ??
+    "https://images.pexels.com/photos/3184338/pexels-photo-3184338.jpeg";
   const t = await getTranslations("Home.hero");
   const tButtons = await getTranslations("Common.buttons");
 
   return (
-    <HeroSection
+    <HomeHeroSection
       imageUrl={imageUrl}
       priority
       title={t("title")}
       subtitle={t("subtitle")}
-      ctaHref="/kontak"
-      ctaLabel={tButtons("contact")}
+      primaryHref="/kontak"
+      primaryLabel={tButtons("contact")}
+      secondaryHref="/layanan"
+      secondaryLabel={tButtons("seeServices")}
     />
   );
 }
