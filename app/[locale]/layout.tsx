@@ -5,6 +5,7 @@ import "../globals.css";
 import { getTranslations } from "next-intl/server";
 import type { Metadata } from "next";
 import { BaseLayout } from "@/components/layout/BaseLayout";
+import { siteUrl } from "@/lib/seo/site";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -15,9 +16,6 @@ const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
 });
-
-const siteUrl =
-  process.env.NEXT_PUBLIC_SITE_URL ?? "https://pkp-company-profile.vercel.app";
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));

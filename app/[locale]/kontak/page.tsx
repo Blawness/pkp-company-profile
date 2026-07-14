@@ -5,6 +5,7 @@ import { company } from "@/lib/data/company";
 import { ContactForm } from "@/components/forms/ContactForm";
 import { HeroSection } from "@/components/sections/HeroSection";
 import { getHeroImageUrl } from "@/lib/api/pexels";
+import { buildAlternates, localizedUrl } from "@/lib/seo/site";
 
 export async function generateMetadata({
   params,
@@ -17,10 +18,11 @@ export async function generateMetadata({
   return {
     title: t("title"),
     description: t("description"),
+    alternates: buildAlternates(locale, "kontak"),
     openGraph: {
       title: t("title"),
       description: t("description"),
-      url: "/kontak",
+      url: localizedUrl(locale, "kontak"),
     },
   };
 }

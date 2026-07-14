@@ -7,6 +7,7 @@ import { urlFor } from "@/sanity/lib/image";
 import type { TypedObject } from "@portabletext/types";
 import { Calendar, MapPin, User, Tag } from "lucide-react";
 import type { SanityImageSource } from "@sanity/image-url/lib/types/types";
+import { buildAlternates } from "@/lib/seo/site";
 
 // Enable ISR so newly published/updated portfolios appear in production without a redeploy.
 export const revalidate = 60;
@@ -21,15 +22,18 @@ type PortfolioGalleryImage = SanityImageSource & {
 };
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string; locale: string }> }) {
-  const { slug } = await params;
+  const { slug, locale } = await params;
   const client = getSanityClient(false);
   const portfolio = (await client.fetch(portfolioBySlugQuery, { slug })) as Portfolio | null;
 
-  if (!portfolio) return { title: "Portofolio Tidak Ditemukan" };
+  if (!portfolio) {
+    return { title: "Portofolio Tidak Ditemukan", robots: { index: false } };
+  }
 
   return {
     title: portfolio.title,
     description: portfolio.excerpt || `Detail proyek portofolio: ${portfolio.title}`,
+    alternates: buildAlternates(locale, `portofolio/${slug}`),
     openGraph: {
       title: portfolio.title,
       description: portfolio.excerpt,

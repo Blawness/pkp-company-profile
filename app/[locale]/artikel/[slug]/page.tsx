@@ -5,6 +5,7 @@ import Image from "next/image";
 import { PortableText, type PortableTextComponents } from "next-sanity";
 import { urlFor } from "@/sanity/lib/image";
 import type { TypedObject } from "@portabletext/types";
+import { buildAlternates } from "@/lib/seo/site";
 
 // Enable ISR so newly published/updated articles appear in production without a redeploy.
 export const revalidate = 60;
@@ -120,6 +121,40 @@ const portableTextComponents: PortableTextComponents = {
     },
   },
 };
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string; locale: string }>;
+}) {
+  const { slug, locale } = await params;
+  const client = getSanityClient(false);
+  const post = (await client.fetch(postBySlugQuery, { slug })) as Post | null;
+
+  if (!post) {
+    return { title: "Artikel Tidak Ditemukan", robots: { index: false } };
+  }
+
+  const image =
+    post.coverImage &&
+    typeof post.coverImage === "object" &&
+    "asset" in post.coverImage
+      ? urlFor(post.coverImage).width(1200).height(630).url()
+      : undefined;
+
+  return {
+    title: post.title,
+    description: post.excerpt || `Artikel: ${post.title}`,
+    alternates: buildAlternates(locale, `artikel/${slug}`),
+    openGraph: {
+      type: "article",
+      title: post.title,
+      description: post.excerpt,
+      publishedTime: post.publishedAt,
+      images: image ? [image] : [],
+    },
+  };
+}
 
 export default async function ArtikelDetailPage({ params }: { params: Promise<{ slug: string; locale: string }> }) {
   const { slug } = await params;

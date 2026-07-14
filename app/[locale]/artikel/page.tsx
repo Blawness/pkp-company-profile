@@ -2,12 +2,27 @@ import React from "react";
 import { getSanityClient, type SanityPostPreview } from "@/lib/sanity/client";
 import { postsQuery } from "@/lib/sanity/queries";
 import { ArticleCard } from "../../components/sections/ArticleCard";
+import { buildAlternates } from "@/lib/seo/site";
 
 // Enable ISR so newly published articles appear in production without a redeploy.
 export const revalidate = 60;
 
 // Force dynamic rendering to avoid build-time issues
 export const dynamic = 'force-dynamic';
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  return {
+    title: "Artikel",
+    description:
+      "Artikel, wawasan, dan informasi terbaru seputar konsultasi pertanahan dari PT Presisi Konsulindo Prima.",
+    alternates: buildAlternates(locale, "artikel"),
+  };
+}
 
 export default async function ArtikelIndexPage() {
   const client = getSanityClient(false);

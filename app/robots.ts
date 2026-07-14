@@ -1,6 +1,5 @@
 import type { MetadataRoute } from "next";
-
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+import { siteUrl } from "@/lib/seo/site";
 
 export default function robots(): MetadataRoute.Robots {
   return {
@@ -8,9 +7,11 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: "*",
         allow: "/",
+        // Keep the Sanity admin and internal API out of the index.
+        disallow: ["/studio", "/api/"],
       },
     ],
     sitemap: new URL("/sitemap.xml", siteUrl).toString(),
-    host: siteUrl,
+    host: new URL(siteUrl).host,
   };
 }

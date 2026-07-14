@@ -6,6 +6,7 @@ import { HomeHeroSection } from "@/components/sections/HomeHeroSection";
 import { ServiceCard } from "@/components/sections/ServiceCard";
 import { services } from "@/lib/data/services";
 import { getHeroImageUrl } from "@/lib/api/pexels";
+import { buildAlternates, localizedUrl } from "@/lib/seo/site";
 
 export async function generateMetadata({
   params,
@@ -18,10 +19,11 @@ export async function generateMetadata({
   return {
     title: t("title"),
     description: t("description"),
+    alternates: buildAlternates(locale, ""),
     openGraph: {
       title: t("title"),
       description: t("description"),
-      url: "/",
+      url: localizedUrl(locale, ""),
     },
   };
 }

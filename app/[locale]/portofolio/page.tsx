@@ -2,6 +2,7 @@ import React from "react";
 import { getSanityClient, type SanityPortfolioPreview } from "@/lib/sanity/client";
 import { portfoliosQuery } from "@/lib/sanity/queries";
 import { PortfolioCard } from "../../components/sections/PortfolioCard";
+import { buildAlternates } from "@/lib/seo/site";
 
 // Enable ISR so newly published portfolios appear in production without a redeploy.
 export const revalidate = 60;
@@ -9,10 +10,17 @@ export const revalidate = 60;
 // Force dynamic rendering to avoid build-time issues
 export const dynamic = 'force-dynamic';
 
-export async function generateMetadata() {
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
   return {
     title: "Portofolio",
-    description: "Daftar portofolio dan proyek yang telah diselesaikan oleh PT Presisi Konsulindo Prima.",
+    description:
+      "Daftar portofolio dan proyek yang telah diselesaikan oleh PT Presisi Konsulindo Prima.",
+    alternates: buildAlternates(locale, "portofolio"),
   };
 }
 

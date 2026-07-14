@@ -3,6 +3,7 @@ import { getTranslations } from "next-intl/server";
 import Image from "next/image";
 import { HeroSection } from "@/components/sections/HeroSection";
 import { getHeroImageUrl } from "@/lib/api/pexels";
+import { buildAlternates, localizedUrl } from "@/lib/seo/site";
 
 export async function generateMetadata({
   params,
@@ -15,10 +16,11 @@ export async function generateMetadata({
   return {
     title: t("title"),
     description: t("description"),
+    alternates: buildAlternates(locale, "tentang-kami"),
     openGraph: {
       title: t("title"),
       description: t("description"),
-      url: "/tentang-kami",
+      url: localizedUrl(locale, "tentang-kami"),
     },
   };
 }
