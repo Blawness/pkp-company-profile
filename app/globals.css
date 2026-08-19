@@ -36,6 +36,19 @@
 
   --color-pkp-earth-600: #d97706;
   --color-pkp-earth-700: #a16207;
+
+  /* Institutional Gravitas — palet situs publik */
+  --color-forest-950: #0b2a1e;
+  --color-forest-900: #123a2a;
+  --color-forest-700: #1a5c42;
+  --color-canvas: #fbfaf7;
+  --color-paper: #ffffff;
+  --color-ink: #111812;
+  --color-ink-muted: #5a6560;
+  --color-brass: #a8792c;
+  --color-hairline: rgba(17, 24, 18, 0.12);
+
+  --font-serif: var(--font-instrument-serif), Georgia, serif;
 }
 
 /* Dark mode is class-based via next-themes */
@@ -47,6 +60,22 @@
 body {
   background: var(--background);
   color: var(--foreground);
+}
+
+.font-display {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+}
+
+.text-display {
+  font-size: clamp(2.75rem, 6vw, 4.75rem);
+  line-height: 1.04;
+}
+
+.text-h2 {
+  font-size: clamp(2rem, 3.5vw, 2.75rem);
+  line-height: 1.12;
 }
 
 /* Simple accordion animation helpers (Tailwind v4 animation utilities rely on keyframes existing) */
