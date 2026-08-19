@@ -3,23 +3,41 @@ import { NextResponse } from "next/server";
 import { getHeroImageUrl } from "@/lib/api/pexels";
 import { getAiSettings } from "@/lib/ai/aiSettings";
 import { generateTextWithRetry, parseJsonResponse } from "@/lib/ai/gemini";
+import { z } from "zod";
 
 const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY || "");
 
+// Input schema: cap prompt length to prevent abuse / huge tokens,
+// and limit context to a small JSON object.
+const generateSchema = z.object({
+  prompt: z
+    .string()
+    .min(1, "Prompt is required")
+    .max(2000, "Prompt is too long (max 2000 chars)"),
+  context: z.record(z.string(), z.unknown()).optional(),
+});
+
 export async function POST(req: Request) {
   if (!process.env.GOOGLE_API_KEY) {
+    console.error("GOOGLE_API_KEY is not configured");
+    // Generic message — don't leak which env var is missing in production.
     return NextResponse.json(
-      { error: "GOOGLE_API_KEY is not configured" },
+      { error: "AI service is not configured" },
       { status: 500 }
     );
   }
 
   try {
-    const { prompt, context } = await req.json();
-
-    if (!prompt) {
-      return NextResponse.json({ error: "Prompt is required" }, { status: 400 });
+    // Parse + validate body. Reject malformed / oversized payloads.
+    const body = await req.json().catch(() => null);
+    const parsed = generateSchema.safeParse(body);
+    if (!parsed.success) {
+      return NextResponse.json(
+        { error: parsed.error.issues[0]?.message ?? "Invalid request body" },
+        { status: 400 }
+      );
     }
+    const { prompt, context } = parsed.data;
 
     const settings = await getAiSettings();
     if (!settings.enabled) {
@@ -86,10 +104,10 @@ export async function POST(req: Request) {
 
     return NextResponse.json({ ...data, imageUrl });
   } catch (error: unknown) {
+    // Log full error server-side, but never echo internal details back to the client.
     console.error("AI Generation Error:", error);
-    const errorMessage = error instanceof Error ? error.message : "Unknown error occurred";
     return NextResponse.json(
-      { error: "Failed to generate content: " + errorMessage },
+      { error: "Failed to generate content. Please try again later." },
       { status: 500 }
     );
   }

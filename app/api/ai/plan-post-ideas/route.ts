@@ -3,13 +3,15 @@ import { NextResponse } from "next/server";
 import { getAiSettings } from "@/lib/ai/aiSettings";
 import { generateTextWithRetry, parseJsonResponse } from "@/lib/ai/gemini";
 import { getSanityClient } from "@/lib/sanity/client";
+import { z } from "zod";
 
 const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY || "");
 
-type PlanIdeasPayload = {
-  count?: number;
-  seed?: string;
-};
+// Input schema: cap seed length, count to a small reasonable range.
+const planIdeasSchema = z.object({
+  count: z.number().int().min(1).max(10).optional(),
+  seed: z.string().max(500, "Seed is too long (max 500 chars)").optional(),
+});
 
 const normalizeTitle = (value: string) =>
   value
@@ -19,14 +21,24 @@ const normalizeTitle = (value: string) =>
 
 export async function POST(req: Request) {
   if (!process.env.GOOGLE_API_KEY) {
+    console.error("GOOGLE_API_KEY is not configured");
     return NextResponse.json(
-      { error: "GOOGLE_API_KEY is not configured" },
+      { error: "AI service is not configured" },
       { status: 500 }
     );
   }
 
   try {
-    const { count = 6, seed } = (await req.json()) as PlanIdeasPayload;
+    const body = await req.json().catch(() => null);
+    const parsed = planIdeasSchema.safeParse(body);
+    if (!parsed.success) {
+      return NextResponse.json(
+        { error: parsed.error.issues[0]?.message ?? "Invalid request body" },
+        { status: 400 }
+      );
+    }
+    const { count = 6, seed } = parsed.data;
+
     const settings = await getAiSettings();
     if (!settings.enabled) {
       return NextResponse.json({ error: "AI is disabled in settings" }, { status: 403 });
@@ -97,9 +109,8 @@ Return valid JSON with shape:
     return NextResponse.json({ ideas: uniqueIdeas.slice(0, count) });
   } catch (error: unknown) {
     console.error("AI Plan Ideas Error:", error);
-    const errorMessage = error instanceof Error ? error.message : "Unknown error occurred";
     return NextResponse.json(
-      { error: "Failed to plan ideas: " + errorMessage },
+      { error: "Failed to plan ideas. Please try again later." },
       { status: 500 }
     );
   }

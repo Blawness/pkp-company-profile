@@ -3,23 +3,37 @@ import { NextResponse } from "next/server";
 import { getHeroImageUrl } from "@/lib/api/pexels";
 import { getAiSettings } from "@/lib/ai/aiSettings";
 import { generateTextWithRetry, parseJsonResponse } from "@/lib/ai/gemini";
+import { z } from "zod";
 
 const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY || "");
 
+const generatePortfolioSchema = z.object({
+  prompt: z
+    .string()
+    .min(1, "Prompt is required")
+    .max(2000, "Prompt is too long (max 2000 chars)"),
+  context: z.record(z.string(), z.unknown()).optional(),
+});
+
 export async function POST(req: Request) {
   if (!process.env.GOOGLE_API_KEY) {
+    console.error("GOOGLE_API_KEY is not configured");
     return NextResponse.json(
-      { error: "GOOGLE_API_KEY is not configured" },
+      { error: "AI service is not configured" },
       { status: 500 }
     );
   }
 
   try {
-    const { prompt, context } = await req.json();
-
-    if (!prompt) {
-      return NextResponse.json({ error: "Prompt is required" }, { status: 400 });
+    const body = await req.json().catch(() => null);
+    const parsed = generatePortfolioSchema.safeParse(body);
+    if (!parsed.success) {
+      return NextResponse.json(
+        { error: parsed.error.issues[0]?.message ?? "Invalid request body" },
+        { status: 400 }
+      );
     }
+    const { prompt, context } = parsed.data;
 
     const settings = await getAiSettings();
     if (!settings.enabled) {
@@ -98,9 +112,8 @@ export async function POST(req: Request) {
     return NextResponse.json({ ...data, imageUrl });
   } catch (error: unknown) {
     console.error("AI Portfolio Generation Error:", error);
-    const errorMessage = error instanceof Error ? error.message : "Unknown error occurred";
     return NextResponse.json(
-      { error: "Failed to generate content: " + errorMessage },
+      { error: "Failed to generate content. Please try again later." },
       { status: 500 }
     );
   }

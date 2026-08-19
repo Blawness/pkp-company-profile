@@ -2,19 +2,22 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 import { NextResponse } from "next/server";
 import { findFieldOverride, getAiSettings } from "@/lib/ai/aiSettings";
 import { generateTextWithRetry, parseJsonResponse } from "@/lib/ai/gemini";
+import { z } from "zod";
 
 const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY || "");
 
-type FieldGeneratePayload = {
-  documentType?: string;
-  fieldName?: string;
-  fieldType?: string;
-  arrayItemType?: string;
-  currentValue?: unknown;
-  document?: Record<string, unknown> | null;
-  instruction?: string;
-  mode?: "generate" | "improve";
-};
+// Cap field name/document-type length, and the user-instruction length,
+// to prevent prompt-bloat DoS / cost amplification.
+const fieldGenerateSchema = z.object({
+  documentType: z.string().min(1).max(100),
+  fieldName: z.string().min(1).max(100),
+  fieldType: z.string().min(1).max(50),
+  arrayItemType: z.string().max(50).optional(),
+  currentValue: z.unknown().optional(),
+  document: z.record(z.string(), z.unknown()).nullable().optional(),
+  instruction: z.string().max(1000, "Instruction is too long (max 1000 chars)").optional(),
+  mode: z.enum(["generate", "improve"]).optional(),
+});
 
 const serializeValue = (value: unknown) => {
   if (value === null || value === undefined) return "";
@@ -41,14 +44,22 @@ const fieldTypeHint = (fieldType?: string, arrayItemType?: string) => {
 
 export async function POST(req: Request) {
   if (!process.env.GOOGLE_API_KEY) {
+    console.error("GOOGLE_API_KEY is not configured");
     return NextResponse.json(
-      { error: "GOOGLE_API_KEY is not configured" },
+      { error: "AI service is not configured" },
       { status: 500 }
     );
   }
 
   try {
-    const payload = (await req.json()) as FieldGeneratePayload;
+    const body = await req.json().catch(() => null);
+    const parsed = fieldGenerateSchema.safeParse(body);
+    if (!parsed.success) {
+      return NextResponse.json(
+        { error: parsed.error.issues[0]?.message ?? "Invalid request body" },
+        { status: 400 }
+      );
+    }
     const {
       documentType,
       fieldName,
@@ -58,14 +69,7 @@ export async function POST(req: Request) {
       document,
       instruction,
       mode = "generate",
-    } = payload;
-
-    if (!documentType || !fieldName || !fieldType) {
-      return NextResponse.json(
-        { error: "documentType, fieldName, and fieldType are required" },
-        { status: 400 }
-      );
-    }
+    } = parsed.data;
 
     const settings = await getAiSettings();
     if (!settings.enabled) {
@@ -132,9 +136,8 @@ Return valid JSON with the following shape:
     return NextResponse.json({ value: data.value });
   } catch (error: unknown) {
     console.error("AI Field Generation Error:", error);
-    const errorMessage = error instanceof Error ? error.message : "Unknown error occurred";
     return NextResponse.json(
-      { error: "Failed to generate field: " + errorMessage },
+      { error: "Failed to generate field. Please try again later." },
       { status: 500 }
     );
   }
