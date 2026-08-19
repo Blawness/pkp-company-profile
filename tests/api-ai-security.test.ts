@@ -281,28 +281,14 @@ describe("AI endpoints: rate limit 429", () => {
   });
 });
 
-// ─── /api/draft route ─────────────────────────────────────────────────────
-describe("/api/draft route", () => {
-  it("returns 403 with wrong secret", async () => {
-    process.env.DRAFT_PREVIEW_SECRET = "abc123";
-    const { GET } = await import("../app/api/draft/route");
-    const req = new Request("http://localhost/api/draft?secret=wrong");
-    const res = await GET(req);
-    expect(res.status).toBe(403);
-  });
-
-  it("returns 403 when DRAFT_PREVIEW_SECRET env is unset", async () => {
-    const original = process.env.DRAFT_PREVIEW_SECRET;
-    delete process.env.DRAFT_PREVIEW_SECRET;
-    try {
-      const { GET } = await import("../app/api/draft/route");
-      const req = new Request(
-        "http://localhost/api/draft?secret=anything",
-      );
-      const res = await GET(req);
-      expect(res.status).toBe(403);
-    } finally {
-      if (original !== undefined) process.env.DRAFT_PREVIEW_SECRET = original;
-    }
+// ─── push-article SSRF (legacy Sanity endpoint was dropped; see
+//     lib-security.test.ts for the JsonLd XSS regression test that
+//     still matters post-migration). ──────────────────────────────────────
+describe("legacy draft endpoint removed", () => {
+  it("draft route was removed in admin-kit migration", () => {
+    // The previous /api/draft Sanity-draft endpoint has been replaced
+    // by admin-kit's built-in draft/published status on the `articles`
+    // table. This test is a placeholder so the test file stays valid.
+    expect(true).toBe(true);
   });
 });

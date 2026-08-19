@@ -1,6 +1,6 @@
 import { createClient } from "@sanity/client";
 import type { ClientConfig } from "@sanity/client";
-import type { SanityImageSource } from "@sanity/image-url/lib/types/types";
+import type { SanityImageSource } from "@sanity/image-url";
 
 /**
  * Returns a configured Sanity client.

@@ -7,7 +7,7 @@ import { PortableText, type PortableTextComponents } from "next-sanity";
 import { urlFor } from "@/sanity/lib/image";
 import type { TypedObject } from "@portabletext/types";
 import { Calendar, MapPin, User, Tag } from "lucide-react";
-import type { SanityImageSource } from "@sanity/image-url/lib/types/types";
+import type { SanityImageSource } from "@sanity/image-url";
 import { buildAlternates } from "@/lib/seo/site";
 
 // Force dynamic rendering so draftMode().isEnabled is respected on every request.
