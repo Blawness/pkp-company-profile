@@ -104,3 +104,81 @@ body {
 .animate-accordion-up {
   animation: accordion-up 200ms ease-out;
 }
+
+/* Article / portfolio body copy. The HTML is injected as a string via
+   dangerouslySetInnerHTML, so it cannot carry utility classes itself. */
+.article-body {
+  font-size: 1.0625rem;
+  line-height: 1.8;
+  color: var(--color-ink);
+}
+
+.article-body > * + * {
+  margin-top: 1.5rem;
+}
+
+.article-body h2 {
+  font-family: var(--font-serif);
+  font-size: 1.875rem;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  margin-top: 3.5rem;
+}
+
+.article-body h3 {
+  font-family: var(--font-serif);
+  font-size: 1.5rem;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+  margin-top: 2.5rem;
+}
+
+.article-body ul,
+.article-body ol {
+  padding-left: 1.25rem;
+  display: grid;
+  gap: 0.75rem;
+}
+
+.article-body ul {
+  list-style: none;
+}
+
+.article-body ul > li::before {
+  content: "";
+  display: inline-block;
+  width: 1rem;
+  height: 1px;
+  vertical-align: middle;
+  margin-right: 0.75rem;
+  background: var(--color-brass);
+}
+
+.article-body ol {
+  list-style: decimal;
+}
+
+.article-body blockquote {
+  border-left: 2px solid var(--color-brass);
+  padding-left: 1.5rem;
+  font-style: italic;
+  color: var(--color-ink-muted);
+}
+
+.article-body a {
+  color: var(--color-forest-700);
+  border-bottom: 1px solid color-mix(in srgb, var(--color-forest-700) 40%, transparent);
+}
+
+.article-body a:hover {
+  border-bottom-color: var(--color-forest-700);
+}
+
+.article-body img {
+  max-width: 100%;
+  height: auto;
+}
+
+.article-body strong {
+  font-weight: 600;
+}

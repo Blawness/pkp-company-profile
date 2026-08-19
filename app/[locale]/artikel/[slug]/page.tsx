@@ -5,6 +5,8 @@ import Image from "next/image";
 import { ArticleContent } from "@/components/article/ArticleContent";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { buildAlternates } from "@/lib/seo/site";
+import { Section } from "@/components/ui/Section";
+import { Button } from "@/components/ui/Button";
 
 // Force dynamic rendering so draftMode().isEnabled is respected on every request.
 export const dynamic = "force-dynamic";
@@ -47,9 +49,9 @@ export default async function ArtikelDetailPage({
 
   if (!post) {
     return (
-      <main className="mx-auto max-w-6xl px-4 py-8">
-        <p>Artikel tidak ditemukan.</p>
-      </main>
+      <Section tone="canvas">
+        <p className="text-base text-ink-muted">Artikel tidak ditemukan.</p>
+      </Section>
     );
   }
 
@@ -63,32 +65,74 @@ export default async function ArtikelDetailPage({
     author: { "@type": "Person", name: post.authorName ?? "PKP" },
   };
 
+  const published = post.publishedAt
+    ? new Date(post.publishedAt).toLocaleDateString("id-ID", {
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+      })
+    : null;
+
   return (
-    <main className="mx-auto max-w-6xl px-4 py-8">
+    <main>
       <article>
-        <h1 className="text-3xl font-semibold text-zinc-900 dark:text-zinc-100">
-          {post.title}
-        </h1>
-        {post.excerpt && (
-          <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
-            {post.excerpt}
-          </p>
-        )}
+        <header className="bg-forest-950 text-white">
+          <div className="mx-auto max-w-[1200px] px-6 pb-20 pt-28 md:px-10 md:pb-24 md:pt-36">
+            {published && (
+              <div className="text-xs uppercase tracking-[0.18em] text-brass">
+                {published}
+              </div>
+            )}
+            <h1 className="font-display text-display mt-6 max-w-4xl text-balance">
+              {post.title}
+            </h1>
+            {post.excerpt && (
+              <p className="mt-7 max-w-2xl text-pretty text-base leading-8 text-white/70">
+                {post.excerpt}
+              </p>
+            )}
+            {post.authorName && (
+              <div className="mt-10 border-t border-white/15 pt-6 text-sm text-white/60">
+                {post.authorName}
+              </div>
+            )}
+          </div>
+        </header>
+
         {post.coverImageUrl && (
-          <div className="relative mt-6 aspect-[16/9] w-full overflow-hidden rounded-2xl">
+          <div className="relative aspect-[16/7] w-full overflow-hidden">
             <Image
               src={post.coverImageUrl}
               alt={post.title}
               fill
               priority
-              sizes="(max-width: 768px) 100vw, 768px"
+              sizes="100vw"
               className="object-cover"
             />
           </div>
         )}
-        <section className="mt-8">
-          <ArticleContent html={post.content} />
-        </section>
+
+        <Section tone="canvas">
+          <div className="mx-auto max-w-[68ch]">
+            <ArticleContent html={post.content} />
+          </div>
+        </Section>
+
+        <Section tone="forest">
+          <div className="grid gap-10 md:grid-cols-12 md:items-end">
+            <div className="md:col-span-8">
+              <div className="font-display text-h2 text-balance">
+                Butuh pendampingan legalitas tanah?
+              </div>
+            </div>
+            <div className="md:col-span-4 md:justify-self-end">
+              <Button href="/kontak" variant="solid" tone="light">
+                Konsultasi Sekarang
+              </Button>
+            </div>
+          </div>
+        </Section>
+
         <JsonLd data={jsonLd} />
       </article>
     </main>
