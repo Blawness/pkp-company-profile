@@ -1586,28 +1586,62 @@ git commit -m "feat(contact): split contact page and restyle form with underline
 
 **Interfaces:**
 - Consumes: `HeroSection`, `Section`, `SectionHead`, `Rule`, `Button`.
-- Produces: `PortfolioCard` dengan props tidak berubah; dirender sebagai "record" bergaris, bukan kartu bershadow.
+- Produces: `PortfolioCard` dengan signature tetap `React.FC<{ portfolio: PortfolioCardData }>`; dirender sebagai "record" bergaris, bukan kartu bershadow. `PortfolioCardData` sudah diekspor dan tidak berubah.
 
 - [ ] **Step 1: Tulis tes yang gagal**
 
-Baca `app/components/sections/PortfolioCard.tsx` untuk mengetahui bentuk propsnya, lalu buat `tests/portfolio-card.test.tsx` memakai props asli tersebut:
+Buat `tests/portfolio-card.test.tsx`. Props asli komponen ini adalah
+`{ portfolio: PortfolioCardData }`, dengan
+`PortfolioCardData = { id: number; title: string; slug: string; excerpt: string | null; coverImageUrl: string | null; year: string | null; tags: string[] }`
+(diekspor dari file komponen).
 
 ```tsx
 import { expect, test, describe } from "bun:test";
-import { render } from "./test-utils";
+import { render, screen } from "./test-utils";
 import React from "react";
-import { PortfolioCard } from "@/app/components/sections/PortfolioCard";
+import {
+  PortfolioCard,
+  type PortfolioCardData,
+} from "@/app/components/sections/PortfolioCard";
+
+const portfolio: PortfolioCardData = {
+  id: 1,
+  title: "Sertifikasi Lahan Menteng",
+  slug: "sertifikasi-lahan-menteng",
+  excerpt: "Pendampingan pendaftaran pertama kali.",
+  coverImageUrl: null,
+  year: "2024",
+  tags: ["sertifikat"],
+};
 
 describe("PortfolioCard", () => {
   test("renders as a hairline record without card chrome", () => {
-    // Ganti props di bawah dengan props asli komponen ini.
-    const { container } = render(<PortfolioCard /* props asli */ />);
+    const { container } = render(<PortfolioCard portfolio={portfolio} />);
     expect(container.innerHTML).not.toContain("rounded-2xl");
     expect(container.innerHTML).not.toContain("shadow");
     expect(container.innerHTML).not.toContain("dark:");
   });
+
+  test("links to the portfolio detail page", () => {
+    render(<PortfolioCard portfolio={portfolio} />);
+    expect(screen.getByRole("link").getAttribute("href")).toBe(
+      "/portofolio/sertifikasi-lahan-menteng",
+    );
+  });
+
+  test("renders title, excerpt, and year", () => {
+    render(<PortfolioCard portfolio={portfolio} />);
+    expect(screen.getByText("Sertifikasi Lahan Menteng")).toBeInTheDocument();
+    expect(
+      screen.getByText("Pendampingan pendaftaran pertama kali."),
+    ).toBeInTheDocument();
+    expect(screen.getByText("2024")).toBeInTheDocument();
+  });
 });
 ```
+
+Catatan: `coverImageUrl: null` dipakai agar tes tidak bergantung pada `next/image`
+memuat berkas nyata. Cabang bergambar diverifikasi manual di Step 7.
 
 - [ ] **Step 2: Jalankan tes, pastikan gagal**
 
@@ -1670,29 +1704,52 @@ git commit -m "feat(portfolio): render portfolio as hairline records"
 
 **Interfaces:**
 - Consumes: `HeroSection`, `Section`, `SectionHead`, `Rule`, `Button`.
-- Produces: `ArticleCard` dengan props tidak berubah, plus prop opsional baru `featured?: boolean` (default `false`) yang merender varian lebar untuk artikel teratas.
+- Produces: `ArticleCard` dengan signature `React.FC<{ post: PostPreview; featured?: boolean }>` (`featured` default `false`, merender varian lebar untuk artikel teratas), dan tipe `PostPreview` yang kini diekspor dari file yang sama.
 
 - [ ] **Step 1: Tulis tes yang gagal**
 
-Baca `app/components/sections/ArticleCard.tsx` untuk propsnya, lalu buat `tests/article-card.test.tsx`:
+Buat `tests/article-card.test.tsx`. Props asli komponen ini adalah
+`{ post: PostPreview }` dengan
+`PostPreview = { _id: string; title?: string; slug?: { current?: string }; excerpt?: string; publishedAt?: string; coverImageUrl?: string; coverImage?: { asset?: { url?: string } } }`.
+Tipe itu saat ini **belum diekspor** — tambahkan `export` pada deklarasi
+`type PostPreview` di `app/components/sections/ArticleCard.tsx` sebagai bagian
+dari Step 3.
 
 ```tsx
 import { expect, test, describe } from "bun:test";
-import { render } from "./test-utils";
+import { render, screen } from "./test-utils";
 import React from "react";
-import { ArticleCard } from "@/app/components/sections/ArticleCard";
+import {
+  ArticleCard,
+  type PostPreview,
+} from "@/app/components/sections/ArticleCard";
+
+const post: PostPreview = {
+  _id: "1",
+  title: "Syarat Pendaftaran Tanah Pertama Kali",
+  slug: { current: "syarat-pendaftaran-tanah" },
+  excerpt: "Dokumen yang perlu disiapkan sebelum mengajukan.",
+  publishedAt: "2026-01-10",
+};
 
 describe("ArticleCard", () => {
   test("renders without card chrome", () => {
-    // Ganti props di bawah dengan props asli komponen ini.
-    const { container } = render(<ArticleCard /* props asli */ />);
+    const { container } = render(<ArticleCard post={post} />);
     expect(container.innerHTML).not.toContain("rounded-2xl");
+    expect(container.innerHTML).not.toContain("rounded-lg");
     expect(container.innerHTML).not.toContain("shadow");
     expect(container.innerHTML).not.toContain("dark:");
   });
 
+  test("links to the article using its slug", () => {
+    render(<ArticleCard post={post} />);
+    expect(screen.getByRole("link").getAttribute("href")).toBe(
+      "/artikel/syarat-pendaftaran-tanah",
+    );
+  });
+
   test("featured variant renders a larger serif title", () => {
-    const { container } = render(<ArticleCard featured /* props asli */ />);
+    const { container } = render(<ArticleCard post={post} featured />);
     expect(container.innerHTML).toContain("font-display");
     expect(container.innerHTML).toContain("text-3xl");
   });
@@ -1704,9 +1761,9 @@ describe("ArticleCard", () => {
 Run: `bun test tests/article-card.test.tsx`
 Expected: FAIL.
 
-- [ ] **Step 3: Restyle `ArticleCard` dan tambahkan prop `featured`**
+- [ ] **Step 3: Restyle `ArticleCard`, ekspor `PostPreview`, tambahkan prop `featured`**
 
-Tambahkan `featured = false` ke props. Kelas:
+Ubah `type PostPreview` menjadi `export type PostPreview`, lalu ubah signature menjadi `React.FC<{ post: PostPreview; featured?: boolean }>` dengan `featured = false`. Kelas:
 
 - Pembungkus: `"group grid gap-5 border-t border-hairline py-8"`
 - Gambar (hanya jika `featured`): `"relative aspect-[16/8] w-full overflow-hidden"`
