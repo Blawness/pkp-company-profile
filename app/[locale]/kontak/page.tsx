@@ -4,6 +4,8 @@ import Image from "next/image";
 import { company } from "@/lib/data/company";
 import { ContactForm } from "@/components/forms/ContactForm";
 import { HeroSection } from "@/components/sections/HeroSection";
+import { Section } from "@/components/ui/Section";
+import { SectionHead } from "@/components/ui/SectionHead";
 import { getHeroImageUrl } from "@/lib/api/pexels";
 import { buildAlternates, localizedUrl } from "@/lib/seo/site";
 
@@ -35,68 +37,67 @@ export default function KontakPage() {
     <main>
       <KontakHero />
 
-      <div className="mx-auto max-w-6xl px-4 py-10 md:py-14">
-        <div className="max-w-3xl">
-          <h1 className="text-3xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-100 md:text-4xl">
-            {t("title")}
-          </h1>
-          <p className="mt-3 text-sm leading-7 text-zinc-600 dark:text-zinc-400">
-            {t("pageDescription")}
-          </p>
-        </div>
+      <Section tone="canvas" id="info">
+        <SectionHead
+          eyebrow={t("title")}
+          title={t("form.title")}
+          lead={t("pageDescription")}
+        />
 
-        <div id="info" className="mt-10 grid gap-8 lg:grid-cols-3">
-          <section className="rounded-2xl border border-black/10 bg-white p-6 shadow-sm dark:border-white/10 dark:bg-zinc-950 lg:col-span-2">
-            <div className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">
-              {t("form.title")}
-            </div>
-            <div className="mt-4">
-              <ContactForm />
-            </div>
-          </section>
+        <div className="mt-16 grid gap-0 md:grid-cols-12">
+          <div className="border border-hairline bg-paper p-8 md:col-span-7 md:p-12">
+            <ContactForm />
+          </div>
 
-          <div className="space-y-8 lg:col-span-1">
-            <section className="rounded-2xl border border-black/10 bg-zinc-50 p-6 dark:border-white/10 dark:bg-zinc-950/40">
-              <div className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">
-                {t("info.title")}
+          <div className="bg-forest-950 p-8 text-white md:col-span-5 md:p-12">
+            <div className="text-xs font-semibold uppercase tracking-[0.18em] text-brass">
+              {t("info.title")}
+            </div>
+
+            <dl className="mt-8 grid gap-8 text-sm">
+              <div>
+                <dt className="text-xs uppercase tracking-[0.14em] text-white/50">
+                  {t("info.email")}
+                </dt>
+                <dd className="mt-2 text-white/85">{company.contact.email}</dd>
               </div>
-              <div className="mt-4 grid gap-3 text-sm text-zinc-700 dark:text-zinc-300">
-                <div>
-                  <div className="text-xs text-zinc-500">{t("info.email")}</div>
-                  <div>{company.contact.email}</div>
-                </div>
-                <div>
-                  <div className="text-xs text-zinc-500">{t("info.phone")}</div>
-                  <div>{company.contact.phone}</div>
-                </div>
-                <div>
-                  <div className="text-xs text-zinc-500">
-                    {t("info.address")}
-                  </div>
-                  <div className="leading-6">{company.contact.address}</div>
+              <div>
+                <dt className="text-xs uppercase tracking-[0.14em] text-white/50">
+                  {t("info.phone")}
+                </dt>
+                <dd className="mt-2 text-white/85">{company.contact.phone}</dd>
+              </div>
+              <div>
+                <dt className="text-xs uppercase tracking-[0.14em] text-white/50">
+                  {t("info.address")}
+                </dt>
+                <dd className="mt-2 leading-7 text-white/85">
+                  {company.contact.address}
                   <a
-                    className="mt-2 inline-flex text-xs font-semibold text-pkp-teal-700 hover:text-pkp-teal-600 dark:text-pkp-teal-600 dark:hover:text-pkp-teal-600/90"
+                    className="mt-4 block w-fit border-b border-white/40 pb-1 text-white transition hover:border-white"
                     href={company.contact.mapsUrl}
                     target="_blank"
                     rel="noopener noreferrer"
                   >
                     {t("info.maps")}
                   </a>
-                </div>
-                <div>
-                  <div className="text-xs text-zinc-500">
-                    {t("info.operational")}
-                  </div>
+                </dd>
+              </div>
+              <div>
+                <dt className="text-xs uppercase tracking-[0.14em] text-white/50">
+                  {t("info.operational")}
+                </dt>
+                <dd className="mt-2 text-white/85">
                   <div>{tCompany("operational.days")}</div>
                   <div>{tCompany("operational.hours")}</div>
-                </div>
+                </dd>
               </div>
-            </section>
+            </dl>
 
             <ContactImage />
           </div>
         </div>
-      </div>
+      </Section>
     </main>
   );
 }
@@ -105,7 +106,7 @@ async function ContactImage() {
   const contactImageUrl = await getHeroImageUrl("customer service assistance");
   if (!contactImageUrl) return null;
   return (
-    <div className="relative aspect-[4/3] overflow-hidden rounded-2xl shadow-sm">
+    <div className="relative mt-12 aspect-[4/3] w-full overflow-hidden">
       <Image
         src={contactImageUrl}
         alt="Kontak Kami"

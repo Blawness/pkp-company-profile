@@ -71,11 +71,11 @@ export function ContactForm() {
   const messageErrorId = errors.message ? "contact-message-error" : undefined;
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="grid gap-4">
-      <div className="grid gap-1">
+    <form onSubmit={handleSubmit(onSubmit)} className="grid gap-8">
+      <div>
         <label
           htmlFor="contact-name"
-          className="text-sm font-medium text-zinc-900 dark:text-zinc-100"
+          className="text-xs font-semibold uppercase tracking-[0.18em] text-ink-muted"
         >
           {t("name")}
         </label>
@@ -85,23 +85,23 @@ export function ContactForm() {
           aria-invalid={errors.name ? true : undefined}
           aria-describedby={nameErrorId}
           className={cn(
-            "h-11 rounded-xl border bg-white px-3 text-sm outline-none transition",
-            "border-black/10 focus:ring-2 focus:ring-pkp-teal-600/30 dark:bg-zinc-950 dark:border-white/10",
+            "mt-3 w-full border-0 border-b border-hairline bg-transparent pb-3 text-base text-ink outline-none transition",
+            "placeholder:text-ink-muted/60 focus:border-forest-700",
           )}
           placeholder={t("namePlaceholder")}
           {...register("name")}
         />
         {errors.name ? (
-          <div id={nameErrorId} className="text-xs text-red-600">
+          <div id={nameErrorId} className="mt-2 text-sm text-brass">
             {errors.name.message}
           </div>
         ) : null}
       </div>
 
-      <div className="grid gap-1">
+      <div>
         <label
           htmlFor="contact-email"
-          className="text-sm font-medium text-zinc-900 dark:text-zinc-100"
+          className="text-xs font-semibold uppercase tracking-[0.18em] text-ink-muted"
         >
           {t("email")}
         </label>
@@ -113,23 +113,23 @@ export function ContactForm() {
           aria-invalid={errors.email ? true : undefined}
           aria-describedby={emailErrorId}
           className={cn(
-            "h-11 rounded-xl border bg-white px-3 text-sm outline-none transition",
-            "border-black/10 focus:ring-2 focus:ring-pkp-teal-600/30 dark:bg-zinc-950 dark:border-white/10",
+            "mt-3 w-full border-0 border-b border-hairline bg-transparent pb-3 text-base text-ink outline-none transition",
+            "placeholder:text-ink-muted/60 focus:border-forest-700",
           )}
           placeholder={t("emailPlaceholder")}
           {...register("email")}
         />
         {errors.email ? (
-          <div id={emailErrorId} className="text-xs text-red-600">
+          <div id={emailErrorId} className="mt-2 text-sm text-brass">
             {errors.email.message}
           </div>
         ) : null}
       </div>
 
-      <div className="grid gap-1">
+      <div>
         <label
           htmlFor="contact-message"
-          className="text-sm font-medium text-zinc-900 dark:text-zinc-100"
+          className="text-xs font-semibold uppercase tracking-[0.18em] text-ink-muted"
         >
           {t("message")}
         </label>
@@ -140,14 +140,14 @@ export function ContactForm() {
           aria-describedby={messageErrorId}
           rows={6}
           className={cn(
-            "rounded-xl border bg-white px-3 py-3 text-sm outline-none transition",
-            "border-black/10 focus:ring-2 focus:ring-pkp-teal-600/30 dark:bg-zinc-950 dark:border-white/10",
+            "mt-3 w-full border-0 border-b border-hairline bg-transparent pb-3 text-base text-ink outline-none transition",
+            "placeholder:text-ink-muted/60 focus:border-forest-700",
           )}
           placeholder={t("messagePlaceholder")}
           {...register("message")}
         />
         {errors.message ? (
-          <div id={messageErrorId} className="text-xs text-red-600">
+          <div id={messageErrorId} className="mt-2 text-sm text-brass">
             {errors.message.message}
           </div>
         ) : null}
@@ -159,8 +159,8 @@ export function ContactForm() {
           whileTap={{ scale: 0.98 }}
           disabled={isSubmitting || status === "missing"}
           className={cn(
-            "inline-flex h-11 items-center justify-center rounded-full px-6 text-sm font-semibold text-white transition",
-            "bg-pkp-teal-600 hover:bg-pkp-teal-700 disabled:opacity-50 disabled:hover:bg-pkp-teal-600",
+            "inline-flex min-h-11 items-center justify-center rounded-full px-8 text-sm font-semibold text-white transition",
+            "bg-forest-950 hover:bg-forest-900 disabled:opacity-50 disabled:hover:bg-forest-950",
           )}
           type="submit"
         >
@@ -170,13 +170,13 @@ export function ContactForm() {
 
       <div aria-live="polite">
         {status === "missing" ? (
-          <div className="text-xs text-zinc-500">{t("missing")}</div>
+          <div className="text-sm text-ink-muted">{t("missing")}</div>
         ) : null}
         {status === "success" ? (
-          <div className="text-xs text-emerald-600">{t("success")}</div>
+          <div className="text-sm text-forest-700">{t("success")}</div>
         ) : null}
         {status === "error" ? (
-          <div className="text-xs text-red-600" role="alert">
+          <div className="text-sm text-brass" role="alert">
             {t("error")}
           </div>
         ) : null}

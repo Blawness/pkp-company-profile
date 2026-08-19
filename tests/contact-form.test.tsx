@@ -68,4 +68,11 @@ describe("ContactForm", () => {
       expect(screen.getByText("Contact.form.success")).toBeInTheDocument();
     });
   });
+
+  test("inputs use underline styling instead of boxed borders", () => {
+    const { container } = render(<ContactForm />);
+    const input = container.querySelector("input");
+    expect(input?.className).toContain("border-b");
+    expect(input?.className).not.toContain("rounded-xl");
+  });
 });
