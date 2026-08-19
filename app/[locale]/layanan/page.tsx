@@ -9,6 +9,9 @@ import {
   AccordionTrigger,
 } from "@/components/ui/Accordion";
 import { HeroSection } from "@/components/sections/HeroSection";
+import { Section } from "@/components/ui/Section";
+import { SectionHead } from "@/components/ui/SectionHead";
+import { Button } from "@/components/ui/Button";
 import { getHeroImageUrl } from "@/lib/api/pexels";
 import { buildAlternates, localizedUrl } from "@/lib/seo/site";
 
@@ -39,31 +42,55 @@ export default function LayananPage() {
     <main>
       <LayananHero />
 
-      <div className="mx-auto max-w-6xl px-4 py-10 md:py-14">
-        <div className="max-w-3xl">
-          <h1 className="text-3xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-100 md:text-4xl">
-            {t("title")}
-          </h1>
-          <p className="mt-3 text-sm leading-7 text-zinc-600 dark:text-zinc-400">
-            {t("pageDescription")}
-          </p>
-        </div>
+      <Section tone="canvas">
+        <SectionHead
+          eyebrow={t("title")}
+          title={t("hero.title")}
+          lead={t("pageDescription")}
+        />
+      </Section>
 
-        <div className="mt-10 grid gap-12">
-          {services.map((service) => (
-            <ServiceSection key={service.id} service={service} />
-          ))}
-        </div>
-      </div>
+      {services.map((service, i) => (
+        <ServiceSection key={service.id} service={service} index={i + 1} />
+      ))}
+
+      <Cta />
     </main>
   );
 }
 
-async function ServiceSection({ service }: { service: MainService }) {
+function Cta() {
+  const tCompany = useTranslations("Company");
+  const tButtons = useTranslations("Common.buttons");
+
+  return (
+    <Section tone="forest">
+      <div className="grid gap-10 md:grid-cols-12 md:items-end">
+        <div className="md:col-span-8">
+          <div className="font-display text-h2 text-balance">
+            {tCompany("tagline")}
+          </div>
+        </div>
+        <div className="md:col-span-4 md:justify-self-end">
+          <Button href="/kontak" variant="solid" tone="light">
+            {tButtons("consultation")}
+          </Button>
+        </div>
+      </div>
+    </Section>
+  );
+}
+
+async function ServiceSection({
+  service,
+  index,
+}: {
+  service: MainService;
+  index: number;
+}) {
   const imageUrl = await getHeroImageUrl(service.imageQuery);
   const t = await getTranslations(`Services.list.${service.id}`);
 
-  // Get raw sections from translation
   const sectionsRaw = t.raw("sections") as Record<
     string,
     { title: string; items: (string | { question: string; answer: string })[] }
@@ -71,56 +98,60 @@ async function ServiceSection({ service }: { service: MainService }) {
   const sectionKeys = Object.keys(sectionsRaw);
 
   return (
-    <section
+    <Section
       id={service.id}
-      className="scroll-mt-24 overflow-hidden rounded-2xl border border-black/10 bg-white shadow-sm dark:border-white/10 dark:bg-zinc-950 md:grid md:grid-cols-2"
+      tone={index % 2 === 1 ? "paper" : "canvas"}
+      className="scroll-mt-24"
     >
-      <div className="relative h-64 w-full md:h-full">
-        {imageUrl && (
-          <Image
-            src={imageUrl}
-            alt={t("title")}
-            fill
-            className="object-cover"
+      <div className="grid gap-14 md:grid-cols-12">
+        <div className="md:col-span-5">
+          <SectionHead
+            eyebrow={String(index).padStart(2, "0")}
+            title={t("title")}
+            lead={t("description")}
           />
-        )}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
-      </div>
-
-      <div className="flex flex-col p-6 md:p-8">
-        <div className="flex flex-col gap-2">
-          <h2 className="text-xl font-semibold text-zinc-900 dark:text-zinc-100">
-            {t("title")}
-          </h2>
-          <p className="text-sm leading-7 text-zinc-600 dark:text-zinc-400">
-            {t("description")}
-          </p>
+          {imageUrl && (
+            <div className="relative mt-10 aspect-[3/2] w-full overflow-hidden">
+              <Image
+                src={imageUrl}
+                alt={t("title")}
+                fill
+                className="object-cover"
+              />
+            </div>
+          )}
         </div>
 
-        <div className="mt-6">
-          <Accordion type="multiple" className="w-full">
+        <div className="md:col-span-7">
+          <Accordion type="multiple" className="w-full border-t border-hairline">
             {sectionKeys.map((key) => {
               const sec = sectionsRaw[key];
               return (
                 <AccordionItem key={key} value={key}>
                   <AccordionTrigger>{sec.title}</AccordionTrigger>
                   <AccordionContent>
-                    <ul className="grid gap-2">
+                    <ul className="grid gap-6">
                       {sec.items.map((it, idx) => {
                         if (typeof it === "string") {
                           return (
-                            <li key={idx} className="flex gap-2">
-                              <span className="mt-2 h-1.5 w-1.5 rounded-full bg-pkp-teal-600" />
+                            <li key={idx} className="flex gap-4">
+                              <span
+                                aria-hidden
+                                className="mt-4 h-px w-6 shrink-0 bg-brass"
+                              />
                               <span>{it}</span>
                             </li>
                           );
                         }
                         return (
-                          <li key={idx} className="space-y-1 py-1">
-                            <div className="font-medium text-zinc-900 dark:text-zinc-100">
+                          <li
+                            key={idx}
+                            className="border-t border-hairline pt-6 first:border-0 first:pt-0"
+                          >
+                            <div className="font-display text-lg text-ink">
                               {it.question}
                             </div>
-                            <div className="text-sm text-zinc-600 dark:text-zinc-400">
+                            <div className="mt-2 text-ink-muted">
                               {it.answer}
                             </div>
                           </li>
@@ -134,7 +165,7 @@ async function ServiceSection({ service }: { service: MainService }) {
           </Accordion>
         </div>
       </div>
-    </section>
+    </Section>
   );
 }
 
