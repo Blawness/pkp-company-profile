@@ -120,7 +120,8 @@ export function HomeHeroSection({
             <MaskedText
               as="h1"
               text={title}
-              delay={0.5}
+              delay={0.1}
+              trigger="mount"
               className="font-display text-display mt-8"
             />
 

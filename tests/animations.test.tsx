@@ -69,3 +69,55 @@ describe("MaskedText", () => {
     expect(heading.className).toContain("font-display");
   });
 });
+
+/**
+ * Regression guard. Framer Motion propagates a parent's variant state down the
+ * tree; a child holding only inline initial/animate objects cannot resolve an
+ * inherited "visible" and stays parked at its initial offset — invisible behind
+ * the mask. That is exactly how the hero headline went blank. The rendered DOM
+ * cannot show this (the test mock drops motion props), so assert on the element
+ * tree the component returns.
+ */
+describe("MaskedText variant contract", () => {
+  const wordSpans = (node: any): any[] => {
+    if (!node || typeof node !== "object") return [];
+    const kids = React.Children.toArray(node.props?.children ?? []);
+    if (node.props?.["data-word"] !== undefined) {
+      return kids.filter((k: any) => k?.props?.variants);
+    }
+    return kids.flatMap((k) => wordSpans(k));
+  };
+
+  test("each word animates via named variants, not inline objects", () => {
+    const tree: any = MaskedText({ text: "Kepastian Hukum", as: "h1" });
+    const spans = wordSpans(tree);
+
+    expect(spans.length).toBe(2);
+    for (const span of spans) {
+      expect(span.props.initial).toBe("hidden");
+      expect(span.props.variants.hidden).toBeDefined();
+      expect(span.props.variants.visible).toBeDefined();
+    }
+  });
+
+  test("mount trigger animates without waiting on an intersection", () => {
+    const tree: any = MaskedText({
+      text: "Judul",
+      as: "h1",
+      trigger: "mount",
+    });
+    const [span] = wordSpans(tree);
+
+    expect(span.props.animate).toBe("visible");
+    expect(span.props.whileInView).toBeUndefined();
+  });
+
+  test("view trigger waits for the element to scroll in", () => {
+    const tree: any = MaskedText({ text: "Judul", as: "h2" });
+    const [span] = wordSpans(tree);
+
+    expect(span.props.whileInView).toBe("visible");
+    expect(span.props.animate).toBeUndefined();
+  });
+});
+
