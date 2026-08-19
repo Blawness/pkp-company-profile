@@ -12,5 +12,7 @@
 import { GlobalRegistrator } from "@happy-dom/global-registrator";
 
 if (!GlobalRegistrator.isRegistered) {
-  GlobalRegistrator.register();
+  // A concrete URL is required so relative asset paths (e.g. next/image with
+  // src="/logo-square.png") resolve instead of throwing "Invalid URL".
+  GlobalRegistrator.register({ url: "http://localhost:3000/" });
 }
