@@ -97,7 +97,7 @@ export default function Home() {
                 key={m}
                 className="grid gap-4 border-t border-hairline py-8 md:grid-cols-[6rem_1fr] md:gap-10"
               >
-                <span className="font-display text-xl text-brass">
+                <span className="text-sm font-semibold tracking-[0.14em] text-brass">
                   {String(i + 1).padStart(2, "0")}
                 </span>
                 <span className="max-w-3xl text-base leading-8 text-ink-muted">

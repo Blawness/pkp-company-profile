@@ -26,7 +26,7 @@ export function IndexedItem({
       )}
     >
       <Reveal y={16}>
-        <div className="font-display text-4xl text-brass/70 transition-all duration-500 group-hover:text-brass md:text-5xl">
+        <div className="font-display text-4xl text-brass/70 transition-colors duration-300 group-hover:text-brass md:text-5xl">
           {label}
         </div>
       </Reveal>

@@ -42,16 +42,17 @@ export function HomeHeroSection({
     target: ref,
     offset: ["start start", "end start"],
   });
-  const bgY = useTransform(scrollYProgress, [0, 1], ["0%", "18%"]);
-  const contentY = useTransform(scrollYProgress, [0, 1], ["0%", "-12%"]);
-  const contentOpacity = useTransform(scrollYProgress, [0, 0.75], [1, 0]);
+  // Parallax on transforms only. Fading the whole content subtree meant
+  // repainting the largest layer on the page on every scroll frame.
+  const bgY = useTransform(scrollYProgress, [0, 1], ["0%", "12%"]);
+  const contentY = useTransform(scrollYProgress, [0, 1], ["0%", "-6%"]);
 
   const fadeIn = {
     hidden: { opacity: reduceMotion ? 1 : 0, y: reduceMotion ? 0 : 20 },
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: reduceMotion ? 0 : 0.9, ease },
+      transition: { duration: reduceMotion ? 0 : 0.6, ease },
     },
   };
 
@@ -59,8 +60,8 @@ export function HomeHeroSection({
     hidden: {},
     visible: {
       transition: {
-        staggerChildren: reduceMotion ? 0 : 0.14,
-        delayChildren: reduceMotion ? 0 : 0.45,
+        staggerChildren: reduceMotion ? 0 : 0.08,
+        delayChildren: reduceMotion ? 0 : 0.15,
       },
     },
   };
@@ -72,14 +73,19 @@ export function HomeHeroSection({
     >
       <motion.div
         className="absolute inset-0 -z-10"
-        style={reduceMotion ? undefined : { y: bgY }}
+        style={
+          reduceMotion ? undefined : { y: bgY, willChange: "transform" }
+        }
       >
-        {/* Slow push-in: the frame keeps moving long after the page settles. */}
+        {/* One settle, then still. A permanently running scale on a
+            full-viewport image competes with the scroll parallax for the
+            same compositor layer. */}
         <motion.div
           className="absolute inset-0"
-          initial={reduceMotion ? false : { scale: 1.12 }}
+          style={{ willChange: "transform" }}
+          initial={reduceMotion ? false : { scale: 1.06 }}
           animate={{ scale: 1 }}
-          transition={{ duration: reduceMotion ? 0 : 18, ease: "linear" }}
+          transition={{ duration: reduceMotion ? 0 : 6, ease }}
         >
           <Image
             src={imageUrl}
@@ -104,7 +110,9 @@ export function HomeHeroSection({
       <motion.div
         className="relative z-10 mx-auto grid min-h-[min(96vh,940px)] max-w-[1200px] px-6 md:px-10 lg:grid-cols-12 lg:gap-0"
         style={
-          reduceMotion ? undefined : { y: contentY, opacity: contentOpacity }
+          reduceMotion
+            ? undefined
+            : { y: contentY, willChange: "transform" }
         }
       >
         <div className="flex flex-col justify-center py-24 lg:col-span-8 lg:py-32">

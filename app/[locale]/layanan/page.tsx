@@ -148,7 +148,7 @@ async function ServiceSection({
                             key={idx}
                             className="border-t border-hairline pt-6 first:border-0 first:pt-0"
                           >
-                            <div className="font-display text-lg text-ink">
+                            <div className="text-base font-semibold text-ink">
                               {it.question}
                             </div>
                             <div className="mt-2 text-ink-muted">

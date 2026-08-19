@@ -31,7 +31,7 @@ export function Rule({
         initial={reduceMotion ? false : { scaleX: 0 }}
         whileInView={{ scaleX: 1 }}
         viewport={{ once: true, margin: "-60px" }}
-        transition={{ duration: 1.1, ease }}
+        transition={{ duration: 0.7, ease }}
       />
       {accent && (
         <motion.span
@@ -39,7 +39,7 @@ export function Rule({
           initial={reduceMotion ? false : { scaleX: 0 }}
           whileInView={{ scaleX: 1 }}
           viewport={{ once: true, margin: "-60px" }}
-          transition={{ duration: 0.8, delay: 0.25, ease }}
+          transition={{ duration: 0.5, delay: 0.18, ease }}
         />
       )}
     </div>

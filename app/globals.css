@@ -48,7 +48,7 @@
   --color-brass: #a8792c;
   --color-hairline: rgba(17, 24, 18, 0.12);
 
-  --font-serif: var(--font-instrument-serif), Georgia, serif;
+  --font-serif: var(--font-source-serif), Georgia, serif;
 }
 
 /* Dark mode is class-based via next-themes */
@@ -62,20 +62,22 @@ body {
   color: var(--foreground);
 }
 
+/* Tracking belongs to the size, not the family: negative tracking that flatters
+   a 76px headline strangles the same face at 20px. */
 .font-display {
   font-family: var(--font-serif);
-  font-weight: 400;
-  letter-spacing: -0.02em;
 }
 
 .text-display {
-  font-size: clamp(2.75rem, 6vw, 4.75rem);
-  line-height: 1.04;
+  font-size: clamp(2.5rem, 5.5vw, 4.5rem);
+  line-height: 1.06;
+  letter-spacing: -0.018em;
 }
 
 .text-h2 {
-  font-size: clamp(2rem, 3.5vw, 2.75rem);
-  line-height: 1.12;
+  font-size: clamp(1.875rem, 3.2vw, 2.625rem);
+  line-height: 1.15;
+  letter-spacing: -0.012em;
 }
 
 /* Simple accordion animation helpers (Tailwind v4 animation utilities rely on keyframes existing) */

@@ -89,7 +89,7 @@ export default async function PortofolioDetailPage({
                   <dt className="text-xs uppercase tracking-[0.14em] text-white/50">
                     Klien
                   </dt>
-                  <dd className="font-display mt-2 text-xl">
+                  <dd className="mt-2 text-base font-medium">
                     {portfolio.client}
                   </dd>
                 </div>
@@ -99,7 +99,7 @@ export default async function PortofolioDetailPage({
                   <dt className="text-xs uppercase tracking-[0.14em] text-white/50">
                     Lokasi
                   </dt>
-                  <dd className="font-display mt-2 text-xl">
+                  <dd className="mt-2 text-base font-medium">
                     {portfolio.location}
                   </dd>
                 </div>
@@ -109,7 +109,7 @@ export default async function PortofolioDetailPage({
                   <dt className="text-xs uppercase tracking-[0.14em] text-white/50">
                     Tahun
                   </dt>
-                  <dd className="font-display mt-2 text-xl">
+                  <dd className="mt-2 text-base font-medium">
                     {portfolio.year}
                   </dd>
                 </div>

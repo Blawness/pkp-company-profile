@@ -43,7 +43,9 @@ export function Header() {
   return (
     <header
       className={cn(
-        "fixed inset-x-0 top-0 z-50 transition-all duration-500 ease-out",
+        // Only colours animate. Animating height would relayout the whole
+        // page on every scroll frame — the jank is not worth the shrink.
+        "fixed inset-x-0 top-0 z-50 transition-colors duration-300 ease-out",
         scrolled
           ? "border-b border-white/10 bg-forest-950/95 backdrop-blur"
           : "border-b border-transparent bg-transparent",
@@ -51,8 +53,7 @@ export function Header() {
     >
       <div
         className={cn(
-          "mx-auto flex max-w-[1200px] items-center justify-between px-6 transition-all duration-500 ease-out md:px-10",
-          scrolled ? "h-16" : "h-24",
+          "mx-auto flex h-20 max-w-[1200px] items-center justify-between px-6 md:px-10",
         )}
       >
         <Link href="/" className="flex items-center gap-3">
@@ -67,7 +68,7 @@ export function Header() {
             />
           </div>
           <div className="leading-tight min-w-0">
-            <div className="font-display truncate text-[15px] tracking-tight text-white sm:text-base lg:whitespace-nowrap">
+            <div className="truncate text-[13px] font-semibold uppercase tracking-[0.14em] text-white sm:text-sm lg:whitespace-nowrap">
               PT PRESISI KONSULINDO PRIMA
             </div>
             <div className="hidden text-[11px] text-white/70 md:block">
@@ -135,7 +136,7 @@ export function Header() {
                         <Link
                           href={item.href}
                           className={cn(
-                            "font-display border-b border-hairline py-4 text-xl",
+                            "font-display border-b border-hairline py-4 text-2xl",
                             active ? "text-forest-700" : "text-ink",
                           )}
                         >

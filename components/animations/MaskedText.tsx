@@ -61,11 +61,12 @@ export function MaskedText({
         >
           <motion.span
             className="inline-block"
+            style={{ willChange: "transform" }}
             variants={{
               hidden: { y: "110%" },
               visible: {
                 y: 0,
-                transition: { duration: 0.9, delay: delay + i * 0.06, ease },
+                transition: { duration: 0.6, delay: delay + i * 0.045, ease },
               },
             }}
             initial="hidden"

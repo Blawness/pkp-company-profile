@@ -14,8 +14,8 @@ function Node({ node, level }: { node: OrgNode; level: number }) {
       <div
         className={
           isRoot
-            ? "font-display mx-auto w-fit border border-white/25 px-8 py-5 text-xl"
-            : "font-display border-t border-white/20 pt-5 text-lg"
+            ? "font-display mx-auto w-fit border border-white/25 px-8 py-5 text-2xl"
+            : "border-t border-white/20 pt-5 text-sm font-semibold uppercase tracking-[0.12em]"
         }
       >
         {node.title}

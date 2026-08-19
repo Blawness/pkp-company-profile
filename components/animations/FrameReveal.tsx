@@ -6,8 +6,11 @@ import { cn } from "@/lib/cn";
 const ease = [0.22, 1, 0.36, 1] as const;
 
 /**
- * Media wipe: the frame opens from the bottom while the image itself settles
- * back from a slight push-in. Two speeds reading as one gesture.
+ * Media reveal: the image rises and settles back from a slight push-in.
+ *
+ * Deliberately transform-and-opacity only. An earlier version animated
+ * `clip-path`, which most browsers do not composite — every frame repainted
+ * the full-size image, which is what made the reveal stutter.
  */
 export function FrameReveal({
   children,
@@ -19,26 +22,25 @@ export function FrameReveal({
   const reduceMotion = useReducedMotion();
 
   if (reduceMotion) {
-    return <div className={cn("relative overflow-hidden", className)}>{children}</div>;
+    return (
+      <div className={cn("relative overflow-hidden", className)}>
+        {children}
+      </div>
+    );
   }
 
   return (
-    <motion.div
-      className={cn("relative overflow-hidden", className)}
-      initial={{ clipPath: "inset(100% 0 0 0)" }}
-      whileInView={{ clipPath: "inset(0% 0 0 0)" }}
-      viewport={{ once: true, margin: "-80px" }}
-      transition={{ duration: 1.2, ease }}
-    >
+    <div className={cn("relative overflow-hidden", className)}>
       <motion.div
         className="absolute inset-0"
-        initial={{ scale: 1.18 }}
-        whileInView={{ scale: 1 }}
-        viewport={{ once: true, margin: "-80px" }}
-        transition={{ duration: 1.6, ease }}
+        style={{ willChange: "transform, opacity" }}
+        initial={{ y: "8%", scale: 1.06, opacity: 0 }}
+        whileInView={{ y: "0%", scale: 1, opacity: 1 }}
+        viewport={{ once: true, margin: "-60px" }}
+        transition={{ duration: 0.8, ease }}
       >
         {children}
       </motion.div>
-    </motion.div>
+    </div>
   );
 }

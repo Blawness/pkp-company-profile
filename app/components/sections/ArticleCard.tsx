@@ -63,8 +63,8 @@ export const ArticleCard: React.FC<{
         <h3
           className={
             featured
-              ? "font-display mt-3 text-3xl text-ink transition group-hover:text-forest-700 md:text-4xl"
-              : "font-display mt-3 text-xl text-ink transition group-hover:text-forest-700"
+              ? "font-display mt-3 text-3xl text-ink transition-colors group-hover:text-forest-700 md:text-4xl"
+              : "font-display mt-3 text-2xl text-ink transition-colors group-hover:text-forest-700"
           }
         >
           {post.title}
