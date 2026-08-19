@@ -30,6 +30,7 @@ export const PortfolioCard: React.FC<{ portfolio: PortfolioCardData }> = ({
               src={portfolio.coverImageUrl}
               alt={portfolio.title}
               fill
+              sizes="(max-width: 768px) 100vw, 50vw"
               className="object-cover"
             />
           </div>

@@ -111,6 +111,7 @@ async function ContactImage() {
         src={contactImageUrl}
         alt="Kontak Kami"
         fill
+        sizes="(max-width: 768px) 100vw, 40vw"
         className="object-cover"
       />
     </div>

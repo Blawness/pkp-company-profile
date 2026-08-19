@@ -137,6 +137,7 @@ function AboutImage() {
       src={imageUrl}
       alt="Tentang PT Presisi Konsulindo Prima"
       fill
+      sizes="(max-width: 768px) 100vw, 42vw"
       className="object-cover"
     />
   );

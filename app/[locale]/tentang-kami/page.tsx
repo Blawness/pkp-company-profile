@@ -119,6 +119,7 @@ function AboutImage() {
         src="https://i.imgur.com/zWVfFts.png"
         alt="Tim PT Presisi Konsulindo Prima"
         fill
+        sizes="(max-width: 768px) 100vw, 42vw"
         className="object-cover"
       />
     </FrameReveal>

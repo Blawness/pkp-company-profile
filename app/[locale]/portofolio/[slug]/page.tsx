@@ -125,6 +125,7 @@ export default async function PortofolioDetailPage({
               alt={portfolio.title ?? "Project Image"}
               fill
               priority
+              sizes="100vw"
               className="object-cover"
             />
           </div>
@@ -154,6 +155,7 @@ export default async function PortofolioDetailPage({
                         src={img.url}
                         alt={img.alt || `Gallery image ${idx + 1}`}
                         fill
+                        sizes="(max-width: 640px) 100vw, 50vw"
                         className="object-cover"
                       />
                     </div>

@@ -116,6 +116,7 @@ async function ServiceSection({
                 src={imageUrl}
                 alt={t("title")}
                 fill
+                sizes="(max-width: 768px) 100vw, 40vw"
                 className="object-cover"
               />
             </div>

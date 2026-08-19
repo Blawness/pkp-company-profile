@@ -50,6 +50,7 @@ export const ArticleCard: React.FC<{
               src={imageUrl}
               alt={post.title ?? "Artikel cover"}
               fill
+              sizes="(max-width: 1200px) 100vw, 1200px"
               className="object-cover"
             />
           </div>
