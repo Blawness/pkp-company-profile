@@ -83,7 +83,7 @@ export default async function ArtikelDetailPage({
                 {published}
               </div>
             )}
-            <h1 className="font-display text-display mt-6 max-w-4xl text-balance">
+            <h1 className="font-display text-display mt-6 max-w-[18ch] text-balance">
               {post.title}
             </h1>
             {post.excerpt && (

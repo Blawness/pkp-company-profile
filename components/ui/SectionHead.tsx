@@ -36,11 +36,11 @@ export function SectionHead({
         as="h2"
         text={title}
         delay={0.1}
-        className="font-display text-h2 mt-6"
+        className="font-display text-h2 mt-6 max-w-[20ch] text-balance"
       />
       {lead && (
         <Reveal delay={0.2}>
-          <p className="mt-5 text-pretty text-base leading-8 opacity-80">
+          <p className="mt-5 max-w-[52ch] text-pretty text-base leading-8 opacity-80">
             {lead}
           </p>
         </Reveal>

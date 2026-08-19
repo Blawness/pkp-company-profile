@@ -121,3 +121,32 @@ describe("MaskedText variant contract", () => {
   });
 });
 
+describe("MaskedText typography", () => {
+  test("word gaps live outside the mask, not inside it", () => {
+    // A trailing space inside an inline-block mask is stripped by CSS
+    // white-space handling, so words collide unpredictably.
+    const { container } = render(<MaskedText as="h2" text="Konsultasi Pertanahan" />);
+    const masks = [...container.querySelectorAll("[data-word]")];
+
+    expect(masks.length).toBe(2);
+    for (const mask of masks) {
+      expect(mask.textContent).toBe(mask.textContent?.trim());
+    }
+  });
+
+  test("the heading still reads as one spaced sentence", () => {
+    render(<MaskedText as="h2" text="Konsultasi Pertanahan Tanah" />);
+    const heading = screen.getByRole("heading", { level: 2 });
+    expect(heading.textContent).toBe("Konsultasi Pertanahan Tanah");
+  });
+
+  test("mask leaves room for descenders instead of shearing them", () => {
+    const { container } = render(<MaskedText as="h2" text="Pengurusan" />);
+    const mask = container.querySelector("[data-word]") as HTMLElement;
+    // padding-bottom (with a matching negative margin) is what keeps the
+    // tails of g/y/p inside the visible box.
+    expect(mask.className).toContain("pb-[0.2em]");
+    expect(mask.className).toContain("-mb-[0.2em]");
+  });
+});
+

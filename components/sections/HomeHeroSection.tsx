@@ -130,12 +130,12 @@ export function HomeHeroSection({
               text={title}
               delay={0.1}
               trigger="mount"
-              className="font-display text-display mt-8"
+              className="font-display text-display mt-10 max-w-[16ch] text-balance"
             />
 
             <motion.p
               variants={fadeIn}
-              className="mt-8 max-w-xl text-pretty text-base leading-8 text-white/75 sm:text-[1.05rem]"
+              className="mt-8 max-w-[46ch] text-pretty text-base leading-8 text-white/70 sm:text-[1.05rem]"
             >
               {subtitle}
             </motion.p>

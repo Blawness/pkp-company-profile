@@ -74,7 +74,7 @@ export default async function PortofolioDetailPage({
                 {portfolio.tags.join(" · ")}
               </div>
             )}
-            <h1 className="font-display text-display mt-6 max-w-4xl text-balance">
+            <h1 className="font-display text-display mt-6 max-w-[18ch] text-balance">
               {portfolio.title}
             </h1>
             {portfolio.excerpt && (

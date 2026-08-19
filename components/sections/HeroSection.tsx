@@ -41,7 +41,7 @@ export function HeroSection({
             : "relative mx-auto max-w-[1200px] px-6 pb-16 pt-24 md:px-10 md:pb-20 md:pt-28"
         }
       >
-        <h1 className="font-display text-display max-w-4xl text-balance">
+        <h1 className="font-display text-display max-w-[16ch] text-balance">
           {title}
         </h1>
         {subtitle && (
