@@ -4,6 +4,8 @@ import createNextIntlPlugin from "next-intl/plugin";
 const withNextIntl = createNextIntlPlugin("./i18n/request.ts");
 
 const nextConfig: NextConfig = {
+  // admin-kit ships compiled JSX/ESM; transpile so the bundler processes it.
+  transpilePackages: ["@blawness/admin-kit"],
   images: {
     formats: ["image/avif", "image/webp"],
     remotePatterns: [
@@ -22,7 +24,6 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-  eslint: { ignoreDuringBuilds: true },
   async headers() {
     return [
       {
