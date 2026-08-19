@@ -3,7 +3,10 @@ import { getTranslations } from "next-intl/server";
 import Image from "next/image";
 import { Link } from "@/i18n/routing";
 import { HomeHeroSection } from "@/components/sections/HomeHeroSection";
-import { ServiceCard } from "@/components/sections/ServiceCard";
+import { Section } from "@/components/ui/Section";
+import { SectionHead } from "@/components/ui/SectionHead";
+import { Button } from "@/components/ui/Button";
+import { IndexedItem } from "@/components/ui/IndexedItem";
 import { services } from "@/lib/data/services";
 import { getHeroImageUrl } from "@/lib/api/pexels";
 import { buildAlternates, localizedUrl } from "@/lib/seo/site";
@@ -32,87 +35,97 @@ export default function Home() {
   const t = useTranslations("Home");
   const tCompany = useTranslations("Company");
   const tButtons = useTranslations("Common.buttons");
+  const tServices = useTranslations("Services");
 
   return (
     <main>
       <HomeHero />
 
-      <section className="mx-auto max-w-6xl px-4 py-12 md:py-16">
-        <div className="grid gap-10 md:grid-cols-2 md:items-center">
-          <div className="relative aspect-square overflow-hidden rounded-2xl md:aspect-[4/3]">
+      <Section tone="canvas">
+        <div className="grid gap-14 md:grid-cols-12 md:items-center">
+          <div className="relative aspect-[4/5] overflow-hidden md:col-span-5">
             <AboutImage />
           </div>
-
-          <div>
-            <div className="text-sm font-semibold text-pkp-green-700">
-              {t("about.label")}
-            </div>
-            <h2 className="mt-2 text-3xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-100">
-              {tCompany("name")}
-            </h2>
-            <p className="mt-4 text-sm leading-7 text-zinc-600 dark:text-zinc-400">
-              {tCompany("description")}
-            </p>
-            <div className="mt-6">
-              <Link
-                href="/tentang-kami"
-                className="text-sm font-semibold text-pkp-teal-700 hover:text-pkp-teal-600 dark:text-pkp-teal-600 dark:hover:text-pkp-teal-600/90"
-              >
-                {tButtons("moreAboutUs")} →
-              </Link>
+          <div className="md:col-span-7">
+            <SectionHead
+              eyebrow={t("about.eyebrow")}
+              title={tCompany("name")}
+              lead={tCompany("description")}
+            />
+            <div className="mt-8">
+              <Button href="/tentang-kami" variant="link">
+                {tButtons("moreAboutUs")}
+              </Button>
             </div>
           </div>
         </div>
+      </Section>
 
-        <div className="mt-16 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {services.map((s) => (
-            <ServiceCard key={s.id} service={s} />
+      <Section tone="paper">
+        <SectionHead
+          eyebrow={t("services.eyebrow")}
+          title={t("services.title")}
+          lead={t("services.lead")}
+        />
+        <div className="mt-16">
+          {services.map((s, i) => (
+            <IndexedItem
+              key={s.id}
+              index={i + 1}
+              title={tServices(`list.${s.id}.title`)}
+              href={`/layanan#${s.id}`}
+            >
+              {tServices(`list.${s.id}.description`)}
+            </IndexedItem>
           ))}
         </div>
-      </section>
+      </Section>
 
-      <section className="border-t border-black/10 bg-zinc-50 dark:border-white/10 dark:bg-zinc-950/40">
-        <div className="mx-auto max-w-6xl px-4 py-12 md:py-16">
-          <div className="grid gap-10 md:grid-cols-2">
-            <div>
-              <div className="text-sm font-semibold text-pkp-green-700 dark:text-pkp-green-400">
-                {t("visionMission.vision")}
-              </div>
-              <p className="mt-3 text-sm leading-7 text-zinc-700 dark:text-zinc-300">
-                {tCompany("vision")}
-              </p>
-            </div>
-            <div>
-              <div className="text-sm font-semibold text-pkp-green-700 dark:text-pkp-green-400">
-                {t("visionMission.mission")}
-              </div>
-              <ul className="mt-3 grid gap-2 text-sm text-zinc-700 dark:text-zinc-300">
-                {tCompany.raw("mission").map((m: string) => (
-                  <li key={m} className="flex gap-2">
-                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-pkp-teal-600" />
-                    <span>{m}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
+      <Section tone="canvas">
+        <SectionHead
+          eyebrow={t("visionMission.eyebrow")}
+          title={t("visionMission.vision")}
+          lead={tCompany("vision")}
+        />
+        <div className="mt-16">
+          <div className="text-xs font-semibold uppercase tracking-[0.18em] text-brass">
+            {t("visionMission.mission")}
           </div>
+          <ol className="mt-8 grid gap-0">
+            {tCompany.raw("mission").map((m: string, i: number) => (
+              <li
+                key={m}
+                className="grid gap-4 border-t border-hairline py-8 md:grid-cols-[6rem_1fr] md:gap-10"
+              >
+                <span className="font-display text-xl text-brass">
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                <span className="max-w-3xl text-base leading-8 text-ink-muted">
+                  {m}
+                </span>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </Section>
 
-          <div className="mt-10 rounded-2xl bg-pkp-green-900 p-8 text-white shadow-sm">
-            <div className="text-lg font-semibold">{tCompany("tagline")}</div>
-            <p className="mt-2 text-sm text-white/80">
+      <Section tone="forest">
+        <div className="grid gap-10 md:grid-cols-12 md:items-end">
+          <div className="md:col-span-8">
+            <div className="font-display text-h2 text-balance">
+              {tCompany("tagline")}
+            </div>
+            <p className="mt-6 max-w-xl text-base leading-8 text-white/70">
               {t("visionMission.ctaDescription")}
             </p>
-            <div className="mt-6">
-              <Link
-                href="/kontak"
-                className="inline-flex items-center justify-center rounded-full bg-pkp-teal-600 px-6 py-3 text-sm font-semibold text-white transition hover:bg-pkp-teal-700"
-              >
-                {tButtons("contact")}
-              </Link>
-            </div>
+          </div>
+          <div className="md:col-span-4 md:justify-self-end">
+            <Button href="/kontak" variant="solid" tone="light">
+              {tButtons("contact")}
+            </Button>
           </div>
         </div>
-      </section>
+      </Section>
     </main>
   );
 }
