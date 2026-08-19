@@ -1,17 +1,40 @@
+import { draftMode } from "next/headers";
+import { redirect } from "next/navigation";
 import { NextResponse } from "next/server";
-
-const SECRET_ENV = process.env.DRAFT_PREVIEW_SECRET;
+import { timingSafeEqual } from "node:crypto";
 
 export async function GET(req: Request) {
   const url = new URL(req.url);
   const secret = url.searchParams.get("secret");
-  if (!SECRET_ENV || secret !== SECRET_ENV) {
-    return NextResponse.json({ ok: false, error: "Invalid secret" }, { status: 403 });
+  const slug = url.searchParams.get("slug");
+  const type = url.searchParams.get("type"); // "post" | "portfolio" | undefined
+  const expected = process.env.DRAFT_PREVIEW_SECRET;
+
+  // Constant-time secret comparison + reject when secret is not configured.
+  if (!expected || !secret) {
+    return NextResponse.json(
+      { ok: false, error: "Invalid secret" },
+      { status: 403 },
+    );
   }
-  const res = NextResponse.json({ ok: true, draftMode: true });
-  // Simple flag to hint client/app to enable draft mode. Real Next.js Draft Mode may require a server-side toggle.
-  res.cookies.set("draftMode", "1", { path: "/" });
-  return res;
+  const a = Buffer.from(secret);
+  const b = Buffer.from(expected);
+  if (a.length !== b.length || !timingSafeEqual(a, b)) {
+    return NextResponse.json(
+      { ok: false, error: "Invalid secret" },
+      { status: 403 },
+    );
+  }
+
+  // Enable real Next.js Draft Mode so subsequent page renders fetch drafts.
+  (await draftMode()).enable();
+
+  // Redirect to the targeted preview page (or home when no slug given).
+  let target = "/";
+  if (slug && typeof slug === "string" && /^[a-z0-9-]+$/.test(slug)) {
+    const path =
+      type === "portfolio" ? `portofolio/${slug}` : `artikel/${slug}`;
+    target = `/${path}`;
+  }
+  redirect(target);
 }
-
-

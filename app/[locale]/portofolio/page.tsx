@@ -1,14 +1,12 @@
 import React from "react";
+import { draftMode } from "next/headers";
 import { getSanityClient, type SanityPortfolioPreview } from "@/lib/sanity/client";
 import { portfoliosQuery } from "@/lib/sanity/queries";
 import { PortfolioCard } from "../../components/sections/PortfolioCard";
 import { buildAlternates } from "@/lib/seo/site";
 
-// Enable ISR so newly published portfolios appear in production without a redeploy.
-export const revalidate = 60;
-
-// Force dynamic rendering to avoid build-time issues
-export const dynamic = 'force-dynamic';
+// Force dynamic rendering so draftMode().isEnabled is respected on every request.
+export const dynamic = "force-dynamic";
 
 export async function generateMetadata({
   params,
@@ -21,11 +19,14 @@ export async function generateMetadata({
     description:
       "Daftar portofolio dan proyek yang telah diselesaikan oleh PT Presisi Konsulindo Prima.",
     alternates: buildAlternates(locale, "portofolio"),
+    // Don't index draft previews.
+    robots: (await draftMode()).isEnabled ? { index: false } : undefined,
   };
 }
 
 export default async function PortofolioIndexPage() {
-  const client = getSanityClient(false);
+  // Honour Next.js Draft Mode: when enabled via /api/draft, fetch drafts.
+  const client = getSanityClient((await draftMode()).isEnabled);
   const portfolios: SanityPortfolioPreview[] = await client.fetch(portfoliosQuery);
 
   return (

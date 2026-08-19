@@ -1,4 +1,5 @@
 import React from "react";
+import { draftMode } from "next/headers";
 import { getSanityClient } from "@/lib/sanity/client";
 import { postBySlugQuery } from "@/lib/sanity/queries";
 import Image from "next/image";
@@ -7,11 +8,8 @@ import { urlFor } from "@/sanity/lib/image";
 import type { TypedObject } from "@portabletext/types";
 import { buildAlternates } from "@/lib/seo/site";
 
-// Enable ISR so newly published/updated articles appear in production without a redeploy.
-export const revalidate = 60;
-
-// Force dynamic rendering to avoid build-time issues
-export const dynamic = 'force-dynamic';
+// Force dynamic rendering so draftMode().isEnabled is respected on every request.
+export const dynamic = "force-dynamic";
 
 type Post = {
   _id: string;
@@ -128,7 +126,8 @@ export async function generateMetadata({
   params: Promise<{ slug: string; locale: string }>;
 }) {
   const { slug, locale } = await params;
-  const client = getSanityClient(false);
+  // Honour Next.js Draft Mode for metadata as well.
+  const client = getSanityClient((await draftMode()).isEnabled);
   const post = (await client.fetch(postBySlugQuery, { slug })) as Post | null;
 
   if (!post) {
@@ -158,7 +157,8 @@ export async function generateMetadata({
 
 export default async function ArtikelDetailPage({ params }: { params: Promise<{ slug: string; locale: string }> }) {
   const { slug } = await params;
-  const client = getSanityClient(false);
+  // Honour Next.js Draft Mode.
+  const client = getSanityClient((await draftMode()).isEnabled);
   const post = (await client.fetch(postBySlugQuery, { slug })) as Post | null;
 
   if (!post) {

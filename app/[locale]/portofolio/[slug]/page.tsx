@@ -1,4 +1,5 @@
 import React from "react";
+import { draftMode } from "next/headers";
 import { getSanityClient } from "@/lib/sanity/client";
 import { portfolioBySlugQuery } from "@/lib/sanity/queries";
 import Image from "next/image";
@@ -9,11 +10,8 @@ import { Calendar, MapPin, User, Tag } from "lucide-react";
 import type { SanityImageSource } from "@sanity/image-url/lib/types/types";
 import { buildAlternates } from "@/lib/seo/site";
 
-// Enable ISR so newly published/updated portfolios appear in production without a redeploy.
-export const revalidate = 60;
-
-// Force dynamic rendering to avoid build-time issues
-export const dynamic = 'force-dynamic';
+// Force dynamic rendering so draftMode().isEnabled is respected on every request.
+export const dynamic = "force-dynamic";
 
 type PortfolioGalleryImage = SanityImageSource & {
   _key?: string;
@@ -23,7 +21,8 @@ type PortfolioGalleryImage = SanityImageSource & {
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string; locale: string }> }) {
   const { slug, locale } = await params;
-  const client = getSanityClient(false);
+  // Honour Next.js Draft Mode for metadata as well.
+  const client = getSanityClient((await draftMode()).isEnabled);
   const portfolio = (await client.fetch(portfolioBySlugQuery, { slug })) as Portfolio | null;
 
   if (!portfolio) {
@@ -115,7 +114,8 @@ const portableTextComponents: PortableTextComponents = {
 
 export default async function PortofolioDetailPage({ params }: { params: Promise<{ slug: string; locale: string }> }) {
   const { slug } = await params;
-  const client = getSanityClient(false);
+  // Honour Next.js Draft Mode.
+  const client = getSanityClient((await draftMode()).isEnabled);
   const portfolio = (await client.fetch(portfolioBySlugQuery, { slug })) as Portfolio | null;
 
   if (!portfolio) {
