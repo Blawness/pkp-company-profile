@@ -171,6 +171,23 @@ export default async function ArtikelDetailPage({ params }: { params: Promise<{ 
 
   const bodyBlocks: TypedObject[] = Array.isArray(post.body) ? (post.body as TypedObject[]) : [];
 
+  // Sanitize JSON-LD payload so user-controlled fields (post.title, post.excerpt)
+  // can't break out of the <script> tag with `</script>` (stored XSS).
+  const jsonLd = JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": post.title,
+    "description": post.excerpt,
+    "image":
+      post.coverImage &&
+      typeof post.coverImage === "object" &&
+      "asset" in post.coverImage
+        ? urlFor(post.coverImage).url()
+        : "",
+    "datePublished": post.publishedAt,
+    "author": { "@type": "Person", "name": "PKP" }
+  }).replace(/</g, "\\u003c");
+
   return (
     <main className="mx-auto max-w-6xl px-4 py-8">
       <article>
@@ -189,22 +206,7 @@ export default async function ArtikelDetailPage({ params }: { params: Promise<{ 
         ) : null}
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "Article",
-              "headline": post.title,
-              "description": post.excerpt,
-              "image":
-                post.coverImage &&
-                typeof post.coverImage === "object" &&
-                "asset" in post.coverImage
-                  ? urlFor(post.coverImage).url()
-                  : "",
-              "datePublished": post.publishedAt,
-              "author": { "@type": "Person", "name": "PKP" }
-            })
-          }}
+          dangerouslySetInnerHTML={{ __html: jsonLd }}
         />
       </article>
     </main>
