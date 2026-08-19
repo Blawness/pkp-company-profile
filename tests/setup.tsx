@@ -1,9 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-require-imports */
-import { GlobalRegistrator } from "@happy-dom/global-registrator";
-GlobalRegistrator.register();
-
 import "@testing-library/jest-dom";
 import { mock, afterEach } from "bun:test";
 import React from "react";
