@@ -1,0 +1,20 @@
+CREATE TABLE "portfolios" (
+	"id" serial PRIMARY KEY NOT NULL,
+	"title" text NOT NULL,
+	"slug" text NOT NULL,
+	"excerpt" text,
+	"client" text,
+	"location" text,
+	"year" text,
+	"tags" text[] DEFAULT '{}' NOT NULL,
+	"cover_image_url" text,
+	"gallery" text[] DEFAULT '{}' NOT NULL,
+	"content" text,
+	"status" text DEFAULT 'draft' NOT NULL,
+	"published_at" timestamp,
+	"created_at" timestamp DEFAULT now() NOT NULL,
+	"updated_at" timestamp DEFAULT now() NOT NULL,
+	"category_id" integer,
+	"author_id" integer NOT NULL,
+	CONSTRAINT "portfolios_slug_unique" UNIQUE("slug")
+);

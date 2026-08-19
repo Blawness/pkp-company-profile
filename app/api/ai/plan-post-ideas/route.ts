@@ -2,7 +2,9 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 import { NextResponse } from "next/server";
 import { getAiSettings } from "@/lib/ai/aiSettings";
 import { generateTextWithRetry, parseJsonResponse } from "@/lib/ai/gemini";
-import { getSanityClient } from "@/lib/sanity/client";
+import { db } from "@/db";
+import { articles } from "@/db/schema";
+import { and, eq, isNotNull } from "drizzle-orm";
 import { verifyAiAuth } from "@/lib/security/ai-auth";
 import { checkRateLimit, getClientIp } from "@/lib/security/rate-limit";
 import { SECURITY_PREAMBLE, fenceUntrusted } from "@/lib/security/prompt";
@@ -72,16 +74,19 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "AI is disabled in settings" }, { status: 403 });
     }
 
-    const client = getSanityClient(true);
+    const client = db;
     // Read only published titles (not drafts). Drafts are an internal editorial
     // pipeline and must not leak via this public endpoint.
-    const published = await client.fetch(
-      `*[_type == "post" && !(_id in path("drafts.**"))]{title}`
-    );
+    const published = await client
+      .select({ title: articles.title })
+      .from(articles)
+      .where(
+        and(eq(articles.status, "published"), isNotNull(articles.publishedAt)),
+      );
 
     const existingTitles = published
-      .map((item: { title?: string }) => item?.title)
-      .filter((title: unknown): title is string => typeof title === "string");
+      .map((item: { title: string | null }) => item?.title)
+      .filter((title: string | null | undefined): title is string => typeof title === "string");
 
     const existingNormalized = new Set(existingTitles.map(normalizeTitle));
 

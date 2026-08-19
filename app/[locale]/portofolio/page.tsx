@@ -1,11 +1,9 @@
 import React from "react";
 import { draftMode } from "next/headers";
-import { getSanityClient, type SanityPortfolioPreview } from "@/lib/sanity/client";
-import { portfoliosQuery } from "@/lib/sanity/queries";
+import { listPublishedPortfolios } from "@/lib/portfolios";
 import { PortfolioCard } from "../../components/sections/PortfolioCard";
 import { buildAlternates } from "@/lib/seo/site";
 
-// Force dynamic rendering so draftMode().isEnabled is respected on every request.
 export const dynamic = "force-dynamic";
 
 export async function generateMetadata({
@@ -19,15 +17,12 @@ export async function generateMetadata({
     description:
       "Daftar portofolio dan proyek yang telah diselesaikan oleh PT Presisi Konsulindo Prima.",
     alternates: buildAlternates(locale, "portofolio"),
-    // Don't index draft previews.
     robots: (await draftMode()).isEnabled ? { index: false } : undefined,
   };
 }
 
 export default async function PortofolioIndexPage() {
-  // Honour Next.js Draft Mode: when enabled via /api/draft, fetch drafts.
-  const client = getSanityClient((await draftMode()).isEnabled);
-  const portfolios: SanityPortfolioPreview[] = await client.fetch(portfoliosQuery);
+  const portfolios = await listPublishedPortfolios();
 
   return (
     <main className="mx-auto max-w-6xl px-4 py-12 md:py-16">
@@ -36,18 +31,21 @@ export default async function PortofolioIndexPage() {
           Portofolio Kami
         </h1>
         <p className="mt-4 text-lg text-zinc-600 dark:text-zinc-400">
-          Beberapa proyek strategis yang telah kami selesaikan dengan profesionalisme dan integritas.
+          Beberapa proyek strategis yang telah kami selesaikan dengan
+          profesionalisme dan integritas.
         </p>
       </div>
 
       {!portfolios || portfolios.length === 0 ? (
         <div className="rounded-2xl border border-dashed border-zinc-300 p-12 text-center dark:border-zinc-700">
-          <p className="text-zinc-600 dark:text-zinc-400">Portofolio belum tersedia.</p>
+          <p className="text-zinc-600 dark:text-zinc-400">
+            Portofolio belum tersedia.
+          </p>
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {portfolios.map((item) => (
-            <PortfolioCard key={item._id} portfolio={item} />
+            <PortfolioCard key={item.id} portfolio={item} />
           ))}
         </div>
       )}

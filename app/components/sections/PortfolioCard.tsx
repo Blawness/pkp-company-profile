@@ -1,60 +1,53 @@
 import { Link } from "@/i18n/routing";
 import React from "react";
 import Image from "next/image";
-import { urlFor } from "@/sanity/lib/image";
-import { SanityPortfolioPreview } from "@/lib/sanity/client";
 
-export const PortfolioCard: React.FC<{ portfolio: SanityPortfolioPreview }> = ({
+/**
+ * Portfolio card for the public list page. Reads from Postgres via
+ * `lib/portfolios.ts` — the portfolio shape is flat (coverImageUrl
+ * already resolved to an absolute URL).
+ */
+export type PortfolioCardData = {
+  id: number;
+  title: string;
+  slug: string;
+  excerpt: string | null;
+  coverImageUrl: string | null;
+  year: string | null;
+  tags: string[];
+};
+
+export const PortfolioCard: React.FC<{ portfolio: PortfolioCardData }> = ({
   portfolio,
 }) => {
-  const slug = portfolio.slug?.current ?? "";
-  const href = `/portofolio/${slug}`;
-  const imageUrl =
-    portfolio.coverImage &&
-    typeof portfolio.coverImage === "object" &&
-    "asset" in portfolio.coverImage
-      ? urlFor(portfolio.coverImage).width(800).height(500).url()
-      : null;
-
+  const href = `/portofolio/${portfolio.slug}`;
   return (
-    <article className="group rounded-2xl border border-zinc-200 dark:border-white/10 overflow-hidden bg-white dark:bg-zinc-900 transition hover:shadow-md">
+    <article className="group rounded-2xl overflow-hidden border border-black/5 dark:border-white/5 shadow-sm hover:shadow-md transition-shadow">
       <Link href={href} className="block no-underline">
-        <div className="relative aspect-[16/10] w-full overflow-hidden bg-zinc-100 dark:bg-zinc-800">
-          {imageUrl ? (
+        {portfolio.coverImageUrl ? (
+          <div className="relative aspect-[4/3] w-full overflow-hidden bg-zinc-100">
             <Image
-              src={imageUrl}
-              alt={portfolio.title ?? "Portfolio cover"}
+              src={portfolio.coverImageUrl}
+              alt={portfolio.title}
               fill
-              className="object-cover transition duration-500 group-hover:scale-105"
+              className="object-cover transition duration-300 group-hover:scale-105"
             />
-          ) : (
-             <div className="flex h-full items-center justify-center text-zinc-400">
-               No Image
-             </div>
-          )}
-        </div>
-        <div className="p-5">
-          <div className="flex flex-wrap gap-2 mb-3">
-            {portfolio.tags?.slice(0, 3).map((tag) => (
-              <span key={tag} className="text-[10px] font-bold uppercase tracking-wider text-pkp-teal-600 dark:text-pkp-teal-400">
-                {tag}
-              </span>
-            ))}
           </div>
-          <h3 className="text-xl font-semibold text-zinc-900 dark:text-zinc-100 group-hover:text-pkp-teal-600 dark:group-hover:text-pkp-teal-400 transition-colors">
+        ) : (
+          <div className="aspect-[4/3] bg-zinc-100 dark:bg-zinc-800" />
+        )}
+        <div className="p-5">
+          <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-100">
             {portfolio.title}
           </h3>
-          {portfolio.client && (
-            <p className="mt-2 text-sm font-medium text-zinc-500 dark:text-zinc-400">
-              Klien: {portfolio.client}
+          {portfolio.excerpt && (
+            <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400 line-clamp-2">
+              {portfolio.excerpt}
             </p>
           )}
-          <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400 line-clamp-2">
-            {portfolio.excerpt ?? ""}
-          </p>
-          <div className="mt-4 flex items-center text-sm font-semibold text-pkp-teal-700 dark:text-pkp-teal-500">
-            Lihat Detail →
-          </div>
+          {portfolio.year && (
+            <p className="mt-3 text-xs text-zinc-500">{portfolio.year}</p>
+          )}
         </div>
       </Link>
     </article>
