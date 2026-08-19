@@ -1,16 +1,20 @@
 import { Link } from "@/i18n/routing";
 import React from "react";
 import Image from "next/image";
-import { urlFor } from "@/sanity/lib/image";
-import type { SanityImageSource } from "@sanity/image-url/lib/types/types";
 
+/**
+ * Article card for the public list page. Reads from Postgres via
+ * `lib/articles.ts` — the article data shape is `{ id, slug, coverImageUrl }`
+ * with coverImageUrl already resolved to an absolute URL.
+ */
 type PostPreview = {
   _id: string;
   title?: string;
   slug?: { current?: string };
   excerpt?: string;
   publishedAt?: string;
-  coverImage?: SanityImageSource;
+  coverImageUrl?: string;
+  coverImage?: { asset?: { url?: string } };
 };
 
 export const ArticleCard: React.FC<{ post: PostPreview }> = ({
@@ -18,12 +22,15 @@ export const ArticleCard: React.FC<{ post: PostPreview }> = ({
 }) => {
   const slug = post.slug?.current ?? "";
   const href = `/artikel/${slug}`;
+  // Accept either a flat `coverImageUrl` (from Drizzle) or the legacy
+  // nested `coverImage.asset.url` shape (kept for backward compat).
   const imageUrl =
-    post.coverImage &&
+    post.coverImageUrl ??
+    (post.coverImage &&
     typeof post.coverImage === "object" &&
     "asset" in post.coverImage
-      ? urlFor(post.coverImage).url()
-      : null;
+      ? post.coverImage.asset?.url ?? undefined
+      : undefined);
 
   return (
     <article className="rounded-lg border border-gray-200 p-4 hover:shadow-sm">
@@ -48,5 +55,3 @@ export const ArticleCard: React.FC<{ post: PostPreview }> = ({
     </article>
   );
 };
-
-
