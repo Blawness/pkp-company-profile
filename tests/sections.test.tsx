@@ -38,12 +38,14 @@ describe("Section Components", () => {
       const heading = screen.getByRole("heading", { level: 1 });
       expect(heading.textContent).toBe("Kepastian Hukum");
       expect(heading.className).toContain("font-display");
-      expect(screen.getByText("Konsultasi").getAttribute("href")).toBe(
-        "/kontak",
-      );
-      expect(screen.getByText("Lihat Layanan").getAttribute("href")).toBe(
-        "/layanan",
-      );
+      expect(
+        screen.getByRole("link", { name: "Konsultasi" }).getAttribute("href"),
+      ).toBe("/kontak");
+      expect(
+        screen
+          .getByRole("link", { name: "Lihat Layanan" })
+          .getAttribute("href"),
+      ).toBe("/layanan");
     });
   });
 

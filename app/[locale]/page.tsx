@@ -6,6 +6,7 @@ import { Section } from "@/components/ui/Section";
 import { SectionHead } from "@/components/ui/SectionHead";
 import { Button } from "@/components/ui/Button";
 import { IndexedItem } from "@/components/ui/IndexedItem";
+import { FrameReveal } from "@/components/animations/FrameReveal";
 import { services } from "@/lib/data/services";
 import { getHeroImageUrl } from "@/lib/api/pexels";
 import { buildAlternates, localizedUrl } from "@/lib/seo/site";
@@ -42,9 +43,9 @@ export default function Home() {
 
       <Section tone="canvas">
         <div className="grid gap-14 md:grid-cols-12 md:items-center">
-          <div className="relative aspect-[4/5] overflow-hidden md:col-span-5">
+          <FrameReveal className="aspect-[4/5] md:col-span-5">
             <AboutImage />
-          </div>
+          </FrameReveal>
           <div className="md:col-span-7">
             <SectionHead
               eyebrow={t("about.eyebrow")}

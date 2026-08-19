@@ -69,6 +69,14 @@ mock.module("framer-motion", () => {
     motion,
     AnimatePresence: ({ children }: any) => children,
     useReducedMotion: () => true,
+    // Scroll-linked values: the test DOM never scrolls, so these stand in
+    // with inert values rather than pretending to animate.
+    useScroll: () => ({
+      scrollY: { get: () => 0, on: () => () => {} },
+      scrollYProgress: { get: () => 0, on: () => () => {} },
+    }),
+    useTransform: () => 0,
+    useMotionValueEvent: () => {},
   };
 });
 

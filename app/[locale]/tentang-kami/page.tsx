@@ -9,6 +9,7 @@ import {
 import { Section } from "@/components/ui/Section";
 import { SectionHead } from "@/components/ui/SectionHead";
 import { Button } from "@/components/ui/Button";
+import { FrameReveal } from "@/components/animations/FrameReveal";
 import { getHeroImageUrl } from "@/lib/api/pexels";
 import { buildAlternates, localizedUrl } from "@/lib/seo/site";
 
@@ -113,14 +114,14 @@ export default function TentangKamiPage() {
 
 function AboutImage() {
   return (
-    <div className="relative aspect-[4/5] w-full overflow-hidden">
+    <FrameReveal className="aspect-[4/5] w-full">
       <Image
         src="https://i.imgur.com/zWVfFts.png"
         alt="Tim PT Presisi Konsulindo Prima"
         fill
         className="object-cover"
       />
-    </div>
+    </FrameReveal>
   );
 }
 

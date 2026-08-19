@@ -8,13 +8,13 @@ import { IndexedItem } from "@/components/ui/IndexedItem";
 describe("Button", () => {
   test("renders a link with the given href", () => {
     render(<Button href="/kontak">Hubungi</Button>);
-    const link = screen.getByText("Hubungi");
+    const link = screen.getByRole("link", { name: "Hubungi" });
     expect(link.getAttribute("href")).toBe("/kontak");
   });
 
   test("solid variant is a pill, never a shadowed box", () => {
     render(<Button href="/kontak">Hubungi</Button>);
-    const link = screen.getByText("Hubungi");
+    const link = screen.getByRole("link", { name: "Hubungi" });
     expect(link.className).toContain("rounded-full");
     expect(link.className).not.toContain("shadow");
   });
@@ -25,7 +25,7 @@ describe("Button", () => {
         Lihat
       </Button>,
     );
-    const link = screen.getByText("Lihat");
+    const link = screen.getByRole("link", { name: /Lihat/ });
     expect(link.className).not.toContain("rounded-full");
   });
 });

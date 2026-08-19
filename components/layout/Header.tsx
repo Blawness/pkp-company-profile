@@ -1,5 +1,6 @@
 "use client";
 
+import * as React from "react";
 import Image from "next/image";
 import { usePathname } from "@/i18n/routing";
 import { Link } from "@/i18n/routing";
@@ -19,6 +20,17 @@ export function Header() {
   const pathname = usePathname();
   const t = useTranslations("Common.nav");
 
+  // Transparent while it sits over the hero, solid once the page moves —
+  // so the masthead reads as part of the hero, not a bar bolted on top.
+  const [scrolled, setScrolled] = React.useState(false);
+
+  React.useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 24);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
   const navItems = [
     { href: "/", label: t("home") },
     { href: "/tentang-kami", label: t("about") },
@@ -29,8 +41,20 @@ export function Header() {
   ] as const;
 
   return (
-    <header className="sticky top-0 z-50 border-b border-white/10 bg-forest-950">
-      <div className="mx-auto flex h-20 max-w-[1200px] items-center justify-between px-6 md:px-10">
+    <header
+      className={cn(
+        "fixed inset-x-0 top-0 z-50 transition-all duration-500 ease-out",
+        scrolled
+          ? "border-b border-white/10 bg-forest-950/95 backdrop-blur"
+          : "border-b border-transparent bg-transparent",
+      )}
+    >
+      <div
+        className={cn(
+          "mx-auto flex max-w-[1200px] items-center justify-between px-6 transition-all duration-500 ease-out md:px-10",
+          scrolled ? "h-16" : "h-24",
+        )}
+      >
         <Link href="/" className="flex items-center gap-3">
           <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white p-1.5">
             <Image

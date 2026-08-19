@@ -1,5 +1,7 @@
 import { cn } from "@/lib/cn";
 import { Rule } from "@/components/ui/Rule";
+import { Reveal } from "@/components/animations/Reveal";
+import { MaskedText } from "@/components/animations/MaskedText";
 
 export function SectionHead({
   eyebrow,
@@ -23,16 +25,25 @@ export function SectionHead({
       )}
     >
       {eyebrow && (
-        <div className="text-xs font-semibold uppercase tracking-[0.18em] text-brass">
-          {eyebrow}
-        </div>
+        <Reveal y={12}>
+          <div className="text-xs font-semibold uppercase tracking-[0.18em] text-brass">
+            {eyebrow}
+          </div>
+        </Reveal>
       )}
-      <Rule className={cn("mt-4", align === "center" && "mx-auto w-24")} />
-      <h2 className="font-display text-h2 mt-6 text-balance">{title}</h2>
+      <Rule accent className={cn("mt-4", align === "center" && "mx-auto w-24")} />
+      <MaskedText
+        as="h2"
+        text={title}
+        delay={0.1}
+        className="font-display text-h2 mt-6"
+      />
       {lead && (
-        <p className="mt-5 text-pretty text-base leading-8 opacity-80">
-          {lead}
-        </p>
+        <Reveal delay={0.2}>
+          <p className="mt-5 text-pretty text-base leading-8 opacity-80">
+            {lead}
+          </p>
+        </Reveal>
       )}
     </div>
   );
