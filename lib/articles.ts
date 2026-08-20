@@ -1,6 +1,6 @@
 /**
  * Article query helpers. Read published articles from Postgres for the
- * public site. Replaces the previous Sanity GROQ queries.
+ * public site.
  *
  * Status semantics (mirrors admin-kit's built-in `articles.status`):
  *   - "draft"    : visible only via /api/draft preview

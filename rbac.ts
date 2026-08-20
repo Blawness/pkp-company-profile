@@ -1,8 +1,7 @@
 /**
  * RBAC configuration. Single source of truth for roles + permissions.
  *
- * Uses admin-kit's `presets.adminEditor` which matches the legacy
- * Sanity-Studio two-role model:
+ * Uses admin-kit's `presets.adminEditor` which defines the two-role model:
  *   - admin   : everything (`*`)
  *   - editor  : read all, create/update articles + categories, upload media,
  *               edit own profile (no publish, no delete)

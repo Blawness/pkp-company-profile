@@ -63,9 +63,8 @@ export const portfolios = pgTable("portfolios", {
 });
 
 /**
- * Singleton AI-settings row. Mirrors the old Sanity `aiSettings`
- * document. Fixed primary key `id='singleton'` ensures we always
- * upsert the same row.
+ * Singleton AI-settings row, keyed by a fixed `id='singleton'` so we
+ * always upsert the same row.
  *
  * `fieldOverrides` is a JSON-encoded array of
  * `{ documentType, fieldName, enabled, promptTemplate }`.

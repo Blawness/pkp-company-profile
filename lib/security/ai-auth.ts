@@ -1,40 +1,15 @@
 /**
  * Authentication helper for /api/ai/* routes.
  *
- * The only legitimate caller is the Sanity Studio (signed-in editor).
- * Studio actions carry the user's session token via the X-AI-Session
- * header, which we verify server-side by hitting Sanity's /users/me.
- *
- * We also accept a shared-secret bypass (X-AI-Secret, env AI_API_SECRET)
- * for server-to-server callers (cron jobs, scripts) that have no Sanity
- * session. Without a session AND without a secret, the request is 401'd.
- *
- * Successful session verifications are cached in-process for 60s to
- * avoid hammering Sanity's API on every Studio action click.
+ * Legitimate callers are signed-in admin-kit users (the NextAuth session
+ * cookie issued by /api/auth). Server-to-server callers (cron jobs,
+ * scripts) with no session may use the shared-secret bypass via the
+ * X-AI-Secret header (env AI_API_SECRET). Without a session AND without a
+ * secret, the request is 401'd.
  */
 
+import { auth } from "@blawness/admin-kit/auth";
 import { timingSafeEqual } from "node:crypto";
-
-const SESSION_CACHE_TTL_MS = 60_000;
-const sessionCache = new Map<string, { ok: boolean; expiresAt: number }>();
-
-async function verifySanitySession(token: string): Promise<boolean> {
-  const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID;
-  if (!projectId) return false;
-  try {
-    const res = await fetch(
-      `https://${projectId}.api.sanity.io/v1/users/me`,
-      {
-        headers: { Authorization: `Bearer ${token}` },
-        cache: "no-store",
-        signal: AbortSignal.timeout(3000),
-      },
-    );
-    return res.ok;
-  } catch {
-    return false;
-  }
-}
 
 function safeEqual(a: string, b: string): boolean {
   const aBuf = Buffer.from(a);
@@ -51,19 +26,14 @@ export async function verifyAiAuth(req: Request): Promise<boolean> {
     return true;
   }
 
-  // 2) Sanity Studio session token (primary path).
-  const sessionToken = req.headers.get("x-ai-session");
-  if (!sessionToken) return false;
-
-  const cached = sessionCache.get(sessionToken);
-  if (cached && cached.expiresAt > Date.now()) return cached.ok;
-
-  const ok = await verifySanitySession(sessionToken);
-  sessionCache.set(sessionToken, { ok, expiresAt: Date.now() + SESSION_CACHE_TTL_MS });
-  return ok;
+  // 2) Signed-in admin-kit session (NextAuth cookie).
+  try {
+    const session = await auth();
+    return !!session?.user;
+  } catch {
+    return false;
+  }
 }
 
-// Test-only helper to reset the cache between unit tests.
-export function __resetAiAuthCacheForTests(): void {
-  sessionCache.clear();
-}
+// Retained for API tests that mock this module; nothing is cached anymore.
+export function __resetAiAuthCacheForTests(): void {}

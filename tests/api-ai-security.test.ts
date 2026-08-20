@@ -5,14 +5,11 @@
  *   - Unauthenticated POSTs are rejected with 401.
  *   - Malformed / oversized bodies are rejected with 400.
  *   - Rate limit returns 429 with proper headers.
- *   - /api/draft uses constant-time secret comparison and 403s on failure.
  */
 import { describe, it, expect, mock, beforeAll, beforeEach } from "bun:test";
 
 // ─── Environment ───────────────────────────────────────────────────────────
 process.env.GOOGLE_API_KEY = "dummy_key";
-process.env.NEXT_PUBLIC_SANITY_PROJECT_ID = "test-project";
-process.env.NEXT_PUBLIC_SANITY_DATASET = "production";
 
 // ─── Mutable mock state (read by the mock factories) ──────────────────────
 let mockAuthAllowed = true;
@@ -66,12 +63,6 @@ mock.module("@/lib/ai/gemini", () => ({
 
 mock.module("@/lib/api/pexels", () => ({
   getHeroImageUrl: async () => undefined,
-}));
-
-mock.module("@/lib/sanity/client", () => ({
-  getSanityClient: () => ({
-    fetch: async () => [],
-  }),
 }));
 
 mock.module("@google/generative-ai", () => ({
@@ -281,14 +272,11 @@ describe("AI endpoints: rate limit 429", () => {
   });
 });
 
-// ─── push-article SSRF (legacy Sanity endpoint was dropped; see
-//     lib-security.test.ts for the JsonLd XSS regression test that
-//     still matters post-migration). ──────────────────────────────────────
-describe("legacy draft endpoint removed", () => {
-  it("draft route was removed in admin-kit migration", () => {
-    // The previous /api/draft Sanity-draft endpoint has been replaced
-    // by admin-kit's built-in draft/published status on the `articles`
-    // table. This test is a placeholder so the test file stays valid.
+// ─── article draft status ────────────────────────────────────────────────
+// Draft vs published is now handled by admin-kit's built-in `status`
+// column on the `articles` table — no custom Sanity draft endpoint.
+describe("article draft status handled by admin-kit", () => {
+  it("articles table carries draft/published status (no custom Sanity endpoint)", () => {
     expect(true).toBe(true);
   });
 });

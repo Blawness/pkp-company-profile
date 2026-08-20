@@ -7,8 +7,8 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: "*",
         allow: "/",
-        // Keep the Sanity admin and internal API out of the index.
-        disallow: ["/studio", "/api/"],
+        // Keep the admin area and internal API out of the index.
+        disallow: ["/admin", "/api/"],
       },
     ],
     sitemap: new URL("/sitemap.xml", siteUrl).toString(),
