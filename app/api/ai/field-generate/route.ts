@@ -34,7 +34,7 @@ const serializeValue = (value: unknown) => {
 
 const fieldTypeHint = (fieldType?: string, arrayItemType?: string) => {
   if (fieldType === "blockContent") {
-    return "Return a Sanity Portable Text array (no _key fields).";
+    return "Return a Portable Text array (no _key fields).";
   }
   if (fieldType === "slug") {
     return "Return a slug string (lowercase, dash-separated, no spaces).";

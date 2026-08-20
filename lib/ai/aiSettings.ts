@@ -1,9 +1,8 @@
 /**
  * AI settings loader. Reads the singleton `ai_settings` row from
- * Postgres. Replaces the old Sanity GROQ fetch.
+ * Postgres.
  *
- * Schema mirrors the previous `aiSettings` Sanity document so the
- * `getAiSettings()` API stays identical for the four /api/ai/* routes.
+ * `getAiSettings()` is consumed by the four /api/ai/* routes.
  *
  * `fieldOverrides` is stored as a JSON-encoded array of:
  *   { documentType, fieldName, enabled, promptTemplate }

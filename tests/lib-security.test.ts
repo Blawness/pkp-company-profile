@@ -8,7 +8,13 @@
  *   - constant-time shared-secret comparison in ai-auth
  *   - JSON-LD XSS escape (regression for S3)
  */
-import { describe, it, expect, beforeEach } from "bun:test";
+import { describe, it, expect, beforeEach, mock } from "bun:test";
+
+// Stub the admin-kit session lookup so this unit test exercises the real
+// verifyAiAuth (constant-time secret compare) without booting NextAuth/DB.
+mock.module("@blawness/admin-kit/auth", () => ({
+  auth: async () => null,
+}));
 
 const { fenceUntrusted, SECURITY_PREAMBLE } = await import(
   "../lib/security/prompt"
@@ -117,7 +123,6 @@ describe("checkRateLimit", () => {
 // ─── verifyAiAuth constant-time secret compare ─────────────────────────────
 describe("verifyAiAuth: constant-time shared secret compare", () => {
   beforeEach(() => {
-    delete process.env.NEXT_PUBLIC_SANITY_PROJECT_ID;
     __resetAiAuthCacheForTests();
   });
 
