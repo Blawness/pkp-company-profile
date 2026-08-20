@@ -1,28 +1,29 @@
-import { Link } from "@/i18n/routing";
 import { useTranslations } from "next-intl";
+import { Section } from "@/components/ui/Section";
+import { Button } from "@/components/ui/Button";
 
 export default function NotFound() {
   const t = useTranslations("NotFound");
   const tButtons = useTranslations("Common.buttons");
 
   return (
-    <main className="mx-auto max-w-6xl px-4 py-16">
-      <div className="rounded-2xl border border-black/10 bg-white p-10 text-center dark:border-white/10 dark:bg-zinc-950">
-        <div className="text-2xl font-semibold text-zinc-900 dark:text-zinc-100">
-          {t("title")}
+    <main>
+      <Section tone="forest" className="min-h-[70vh] content-center">
+        <div className="text-xs font-semibold uppercase tracking-[0.18em] text-brass">
+          404
         </div>
-        <p className="mt-3 text-sm text-zinc-600 dark:text-zinc-400">
+        <h1 className="font-display text-display mt-6 max-w-3xl text-balance">
+          {t("title")}
+        </h1>
+        <p className="mt-7 max-w-xl text-pretty text-base leading-8 text-white/70">
           {t("description")}
         </p>
-        <div className="mt-8">
-          <Link
-            href="/"
-            className="inline-flex items-center justify-center rounded-full bg-pkp-teal-600 px-6 py-3 text-sm font-semibold text-white transition hover:bg-pkp-teal-700"
-          >
+        <div className="mt-10">
+          <Button href="/" variant="solid" tone="light">
             {tButtons("backToHome")}
-          </Link>
+          </Button>
         </div>
-      </div>
+      </Section>
     </main>
   );
 }

@@ -11,6 +11,9 @@ global.fetch = mockFetch as any;
 describe("ContactForm", () => {
   beforeEach(() => {
     mockFetch.mockClear();
+    // The submit button is disabled while no Formspree ID is configured, and a
+    // disabled button never fires submit — so validation would never run.
+    process.env.NEXT_PUBLIC_FORMSPREE_ID = "test-id";
   });
 
   test("renders all form fields", () => {
@@ -44,9 +47,6 @@ describe("ContactForm", () => {
   });
 
   test("submits form with valid data", async () => {
-    // Setup environment variable for action URL
-    process.env.NEXT_PUBLIC_FORMSPREE_ID = "test-id";
-
     render(<ContactForm />);
 
     fireEvent.change(screen.getByLabelText("Contact.form.name"), {
@@ -67,5 +67,12 @@ describe("ContactForm", () => {
       expect(mockFetch).toHaveBeenCalled();
       expect(screen.getByText("Contact.form.success")).toBeInTheDocument();
     });
+  });
+
+  test("inputs use underline styling instead of boxed borders", () => {
+    const { container } = render(<ContactForm />);
+    const input = container.querySelector("input");
+    expect(input?.className).toContain("border-b");
+    expect(input?.className).not.toContain("rounded-xl");
   });
 });

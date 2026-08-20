@@ -52,13 +52,20 @@
     },
     "about": {
       "label": "About Us",
-      "description": "A land consultancy and service company that helps clients understand, analyze, and resolve land legality needs professionally, transparently, and with integrity."
+      "description": "A land consultancy and service company that helps clients understand, analyze, and resolve land legality needs professionally, transparently, and with integrity.",
+      "eyebrow": "About Us"
     },
     "visionMission": {
       "vision": "Vision",
       "mission": "Mission",
       "tagline": "Land consultancy & land certificate management",
-      "ctaDescription": "Consult your needs—we help from analysis to process-ready documents."
+      "ctaDescription": "Consult your needs—we help from analysis to process-ready documents.",
+      "eyebrow": "Vision & Mission"
+    },
+    "services": {
+      "eyebrow": "Services",
+      "title": "Three pillars of land services",
+      "lead": "From legal review to certificate issuance and land measurement — one accountable process end to end."
     }
   },
   "About": {
@@ -81,22 +88,34 @@
           {
             "title": "Legal & Compliance Division",
             "children": [
-              { "title": "Legal Officer" },
-              { "title": "Documentation & Administration" }
+              {
+                "title": "Legal Officer"
+              },
+              {
+                "title": "Documentation & Administration"
+              }
             ]
           },
           {
             "title": "Certification & Licensing Division",
             "children": [
-              { "title": "Certificate Management" },
-              { "title": "KKPR/LSD Licensing" }
+              {
+                "title": "Certificate Management"
+              },
+              {
+                "title": "KKPR/LSD Licensing"
+              }
             ]
           },
           {
             "title": "Client Services Division",
             "children": [
-              { "title": "Customer Support" },
-              { "title": "Quality Assurance" }
+              {
+                "title": "Customer Support"
+              },
+              {
+                "title": "Quality Assurance"
+              }
             ]
           }
         ]

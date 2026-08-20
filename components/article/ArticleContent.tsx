@@ -6,6 +6,9 @@
  * Tiptap outputs well-formed semantic HTML, but the raw HTML still comes
  * from a database row that any admin editor can put anything in. Sanitise
  * before injecting into the DOM via `dangerouslySetInnerHTML`.
+ *
+ * Styling lives in `app/globals.css` under `.article-body`, since the markup
+ * is injected as a string and cannot carry utility classes of its own.
  */
 import { sanitizeHtml } from "@blawness/admin-kit";
 
@@ -14,7 +17,7 @@ export function ArticleContent({ html }: { html: string | null }) {
   const safe = sanitizeHtml(html);
   return (
     <div
-      className="prose prose-zinc dark:prose-invert max-w-none"
+      className="article-body"
       // Sanitised via admin-kit (strips <script>, event handlers, etc.)
       dangerouslySetInnerHTML={{ __html: safe }}
     />

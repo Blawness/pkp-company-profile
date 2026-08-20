@@ -2,6 +2,14 @@ import { useTranslations } from "next-intl";
 import { getTranslations } from "next-intl/server";
 import Image from "next/image";
 import { HeroSection } from "@/components/sections/HeroSection";
+import {
+  OrganizationChart,
+  type OrgNode,
+} from "@/components/sections/OrganizationChart";
+import { Section } from "@/components/ui/Section";
+import { SectionHead } from "@/components/ui/SectionHead";
+import { Button } from "@/components/ui/Button";
+import { FrameReveal } from "@/components/animations/FrameReveal";
 import { getHeroImageUrl } from "@/lib/api/pexels";
 import { buildAlternates, localizedUrl } from "@/lib/seo/site";
 
@@ -28,62 +36,93 @@ export async function generateMetadata({
 export default function TentangKamiPage() {
   const t = useTranslations("About");
   const tCompany = useTranslations("Company");
+  const tButtons = useTranslations("Common.buttons");
 
   return (
     <main>
       <TentangKamiHero />
 
-      <div className="mx-auto max-w-6xl px-4 py-10 md:py-14">
-        <div className="w-full">
-          <h1 className="text-3xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-100 md:text-4xl">
-            {t("title")}
-          </h1>
-          <p className="mt-3 text-sm leading-7 text-zinc-600 dark:text-zinc-400">
-            {tCompany("description")}
-          </p>
-        </div>
-
-        <div className="mt-10">
-          <section className="space-y-8 w-full">
-            <div className="rounded-2xl border border-black/10 bg-white p-6 shadow-sm dark:border-white/10 dark:bg-zinc-950">
-              <div className="text-sm font-semibold text-pkp-green-700 dark:text-pkp-green-400">
-                {t("visionMission.vision")}
-              </div>
-              <p className="mt-3 text-sm leading-7 text-zinc-700 dark:text-zinc-300">
-                {tCompany("vision")}
-              </p>
-
-              <div className="mt-8 text-sm font-semibold text-pkp-green-700 dark:text-pkp-green-400">
-                {t("visionMission.mission")}
-              </div>
-              <ul className="mt-3 grid gap-2 text-sm text-zinc-700 dark:text-zinc-300">
-                {tCompany.raw("mission").map((m: string) => (
-                  <li key={m} className="flex gap-2">
-                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-pkp-teal-600" />
-                    <span>{m}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
+      <Section tone="canvas">
+        <div className="grid gap-14 md:grid-cols-12 md:items-center">
+          <div className="md:col-span-7">
+            <SectionHead
+              eyebrow={t("title")}
+              title={tCompany("name")}
+              lead={tCompany("description")}
+            />
+          </div>
+          <div className="md:col-span-5">
             <AboutImage />
-          </section>
+          </div>
         </div>
-      </div>
+      </Section>
+
+      <Section tone="paper">
+        <SectionHead
+          eyebrow={t("visionMission.vision")}
+          title={tCompany("vision")}
+        />
+
+        <div className="mt-16">
+          <div className="text-xs font-semibold uppercase tracking-[0.18em] text-brass">
+            {t("visionMission.mission")}
+          </div>
+          <ol className="mt-8">
+            {tCompany.raw("mission").map((m: string, i: number) => (
+              <li
+                key={m}
+                className="grid gap-4 border-t border-hairline py-8 md:grid-cols-[6rem_1fr] md:gap-10"
+              >
+                <span className="text-sm font-semibold tracking-[0.14em] text-brass">
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                <span className="max-w-3xl text-base leading-8 text-ink-muted">
+                  {m}
+                </span>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </Section>
+
+      <Section tone="forest">
+        <SectionHead
+          eyebrow={t("title")}
+          title={t("organization.title")}
+          className="mb-16"
+        />
+        <OrganizationChart data={t.raw("organization.chart") as OrgNode} />
+      </Section>
+
+      <Section tone="canvas">
+        <div className="grid gap-10 md:grid-cols-12 md:items-end">
+          <div className="md:col-span-8">
+            <div className="font-display text-h2 text-balance">
+              {tCompany("tagline")}
+            </div>
+          </div>
+          <div className="md:col-span-4 md:justify-self-end">
+            <Button href="/kontak" variant="solid">
+              {tButtons("contact")}
+            </Button>
+          </div>
+        </div>
+      </Section>
     </main>
   );
 }
 
 function AboutImage() {
   return (
-    <div className="relative aspect-video overflow-hidden rounded-2xl w-full">
+    <FrameReveal className="aspect-[4/5] w-full">
       <Image
         src="https://i.imgur.com/zWVfFts.png"
         alt="Tim PT Presisi Konsulindo Prima"
         fill
+        sizes="(max-width: 768px) 100vw, 42vw"
         className="object-cover"
       />
-    </div>
+    </FrameReveal>
   );
 }
 

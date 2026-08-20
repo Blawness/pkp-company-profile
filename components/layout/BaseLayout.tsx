@@ -1,6 +1,5 @@
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages, setRequestLocale, getTranslations } from "next-intl/server";
-import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { PageTransition } from "@/components/animations/PageTransition";
@@ -38,14 +37,12 @@ export async function BaseLayout({ children, locale }: BaseLayoutProps) {
 
   return (
     <NextIntlClientProvider messages={messages} locale={locale}>
-      <ThemeProvider>
-        <div className="min-h-dvh bg-white text-zinc-900 dark:bg-black dark:text-zinc-100">
-          <JsonLd data={schemas} />
-          <Header />
-          <PageTransition>{children}</PageTransition>
-          <Footer />
-        </div>
-      </ThemeProvider>
+      <div className="min-h-dvh bg-canvas text-ink">
+        <JsonLd data={schemas} />
+        <Header />
+        <PageTransition>{children}</PageTransition>
+        <Footer />
+      </div>
     </NextIntlClientProvider>
   );
 }

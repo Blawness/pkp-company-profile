@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Source_Serif_4 } from "next/font/google";
 import "../globals.css";
 import { getTranslations } from "next-intl/server";
 import type { Metadata } from "next";
@@ -15,6 +15,16 @@ const geistSans = Geist({
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+});
+
+// Source Serif 4 is a variable text-and-display face: real weights (no
+// synthetic bold) and drawn to stay legible at UI sizes, unlike a display-only
+// serif that falls apart below ~24px.
+const sourceSerif = Source_Serif_4({
+  variable: "--font-source-serif",
+  subsets: ["latin"],
+  weight: ["400", "500", "600"],
+  display: "swap",
 });
 
 export function generateStaticParams() {
@@ -68,7 +78,7 @@ export default async function LocaleLayout({
   return (
     <html lang={locale} suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${sourceSerif.variable} antialiased`}
       >
         <BaseLayout locale={locale}>{children}</BaseLayout>
       </body>

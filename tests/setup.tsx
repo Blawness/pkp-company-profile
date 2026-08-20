@@ -1,9 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-require-imports */
-import { GlobalRegistrator } from "@happy-dom/global-registrator";
-GlobalRegistrator.register();
-
 import "@testing-library/jest-dom";
 import { mock, afterEach } from "bun:test";
 import React from "react";
@@ -33,27 +30,53 @@ mock.module("next-themes", () => ({
   }),
 }));
 
-// Mock framer-motion
+// Mock framer-motion. Each motion.<tag> renders that same HTML tag so the
+// mock preserves semantics (a motion.h1 must still expose the heading role).
 mock.module("framer-motion", () => {
-  const Div = ({ children, whileHover, whileTap, ...props }: any) => {
-    return <div {...props}>{children}</div>;
+  const strip = ({
+    children,
+    whileHover,
+    whileTap,
+    whileInView,
+    initial,
+    animate,
+    exit,
+    transition,
+    variants,
+    viewport,
+    layout,
+    layoutId,
+    ...props
+  }: any) => ({ children, props });
+
+  const tag = (name: string) => {
+    const Component = (allProps: any) => {
+      const { children, props } = strip(allProps);
+      return React.createElement(name, props, children);
+    };
+    Component.displayName = `motion.${name}`;
+    return Component;
   };
-  const Button = ({ children, whileHover, whileTap, ...props }: any) => {
-    return <button {...props}>{children}</button>;
-  };
-  return {
-    motion: {
-      div: Div,
-      button: Button,
-      section: Div,
-      span: Div,
-      nav: Div,
-      p: Div,
-      h1: Div,
-      h2: Div,
-      h3: Div,
+
+  const motion = new Proxy({} as Record<string, unknown>, {
+    get: (target, name: string) => {
+      if (!target[name]) target[name] = tag(name);
+      return target[name];
     },
+  });
+
+  return {
+    motion,
     AnimatePresence: ({ children }: any) => children,
+    useReducedMotion: () => true,
+    // Scroll-linked values: the test DOM never scrolls, so these stand in
+    // with inert values rather than pretending to animate.
+    useScroll: () => ({
+      scrollY: { get: () => 0, on: () => () => {} },
+      scrollYProgress: { get: () => 0, on: () => () => {} },
+    }),
+    useTransform: () => 0,
+    useMotionValueEvent: () => {},
   };
 });
 

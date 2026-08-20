@@ -52,13 +52,20 @@
     },
     "about": {
       "label": "Tentang Kami",
-      "description": "Perusahaan jasa konsultasi dan layanan pertanahan yang membantu klien memahami, menganalisa, dan menyelesaikan kebutuhan legalitas tanah secara profesional, transparan, dan berintegritas."
+      "description": "Perusahaan jasa konsultasi dan layanan pertanahan yang membantu klien memahami, menganalisa, dan menyelesaikan kebutuhan legalitas tanah secara profesional, transparan, dan berintegritas.",
+      "eyebrow": "Tentang Kami"
     },
     "visionMission": {
       "vision": "Visi",
       "mission": "Misi",
       "tagline": "Konsultasi pertanahan & pengurusan sertifikat tanah",
-      "ctaDescription": "Konsultasikan kebutuhan Anda—kami bantu dari analisis hingga dokumen siap proses."
+      "ctaDescription": "Konsultasikan kebutuhan Anda—kami bantu dari analisis hingga dokumen siap proses.",
+      "eyebrow": "Visi & Misi"
+    },
+    "services": {
+      "eyebrow": "Layanan",
+      "title": "Tiga pilar layanan pertanahan",
+      "lead": "Dari kajian hukum sampai penerbitan sertifikat dan pengukuran bidang — satu alur pendampingan yang terukur."
     }
   },
   "About": {
@@ -81,22 +88,34 @@
           {
             "title": "Divisi Legal & Kepatuhan",
             "children": [
-              { "title": "Legal Officer" },
-              { "title": "Dokumentasi & Administrasi" }
+              {
+                "title": "Legal Officer"
+              },
+              {
+                "title": "Dokumentasi & Administrasi"
+              }
             ]
           },
           {
             "title": "Divisi Sertifikasi & Perizinan",
             "children": [
-              { "title": "Pengurusan Sertifikat" },
-              { "title": "Perizinan KKPR/LSD" }
+              {
+                "title": "Pengurusan Sertifikat"
+              },
+              {
+                "title": "Perizinan KKPR/LSD"
+              }
             ]
           },
           {
             "title": "Divisi Layanan Klien",
             "children": [
-              { "title": "Customer Support" },
-              { "title": "Quality Assurance" }
+              {
+                "title": "Customer Support"
+              },
+              {
+                "title": "Quality Assurance"
+              }
             ]
           }
         ]

@@ -1,5 +1,6 @@
 "use client";
 
+import * as React from "react";
 import Image from "next/image";
 import { usePathname } from "@/i18n/routing";
 import { Link } from "@/i18n/routing";
@@ -12,13 +13,23 @@ import {
   NavigationMenuLink,
   NavigationMenuList,
 } from "@/components/ui/NavigationMenu";
-import { ThemeToggle } from "@/components/layout/ThemeToggle";
 import { LanguageSwitcher } from "@/components/layout/LanguageSwitcher";
 import { useTranslations } from "next-intl";
 
 export function Header() {
   const pathname = usePathname();
   const t = useTranslations("Common.nav");
+
+  // Transparent while it sits over the hero, solid once the page moves —
+  // so the masthead reads as part of the hero, not a bar bolted on top.
+  const [scrolled, setScrolled] = React.useState(false);
+
+  React.useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 24);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   const navItems = [
     { href: "/", label: t("home") },
@@ -30,8 +41,21 @@ export function Header() {
   ] as const;
 
   return (
-    <header className="sticky top-0 z-50 border-b border-white/10 bg-pkp-green-900/95 backdrop-blur">
-      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4">
+    <header
+      className={cn(
+        // Only colours animate. Animating height would relayout the whole
+        // page on every scroll frame — the jank is not worth the shrink.
+        "fixed inset-x-0 top-0 z-50 transition-colors duration-300 ease-out",
+        scrolled
+          ? "border-b border-white/10 bg-forest-950/95 backdrop-blur"
+          : "border-b border-transparent bg-transparent",
+      )}
+    >
+      <div
+        className={cn(
+          "mx-auto flex h-20 max-w-[1200px] items-center justify-between px-6 md:px-10",
+        )}
+      >
         <Link href="/" className="flex items-center gap-3">
           <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white p-1.5">
             <Image
@@ -44,7 +68,7 @@ export function Header() {
             />
           </div>
           <div className="leading-tight min-w-0">
-            <div className="truncate text-[13px] font-semibold tracking-wide text-white sm:text-sm lg:whitespace-nowrap">
+            <div className="truncate text-[13px] font-semibold uppercase tracking-[0.14em] text-white sm:text-sm lg:whitespace-nowrap">
               PT PRESISI KONSULINDO PRIMA
             </div>
             <div className="hidden text-[11px] text-white/70 md:block">
@@ -65,9 +89,8 @@ export function Header() {
                       <Link
                         href={item.href}
                         className={cn(
-                          "whitespace-nowrap text-sm font-medium text-white/80 transition hover:text-white",
-                          active &&
-                            "text-white underline underline-offset-8 decoration-white/60",
+                          "whitespace-nowrap text-[13px] font-medium uppercase tracking-[0.12em] text-white/70 transition hover:text-white",
+                          active && "text-white",
                         )}
                       >
                         {item.label}
@@ -80,13 +103,11 @@ export function Header() {
           </NavigationMenu>
           <div className="flex items-center gap-4 border-l border-white/20 pl-4">
             <LanguageSwitcher />
-            <ThemeToggle />
           </div>
         </div>
 
         <div className="flex items-center gap-3 lg:hidden">
           <LanguageSwitcher />
-          <ThemeToggle />
           <Dialog.Root>
             <Dialog.Trigger asChild>
               <button
@@ -99,14 +120,14 @@ export function Header() {
             </Dialog.Trigger>
             <Dialog.Portal>
               <Dialog.Overlay className="fixed inset-0 bg-black/50" />
-              <Dialog.Content className="fixed right-0 top-0 h-full w-[85%] max-w-sm bg-white p-6 shadow-xl outline-none dark:bg-zinc-950">
-                <Dialog.Title className="mb-6 text-sm font-semibold text-zinc-900 dark:text-zinc-100">
+              <Dialog.Content className="fixed right-0 top-0 h-full w-[85%] max-w-sm border-l border-hairline bg-canvas p-8 outline-none">
+                <Dialog.Title className="text-xs font-semibold uppercase tracking-[0.18em] text-brass">
                   Menu
                 </Dialog.Title>
                 <Dialog.Description className="sr-only">
                   Navigasi menu untuk perangkat seluler
                 </Dialog.Description>
-                <nav className="flex flex-col gap-2">
+                <nav className="mt-8 flex flex-col">
                   {navItems.map((item) => {
                     const active = pathname === item.href;
 
@@ -115,10 +136,8 @@ export function Header() {
                         <Link
                           href={item.href}
                           className={cn(
-                            "rounded-lg px-3 py-2 text-sm font-medium",
-                            active
-                              ? "bg-zinc-900 text-white dark:bg-white dark:text-black"
-                              : "text-zinc-700 hover:bg-zinc-100 dark:text-zinc-300 dark:hover:bg-white/10",
+                            "font-display border-b border-hairline py-4 text-2xl",
+                            active ? "text-forest-700" : "text-ink",
                           )}
                         >
                           {item.label}

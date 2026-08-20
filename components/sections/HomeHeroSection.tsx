@@ -1,8 +1,16 @@
 "use client";
 
-import { motion, useReducedMotion } from "framer-motion";
+import { useRef } from "react";
+import {
+  motion,
+  useReducedMotion,
+  useScroll,
+  useTransform,
+} from "framer-motion";
 import Image from "next/image";
-import { Link } from "@/i18n/routing";
+import { Button } from "@/components/ui/Button";
+import { StatBlock } from "@/components/ui/StatBlock";
+import { MaskedText } from "@/components/animations/MaskedText";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
@@ -26,113 +34,152 @@ export function HomeHeroSection({
   priority?: boolean;
 }) {
   const reduceMotion = useReducedMotion();
+  const ref = useRef<HTMLElement>(null);
 
-  const contentParent = {
-    hidden: { opacity: reduceMotion ? 1 : 0 },
+  // Background drifts slower than the page, so the hero feels like a fixed
+  // plate the content slides over rather than a picture that scrolls away.
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start start", "end start"],
+  });
+  // Parallax on transforms only. Fading the whole content subtree meant
+  // repainting the largest layer on the page on every scroll frame.
+  const bgY = useTransform(scrollYProgress, [0, 1], ["0%", "12%"]);
+  const contentY = useTransform(scrollYProgress, [0, 1], ["0%", "-6%"]);
+
+  const fadeIn = {
+    hidden: { opacity: reduceMotion ? 1 : 0, y: reduceMotion ? 0 : 20 },
     visible: {
       opacity: 1,
-      transition: {
-        staggerChildren: reduceMotion ? 0 : 0.12,
-        delayChildren: reduceMotion ? 0 : 0.05,
-      },
+      y: 0,
+      transition: { duration: reduceMotion ? 0 : 0.6, ease },
     },
   };
 
-  const fadeIn = {
-    hidden: { opacity: reduceMotion ? 1 : 0 },
+  const parent = {
+    hidden: {},
     visible: {
-      opacity: 1,
       transition: {
-        duration: reduceMotion ? 0 : 0.6,
-        ease,
+        staggerChildren: reduceMotion ? 0 : 0.08,
+        delayChildren: reduceMotion ? 0 : 0.15,
       },
     },
   };
 
   return (
-    <section className="relative isolate overflow-hidden text-white">
+    <section
+      ref={ref}
+      className="relative isolate overflow-hidden bg-forest-950 text-white"
+    >
       <motion.div
-        className="absolute inset-0"
-        initial={reduceMotion ? false : { opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{
-          duration: reduceMotion ? 0 : 0.75,
-          ease,
-        }}
+        className="absolute inset-0 -z-10"
+        style={
+          reduceMotion ? undefined : { y: bgY, willChange: "transform" }
+        }
       >
-        <Image
-          src={imageUrl}
-          alt=""
-          fill
-          priority={priority}
-          sizes="100vw"
-          className="object-cover object-center"
-        />
+        {/* One settle, then still. A permanently running scale on a
+            full-viewport image competes with the scroll parallax for the
+            same compositor layer. */}
+        <motion.div
+          className="absolute inset-0"
+          style={{ willChange: "transform" }}
+          initial={reduceMotion ? false : { scale: 1.06 }}
+          animate={{ scale: 1 }}
+          transition={{ duration: reduceMotion ? 0 : 6, ease }}
+        >
+          <Image
+            src={imageUrl}
+            alt=""
+            fill
+            priority={priority}
+            sizes="100vw"
+            className="object-cover object-center"
+          />
+        </motion.div>
+
         <div
-          className="pointer-events-none absolute inset-0 bg-gradient-to-r from-zinc-950/92 via-zinc-950/55 to-zinc-950/12 dark:from-black/88 dark:via-black/48 dark:to-black/12"
+          className="pointer-events-none absolute inset-0 bg-gradient-to-r from-forest-950 via-forest-950/85 to-forest-950/40"
           aria-hidden
         />
         <div
-          className="pointer-events-none absolute inset-0 bg-gradient-to-t from-zinc-950/55 via-transparent to-zinc-950/30 lg:hidden"
+          className="pointer-events-none absolute inset-0 bg-gradient-to-t from-forest-950 via-transparent to-forest-950/50"
           aria-hidden
-        />
-        <div
-          className="pointer-events-none absolute inset-0 opacity-80"
-          aria-hidden
-          style={{
-            background:
-              "radial-gradient(ellipse 70% 60% at 15% 35%, rgba(13,148,136,0.1), transparent 55%)",
-          }}
         />
       </motion.div>
 
-      <div className="relative z-10 mx-auto grid min-h-[min(92vh,880px)] max-w-7xl lg:grid-cols-2 lg:gap-0">
-        <div className="flex flex-col justify-center px-4 py-14 sm:px-6 lg:px-8 lg:py-24">
-          <motion.div
-            className="max-w-xl"
-            variants={contentParent}
-            initial="hidden"
-            animate="visible"
-          >
-            <motion.h1
+      <motion.div
+        className="relative z-10 mx-auto grid min-h-[min(96vh,940px)] max-w-[1200px] px-6 md:px-10 lg:grid-cols-12 lg:gap-0"
+        style={
+          reduceMotion
+            ? undefined
+            : { y: contentY, willChange: "transform" }
+        }
+      >
+        <div className="flex flex-col justify-center py-24 lg:col-span-8 lg:py-32">
+          <motion.div variants={parent} initial="hidden" animate="visible">
+            <motion.div
               variants={fadeIn}
-              className="text-balance text-4xl font-semibold leading-[1.08] tracking-tight sm:text-5xl lg:text-[3.25rem] lg:leading-[1.06]"
+              className="flex items-center gap-4 text-xs font-semibold uppercase tracking-[0.18em] text-brass"
             >
-              {title}
-            </motion.h1>
+              <span aria-hidden className="block h-px w-12 bg-brass" />
+              PT Presisi Konsulindo Prima
+            </motion.div>
+
+            <MaskedText
+              as="h1"
+              text={title}
+              delay={0.1}
+              trigger="mount"
+              className="font-display text-display mt-10 max-w-[16ch] text-balance"
+            />
+
             <motion.p
               variants={fadeIn}
-              className="mt-5 max-w-lg text-pretty text-base leading-relaxed text-zinc-300 sm:text-[1.05rem]"
+              className="mt-8 max-w-[46ch] text-pretty text-base leading-8 text-white/70 sm:text-[1.05rem]"
             >
               {subtitle}
             </motion.p>
 
             <motion.div
               variants={fadeIn}
-              className="mt-9 flex flex-wrap items-center gap-3"
+              className="mt-12 flex flex-wrap items-center gap-4"
             >
-              <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
-                <Link
-                  href={primaryHref}
-                  className="inline-flex min-h-11 items-center justify-center rounded-lg bg-pkp-teal-600 px-6 py-2.5 text-sm font-semibold text-white shadow-lg shadow-black/30 transition hover:bg-pkp-teal-700"
-                >
-                  {primaryLabel}
-                </Link>
-              </motion.div>
-              <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
-                <Link
-                  href={secondaryHref}
-                  className="inline-flex min-h-11 items-center justify-center rounded-lg border border-white/15 bg-white/[0.06] px-6 py-2.5 text-sm font-semibold text-white backdrop-blur-sm transition hover:border-white/25 hover:bg-white/[0.1]"
-                >
-                  {secondaryLabel}
-                </Link>
-              </motion.div>
+              <Button href={primaryHref} variant="solid" tone="light">
+                {primaryLabel}
+              </Button>
+              <Button href={secondaryHref} variant="outline" tone="light">
+                {secondaryLabel}
+              </Button>
+            </motion.div>
+
+            <motion.div variants={fadeIn} className="mt-16">
+              <StatBlock tone="light" />
             </motion.div>
           </motion.div>
         </div>
 
-        <div className="hidden min-h-0 lg:block" aria-hidden />
-      </div>
+        <div className="hidden lg:col-span-4 lg:block" aria-hidden />
+      </motion.div>
+
+      {/* Scroll cue: a hairline that keeps drawing itself downward. */}
+      {!reduceMotion && (
+        <div
+          aria-hidden
+          className="pointer-events-none absolute bottom-0 left-6 z-10 hidden h-24 w-px overflow-hidden bg-white/15 md:left-10 md:block"
+        >
+          <motion.span
+            className="block h-1/2 w-px bg-brass"
+            initial={{ y: "-100%" }}
+            animate={{ y: "200%" }}
+            transition={{
+              duration: 2.4,
+              repeat: Infinity,
+              ease: "easeInOut",
+              repeatDelay: 0.6,
+            }}
+          />
+        </div>
+      )}
     </section>
   );
 }
