@@ -17,10 +17,7 @@ const WINDOW_MS = parseInt(
   10,
 );
 const MAX_PER_WINDOW = parseInt(process.env.AI_RATE_MAX ?? "10", 10);
-const AUTH_MAX_PER_WINDOW = parseInt(
-  process.env.AI_RATE_AUTH_MAX ?? "200",
-  10,
-);
+const AUTH_MAX_PER_WINDOW = parseInt(process.env.AI_RATE_AUTH_MAX ?? "200", 10);
 
 const CLEANUP_INTERVAL_MS = 10 * 60 * 1000;
 let cleanupStarted = false;

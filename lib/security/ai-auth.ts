@@ -22,7 +22,11 @@ export async function verifyAiAuth(req: Request): Promise<boolean> {
   // 1) Optional shared-secret bypass for server-to-server callers.
   const expectedSecret = process.env.AI_API_SECRET;
   const providedSecret = req.headers.get("x-ai-secret");
-  if (expectedSecret && providedSecret && safeEqual(providedSecret, expectedSecret)) {
+  if (
+    expectedSecret &&
+    providedSecret &&
+    safeEqual(providedSecret, expectedSecret)
+  ) {
     return true;
   }
 

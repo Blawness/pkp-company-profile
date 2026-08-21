@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/Button";
 import { IndexedItem } from "@/components/ui/IndexedItem";
 import { FrameReveal } from "@/components/animations/FrameReveal";
 import { services } from "@/lib/data/services";
-import { getHeroImageUrl } from "@/lib/api/pexels";
+import { FALLBACK_HERO_IMAGE, getHeroImageUrl } from "@/lib/api/pexels";
 import { buildAlternates, localizedUrl } from "@/lib/seo/site";
 
 export async function generateMetadata({
@@ -146,8 +146,9 @@ function AboutImage() {
 async function HomeHero() {
   // Use a fallback image during build time to avoid API calls
   const imageUrl =
-    (await getHeroImageUrl("business meeting documents contract").catch(() => undefined)) ??
-    "https://images.pexels.com/photos/3184338/pexels-photo-3184338.jpeg";
+    (await getHeroImageUrl("business meeting documents contract").catch(
+      () => undefined,
+    )) ?? FALLBACK_HERO_IMAGE;
   const t = await getTranslations("Home.hero");
   const tButtons = await getTranslations("Common.buttons");
 

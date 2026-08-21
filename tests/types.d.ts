@@ -18,7 +18,10 @@ declare module "bun:test" {
     toHaveFocus(): T;
     toHaveFormValues(values: { [key: string]: unknown }): T;
     toHaveStyle(style: string | { [key: string]: unknown }): T;
-    toHaveTextContent(text: string | RegExp, options?: { normalizeWhitespace: boolean }): T;
+    toHaveTextContent(
+      text: string | RegExp,
+      options?: { normalizeWhitespace: boolean },
+    ): T;
     toHaveValue(value?: string | string[] | number): T;
     toHaveDisplayValue(value: string | RegExp | (string | RegExp)[]): T;
     toBeChecked(): T;
@@ -26,4 +29,3 @@ declare module "bun:test" {
     toHaveDescription(description?: string | RegExp): T;
   }
 }
-

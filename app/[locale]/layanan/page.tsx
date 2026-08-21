@@ -12,7 +12,7 @@ import { HeroSection } from "@/components/sections/HeroSection";
 import { Section } from "@/components/ui/Section";
 import { SectionHead } from "@/components/ui/SectionHead";
 import { Button } from "@/components/ui/Button";
-import { getHeroImageUrl } from "@/lib/api/pexels";
+import { FALLBACK_HERO_IMAGE, getHeroImageUrl } from "@/lib/api/pexels";
 import { buildAlternates, localizedUrl } from "@/lib/seo/site";
 
 export async function generateMetadata({
@@ -124,7 +124,10 @@ async function ServiceSection({
         </div>
 
         <div className="md:col-span-7">
-          <Accordion type="multiple" className="w-full border-t border-hairline">
+          <Accordion
+            type="multiple"
+            className="w-full border-t border-hairline"
+          >
             {sectionKeys.map((key) => {
               const sec = sectionsRaw[key];
               return (
@@ -171,7 +174,9 @@ async function ServiceSection({
 }
 
 async function LayananHero() {
-  const imageUrl = await getHeroImageUrl("documents contract signature");
+  const imageUrl =
+    (await getHeroImageUrl("documents contract signature")) ??
+    FALLBACK_HERO_IMAGE;
   const t = await getTranslations("Services.hero");
   const tButtons = await getTranslations("Common.buttons");
 

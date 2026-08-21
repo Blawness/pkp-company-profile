@@ -21,7 +21,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
   return routes.flatMap((route) => {
     // hreflang alternates: every locale variant of this same page.
     const languages = Object.fromEntries(
-      routing.locales.map((locale) => [locale, localizedUrl(locale, route.path)]),
+      routing.locales.map((locale) => [
+        locale,
+        localizedUrl(locale, route.path),
+      ]),
     );
 
     return routing.locales.map((locale) => ({

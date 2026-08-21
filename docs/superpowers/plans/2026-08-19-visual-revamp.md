@@ -28,6 +28,7 @@
 ### Task 1: Fondasi — token, font serif, data kredensial, penjaga i18n
 
 **Files:**
+
 - Modify: `app/globals.css`
 - Modify: `app/[locale]/layout.tsx`
 - Create: `lib/data/credentials.ts`
@@ -35,6 +36,7 @@
 - Test: `tests/i18n-parity.test.ts`
 
 **Interfaces:**
+
 - Consumes: tidak ada (task pertama).
 - Produces:
   - `credentials` dari `@/lib/data/credentials` bertipe `Credentials`:
@@ -146,18 +148,18 @@ Expected: PASS. Kalau FAIL, itu ketimpangan key yang sudah ada sebelumnya — pe
 Di dalam blok `@theme inline { ... }` yang sudah ada, **tambahkan** (jangan hapus token `--color-navy`, `--color-brand`, `--color-gold`, `--color-pkp-*` yang sudah ada):
 
 ```css
-  /* Institutional Gravitas — palet situs publik */
-  --color-forest-950: #0b2a1e;
-  --color-forest-900: #123a2a;
-  --color-forest-700: #1a5c42;
-  --color-canvas: #fbfaf7;
-  --color-paper: #ffffff;
-  --color-ink: #111812;
-  --color-ink-muted: #5a6560;
-  --color-brass: #a8792c;
-  --color-hairline: rgba(17, 24, 18, 0.12);
+/* Institutional Gravitas — palet situs publik */
+--color-forest-950: #0b2a1e;
+--color-forest-900: #123a2a;
+--color-forest-700: #1a5c42;
+--color-canvas: #fbfaf7;
+--color-paper: #ffffff;
+--color-ink: #111812;
+--color-ink-muted: #5a6560;
+--color-brass: #a8792c;
+--color-hairline: rgba(17, 24, 18, 0.12);
 
-  --font-serif: var(--font-instrument-serif), Georgia, serif;
+--font-serif: var(--font-instrument-serif), Georgia, serif;
 ```
 
 Lalu di bawah blok `body { ... }` yang sudah ada, tambahkan:
@@ -223,20 +225,40 @@ git commit -m "feat(design): add institutional palette tokens, serif display fon
 ### Task 2: Primitif tata letak — `Section`, `Rule`, `SectionHead`
 
 **Files:**
+
 - Create: `components/ui/Section.tsx`
 - Create: `components/ui/Rule.tsx`
 - Create: `components/ui/SectionHead.tsx`
 - Test: `tests/ui-primitives.test.tsx`
 
 **Interfaces:**
+
 - Consumes: token warna dari Task 1; `cn` dari `@/lib/cn` (signature: `cn(...classes: Array<string | false | null | undefined>): string`).
 - Produces:
+
   ```ts
   type Tone = "canvas" | "forest" | "paper";
-  function Section(props: { tone?: Tone; bleed?: boolean; className?: string; id?: string; children: React.ReactNode }): JSX.Element;
-  function Rule(props: { tone?: "ink" | "light"; accent?: boolean; className?: string }): JSX.Element;
-  function SectionHead(props: { eyebrow?: string; title: string; lead?: string; align?: "left" | "center"; className?: string }): JSX.Element;
+  function Section(props: {
+    tone?: Tone;
+    bleed?: boolean;
+    className?: string;
+    id?: string;
+    children: React.ReactNode;
+  }): JSX.Element;
+  function Rule(props: {
+    tone?: "ink" | "light";
+    accent?: boolean;
+    className?: string;
+  }): JSX.Element;
+  function SectionHead(props: {
+    eyebrow?: string;
+    title: string;
+    lead?: string;
+    align?: "left" | "center";
+    className?: string;
+  }): JSX.Element;
   ```
+
   `SectionHead` merender `title` sebagai `<h2>`.
 
 - [ ] **Step 1: Tulis tes yang gagal**
@@ -461,14 +483,17 @@ git commit -m "feat(ui): add Section, Rule, and SectionHead layout primitives"
 ### Task 3: Primitif konten — `Button`, `StatBlock`, `IndexedItem`
 
 **Files:**
+
 - Create: `components/ui/Button.tsx`
 - Create: `components/ui/StatBlock.tsx`
 - Create: `components/ui/IndexedItem.tsx`
 - Test: `tests/ui-content-primitives.test.tsx`
 
 **Interfaces:**
+
 - Consumes: `Rule` dari Task 2; `credentials` dari Task 1; `Link` dari `@/i18n/routing` (di test sudah di-mock jadi `<a href>`).
 - Produces:
+
   ```ts
   function Button(props: {
     href: string;
@@ -478,10 +503,20 @@ git commit -m "feat(ui): add Section, Rule, and SectionHead layout primitives"
     children: React.ReactNode;
   }): JSX.Element; // merender <Link> dari @/i18n/routing
 
-  function StatBlock(props: { items?: StatItem[]; tone?: "forest" | "light"; className?: string }): JSX.Element | null;
+  function StatBlock(props: {
+    items?: StatItem[];
+    tone?: "forest" | "light";
+    className?: string;
+  }): JSX.Element | null;
   // items default: credentials.stats. Mengembalikan null saat credentials.enabled === false ATAU items kosong.
 
-  function IndexedItem(props: { index: number; title: string; href?: string; className?: string; children?: React.ReactNode }): JSX.Element;
+  function IndexedItem(props: {
+    index: number;
+    title: string;
+    href?: string;
+    className?: string;
+    children?: React.ReactNode;
+  }): JSX.Element;
   // index dirender dua digit dengan padding nol: 1 -> "01"
   ```
 
@@ -564,9 +599,7 @@ describe("IndexedItem", () => {
     expect(screen.getByText("Deskripsi layanan.")).toBeInTheDocument();
     const heading = screen.getByRole("heading", { level: 3 });
     expect(heading.textContent).toContain("Pengukuran");
-    expect(screen.getByRole("link").getAttribute("href")).toBe(
-      "/layanan#ukur",
-    );
+    expect(screen.getByRole("link").getAttribute("href")).toBe("/layanan#ukur");
   });
 });
 ```
@@ -741,6 +774,7 @@ git commit -m "feat(ui): add Button, StatBlock, and IndexedItem content primitiv
 ### Task 4: Shell — lepas dark mode, restyle Header dan BaseLayout
 
 **Files:**
+
 - Modify: `components/layout/Header.tsx`
 - Modify: `components/layout/BaseLayout.tsx`
 - Delete: `components/layout/ThemeToggle.tsx`
@@ -748,6 +782,7 @@ git commit -m "feat(ui): add Button, StatBlock, and IndexedItem content primitiv
 - Test: `tests/layout-components.test.tsx`
 
 **Interfaces:**
+
 - Consumes: token warna Task 1; `cn` dari `@/lib/cn`.
 - Produces: `Header` tanpa tombol tema; `BaseLayout` tanpa `ThemeProvider`, root `div` memakai `bg-canvas text-ink`.
 
@@ -758,21 +793,21 @@ Catatan penting: `components/providers/ThemeProvider.tsx` **jangan dihapus** —
 Di `tests/layout-components.test.tsx`, hapus seluruh blok `describe("ThemeToggle", ...)` beserta `import { ThemeToggle } ...` di bagian atas file, lalu tambahkan blok berikut di dalam `describe("Layout Components", ...)`:
 
 ```tsx
-  describe("Header", () => {
-    test("renders the main navigation links", () => {
-      render(<Header />);
-      expect(screen.getByText("Common.nav.home")).toBeInTheDocument();
-      expect(screen.getByText("Common.nav.contact")).toBeInTheDocument();
-    });
-
-    test("no longer renders a theme toggle", () => {
-      const { container } = render(<Header />);
-      const themeButton = container.querySelector(
-        '[aria-label*="tema" i], [aria-label*="theme" i]',
-      );
-      expect(themeButton).toBeNull();
-    });
+describe("Header", () => {
+  test("renders the main navigation links", () => {
+    render(<Header />);
+    expect(screen.getByText("Common.nav.home")).toBeInTheDocument();
+    expect(screen.getByText("Common.nav.contact")).toBeInTheDocument();
   });
+
+  test("no longer renders a theme toggle", () => {
+    const { container } = render(<Header />);
+    const themeButton = container.querySelector(
+      '[aria-label*="tema" i], [aria-label*="theme" i]',
+    );
+    expect(themeButton).toBeNull();
+  });
+});
 ```
 
 Tambahkan importnya di bagian atas file:
@@ -807,9 +842,9 @@ Di `components/layout/Header.tsx`:
 5. Ganti nama perusahaan pada logo menjadi serif:
 
 ```tsx
-            <div className="font-display truncate text-[15px] tracking-tight text-white sm:text-base lg:whitespace-nowrap">
-              PT PRESISI KONSULINDO PRIMA
-            </div>
+<div className="font-display truncate text-[15px] tracking-tight text-white sm:text-base lg:whitespace-nowrap">
+  PT PRESISI KONSULINDO PRIMA
+</div>
 ```
 
 6. Ganti `className` link nav aktif/non-aktif menjadi:
@@ -881,10 +916,12 @@ git commit -m "feat(layout): drop public dark mode and restyle header shell"
 ### Task 5: Footer institusional
 
 **Files:**
+
 - Modify: `components/layout/Footer.tsx`
 - Test: `tests/layout-components.test.tsx`
 
 **Interfaces:**
+
 - Consumes: `Rule` (Task 2), `credentials` (Task 1), `company` dari `@/lib/data/company` (field yang dipakai: `company.contact.email`, `.phone`, `.address`, `.mapsUrl`).
 - Produces: `Footer` band `forest-950`.
 
@@ -893,18 +930,18 @@ git commit -m "feat(layout): drop public dark mode and restyle header shell"
 Tambahkan ke `tests/layout-components.test.tsx`, di dalam `describe("Layout Components", ...)`:
 
 ```tsx
-  describe("Footer", () => {
-    test("renders contact details and menu links", () => {
-      render(<Footer />);
-      expect(screen.getByText("Common.footer.menu")).toBeInTheDocument();
-      expect(screen.getByText("Common.nav.contact")).toBeInTheDocument();
-    });
-
-    test("hides legal credentials while they are unconfirmed", () => {
-      const { container } = render(<Footer />);
-      expect(container.textContent).not.toContain("NIB");
-    });
+describe("Footer", () => {
+  test("renders contact details and menu links", () => {
+    render(<Footer />);
+    expect(screen.getByText("Common.footer.menu")).toBeInTheDocument();
+    expect(screen.getByText("Common.nav.contact")).toBeInTheDocument();
   });
+
+  test("hides legal credentials while they are unconfirmed", () => {
+    const { container } = render(<Footer />);
+    expect(container.textContent).not.toContain("NIB");
+  });
+});
 ```
 
 Tambahkan import di atas file:
@@ -1033,12 +1070,14 @@ git commit -m "feat(layout): rebuild footer as an institutional forest band"
 ### Task 6: Homepage — hero forest, tentang asimetris, tiga pilar bernomor
 
 **Files:**
+
 - Modify: `app/[locale]/page.tsx`
 - Modify: `components/sections/HomeHeroSection.tsx`
 - Modify: `messages/id.json`, `messages/en.json`
 - Test: `tests/sections.test.tsx`
 
 **Interfaces:**
+
 - Consumes: `Section`, `SectionHead`, `Rule` (Task 2); `Button`, `StatBlock`, `IndexedItem` (Task 3).
 - Produces: `HomeHeroSection` dengan props tak berubah (`imageUrl`, `title`, `subtitle`, `primaryHref`, `primaryLabel`, `secondaryHref`, `secondaryLabel`, `priority`) — jadi pemanggilnya di `app/[locale]/page.tsx` tidak perlu diubah kecuali untuk gaya.
 
@@ -1047,6 +1086,7 @@ Key i18n baru yang ditambahkan ke `messages/id.json` DAN `messages/en.json`:
 `Home.services.eyebrow`, `Home.services.title`, `Home.services.lead`, `Home.about.eyebrow`, `Home.visionMission.eyebrow`.
 
 Nilai `id.json`:
+
 ```json
 "services": {
   "eyebrow": "Layanan",
@@ -1054,7 +1094,9 @@ Nilai `id.json`:
   "lead": "Dari kajian hukum sampai penerbitan sertifikat dan pengukuran bidang — satu alur pendampingan yang terukur."
 }
 ```
+
 Nilai `en.json`:
+
 ```json
 "services": {
   "eyebrow": "Services",
@@ -1062,6 +1104,7 @@ Nilai `en.json`:
   "lead": "From legal review to certificate issuance and land measurement — one accountable process end to end."
 }
 ```
+
 Tambahkan juga `"eyebrow": "Tentang Kami"` / `"eyebrow": "About Us"` di dalam objek `Home.about`, dan `"eyebrow": "Visi & Misi"` / `"eyebrow": "Vision & Mission"` di dalam objek `Home.visionMission`.
 
 - [ ] **Step 1: Tulis tes yang gagal untuk hero**
@@ -1069,30 +1112,28 @@ Tambahkan juga `"eyebrow": "Tentang Kami"` / `"eyebrow": "About Us"` di dalam ob
 Tambahkan ke `tests/sections.test.tsx` di dalam `describe("Section Components", ...)`:
 
 ```tsx
-  describe("HomeHeroSection", () => {
-    test("renders title, subtitle, and both calls to action", () => {
-      render(
-        <HomeHeroSection
-          imageUrl="/hero.jpg"
-          title="Kepastian Hukum"
-          subtitle="Pendampingan legalitas lahan."
-          primaryHref="/kontak"
-          primaryLabel="Konsultasi"
-          secondaryHref="/layanan"
-          secondaryLabel="Lihat Layanan"
-        />,
-      );
-      const heading = screen.getByRole("heading", { level: 1 });
-      expect(heading.textContent).toBe("Kepastian Hukum");
-      expect(heading.className).toContain("font-display");
-      expect(screen.getByText("Konsultasi").getAttribute("href")).toBe(
-        "/kontak",
-      );
-      expect(screen.getByText("Lihat Layanan").getAttribute("href")).toBe(
-        "/layanan",
-      );
-    });
+describe("HomeHeroSection", () => {
+  test("renders title, subtitle, and both calls to action", () => {
+    render(
+      <HomeHeroSection
+        imageUrl="/hero.jpg"
+        title="Kepastian Hukum"
+        subtitle="Pendampingan legalitas lahan."
+        primaryHref="/kontak"
+        primaryLabel="Konsultasi"
+        secondaryHref="/layanan"
+        secondaryLabel="Lihat Layanan"
+      />,
+    );
+    const heading = screen.getByRole("heading", { level: 1 });
+    expect(heading.textContent).toBe("Kepastian Hukum");
+    expect(heading.className).toContain("font-display");
+    expect(screen.getByText("Konsultasi").getAttribute("href")).toBe("/kontak");
+    expect(screen.getByText("Lihat Layanan").getAttribute("href")).toBe(
+      "/layanan",
+    );
   });
+});
 ```
 
 Tambahkan import:
@@ -1132,47 +1173,44 @@ Di `components/sections/HomeHeroSection.tsx`, ubah bagian-bagian berikut (strukt
 3. Heading:
 
 ```tsx
-            <motion.h1
-              variants={fadeIn}
-              className="font-display text-display text-balance"
-            >
-              {title}
-            </motion.h1>
+<motion.h1 variants={fadeIn} className="font-display text-display text-balance">
+  {title}
+</motion.h1>
 ```
 
 4. Subtitle:
 
 ```tsx
-            <motion.p
-              variants={fadeIn}
-              className="mt-7 max-w-lg text-pretty text-base leading-8 text-white/75 sm:text-[1.05rem]"
-            >
-              {subtitle}
-            </motion.p>
+<motion.p
+  variants={fadeIn}
+  className="mt-7 max-w-lg text-pretty text-base leading-8 text-white/75 sm:text-[1.05rem]"
+>
+  {subtitle}
+</motion.p>
 ```
 
 5. Tombol — ganti kedua `<Link>` inline dengan `Button`, hapus `motion.div` pembungkus `whileHover`/`whileTap` (efek scale bertabrakan dengan kesan institusional):
 
 ```tsx
-            <motion.div
-              variants={fadeIn}
-              className="mt-10 flex flex-wrap items-center gap-4"
-            >
-              <Button href={primaryHref} variant="solid" tone="light">
-                {primaryLabel}
-              </Button>
-              <Button href={secondaryHref} variant="outline" tone="light">
-                {secondaryLabel}
-              </Button>
-            </motion.div>
+<motion.div
+  variants={fadeIn}
+  className="mt-10 flex flex-wrap items-center gap-4"
+>
+  <Button href={primaryHref} variant="solid" tone="light">
+    {primaryLabel}
+  </Button>
+  <Button href={secondaryHref} variant="outline" tone="light">
+    {secondaryLabel}
+  </Button>
+</motion.div>
 ```
 
 6. Tambahkan `StatBlock` di bawah tombol, masih di dalam `motion.div` konten induk:
 
 ```tsx
-            <motion.div variants={fadeIn} className="mt-14">
-              <StatBlock tone="light" />
-            </motion.div>
+<motion.div variants={fadeIn} className="mt-14">
+  <StatBlock tone="light" />
+</motion.div>
 ```
 
 7. Perbarui import di bagian atas file:
@@ -1194,97 +1232,97 @@ Expected: tes `HomeHeroSection` PASS. Tes `ServiceCard` masih lulus (belum disen
 Di `app/[locale]/page.tsx`, ganti isi `return` pada `export default function Home()` menjadi:
 
 ```tsx
-  return (
-    <main>
-      <HomeHero />
+return (
+  <main>
+    <HomeHero />
 
-      <Section tone="canvas">
-        <div className="grid gap-14 md:grid-cols-12 md:items-center">
-          <div className="relative aspect-[4/5] overflow-hidden md:col-span-5">
-            <AboutImage />
-          </div>
-          <div className="md:col-span-7">
-            <SectionHead
-              eyebrow={t("about.eyebrow")}
-              title={tCompany("name")}
-              lead={tCompany("description")}
-            />
-            <div className="mt-8">
-              <Button href="/tentang-kami" variant="link">
-                {tButtons("moreAboutUs")}
-              </Button>
-            </div>
-          </div>
+    <Section tone="canvas">
+      <div className="grid gap-14 md:grid-cols-12 md:items-center">
+        <div className="relative aspect-[4/5] overflow-hidden md:col-span-5">
+          <AboutImage />
         </div>
-      </Section>
-
-      <Section tone="paper">
-        <SectionHead
-          eyebrow={t("services.eyebrow")}
-          title={t("services.title")}
-          lead={t("services.lead")}
-        />
-        <div className="mt-16">
-          {services.map((s, i) => (
-            <IndexedItem
-              key={s.id}
-              index={i + 1}
-              title={tServices(`list.${s.id}.title`)}
-              href={`/layanan#${s.id}`}
-            >
-              {tServices(`list.${s.id}.description`)}
-            </IndexedItem>
-          ))}
-        </div>
-      </Section>
-
-      <Section tone="canvas">
-        <SectionHead
-          eyebrow={t("visionMission.eyebrow")}
-          title={t("visionMission.vision")}
-          lead={tCompany("vision")}
-        />
-        <div className="mt-16">
-          <div className="text-xs font-semibold uppercase tracking-[0.18em] text-brass">
-            {t("visionMission.mission")}
-          </div>
-          <ol className="mt-8 grid gap-0">
-            {tCompany.raw("mission").map((m: string, i: number) => (
-              <li
-                key={m}
-                className="grid gap-4 border-t border-hairline py-8 md:grid-cols-[6rem_1fr] md:gap-10"
-              >
-                <span className="font-display text-xl text-brass">
-                  {String(i + 1).padStart(2, "0")}
-                </span>
-                <span className="max-w-3xl text-base leading-8 text-ink-muted">
-                  {m}
-                </span>
-              </li>
-            ))}
-          </ol>
-        </div>
-      </Section>
-
-      <Section tone="forest">
-        <div className="grid gap-10 md:grid-cols-12 md:items-end">
-          <div className="md:col-span-8">
-            <div className="font-display text-h2 text-balance">
-              {tCompany("tagline")}
-            </div>
-            <p className="mt-6 max-w-xl text-base leading-8 text-white/70">
-              {t("visionMission.ctaDescription")}
-            </p>
-          </div>
-          <div className="md:col-span-4 md:justify-self-end">
-            <Button href="/kontak" variant="solid" tone="light">
-              {tButtons("contact")}
+        <div className="md:col-span-7">
+          <SectionHead
+            eyebrow={t("about.eyebrow")}
+            title={tCompany("name")}
+            lead={tCompany("description")}
+          />
+          <div className="mt-8">
+            <Button href="/tentang-kami" variant="link">
+              {tButtons("moreAboutUs")}
             </Button>
           </div>
         </div>
-      </Section>
-    </main>
-  );
+      </div>
+    </Section>
+
+    <Section tone="paper">
+      <SectionHead
+        eyebrow={t("services.eyebrow")}
+        title={t("services.title")}
+        lead={t("services.lead")}
+      />
+      <div className="mt-16">
+        {services.map((s, i) => (
+          <IndexedItem
+            key={s.id}
+            index={i + 1}
+            title={tServices(`list.${s.id}.title`)}
+            href={`/layanan#${s.id}`}
+          >
+            {tServices(`list.${s.id}.description`)}
+          </IndexedItem>
+        ))}
+      </div>
+    </Section>
+
+    <Section tone="canvas">
+      <SectionHead
+        eyebrow={t("visionMission.eyebrow")}
+        title={t("visionMission.vision")}
+        lead={tCompany("vision")}
+      />
+      <div className="mt-16">
+        <div className="text-xs font-semibold uppercase tracking-[0.18em] text-brass">
+          {t("visionMission.mission")}
+        </div>
+        <ol className="mt-8 grid gap-0">
+          {tCompany.raw("mission").map((m: string, i: number) => (
+            <li
+              key={m}
+              className="grid gap-4 border-t border-hairline py-8 md:grid-cols-[6rem_1fr] md:gap-10"
+            >
+              <span className="font-display text-xl text-brass">
+                {String(i + 1).padStart(2, "0")}
+              </span>
+              <span className="max-w-3xl text-base leading-8 text-ink-muted">
+                {m}
+              </span>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </Section>
+
+    <Section tone="forest">
+      <div className="grid gap-10 md:grid-cols-12 md:items-end">
+        <div className="md:col-span-8">
+          <div className="font-display text-h2 text-balance">
+            {tCompany("tagline")}
+          </div>
+          <p className="mt-6 max-w-xl text-base leading-8 text-white/70">
+            {t("visionMission.ctaDescription")}
+          </p>
+        </div>
+        <div className="md:col-span-4 md:justify-self-end">
+          <Button href="/kontak" variant="solid" tone="light">
+            {tButtons("contact")}
+          </Button>
+        </div>
+      </div>
+    </Section>
+  </main>
+);
 ```
 
 Tambahkan import berikut di atas file dan hapus import `ServiceCard`:
@@ -1299,7 +1337,7 @@ import { IndexedItem } from "@/components/ui/IndexedItem";
 Tambahkan hook translasi layanan di dalam `Home()`:
 
 ```tsx
-  const tServices = useTranslations("Services");
+const tServices = useTranslations("Services");
 ```
 
 - [ ] **Step 6: Tambahkan key i18n baru**
@@ -1323,6 +1361,7 @@ git commit -m "feat(home): rebuild homepage with forest hero and indexed service
 ### Task 7: Halaman Layanan + restyle `Accordion` dan `HeroSection`
 
 **Files:**
+
 - Modify: `app/[locale]/layanan/page.tsx`
 - Modify: `components/ui/Accordion.tsx`
 - Modify: `components/sections/HeroSection.tsx`
@@ -1331,6 +1370,7 @@ git commit -m "feat(home): rebuild homepage with forest hero and indexed service
 - Modify: `tests/ui-components.test.tsx`
 
 **Interfaces:**
+
 - Consumes: `Section`, `SectionHead`, `IndexedItem`, `Button`, `Rule`.
 - Produces: `HeroSection` dengan props tetap (`title`, `subtitle`) tapi merender band `forest` dengan `<h1 className="font-display text-display">`. Dipakai oleh halaman Tentang Kami, Layanan, Portofolio, Artikel, dan Kontak — jadi restyle di sini menguntungkan task berikutnya.
 
@@ -1339,18 +1379,18 @@ git commit -m "feat(home): rebuild homepage with forest hero and indexed service
 Di `tests/sections.test.tsx`: hapus seluruh blok `describe("ServiceCard", ...)` dan importnya (`ServiceCard`, `MainService`). Ganti tes `HeroSection` menjadi:
 
 ```tsx
-  describe("HeroSection", () => {
-    test("renders a serif h1 on the forest band", () => {
-      const { container } = render(
-        <HeroSection title="Layanan" subtitle="Deskripsi layanan." />,
-      );
-      const heading = screen.getByRole("heading", { level: 1 });
-      expect(heading.textContent).toBe("Layanan");
-      expect(heading.className).toContain("font-display");
-      expect(container.innerHTML).toContain("bg-forest-950");
-      expect(screen.getByText("Deskripsi layanan.")).toBeInTheDocument();
-    });
+describe("HeroSection", () => {
+  test("renders a serif h1 on the forest band", () => {
+    const { container } = render(
+      <HeroSection title="Layanan" subtitle="Deskripsi layanan." />,
+    );
+    const heading = screen.getByRole("heading", { level: 1 });
+    expect(heading.textContent).toBe("Layanan");
+    expect(heading.className).toContain("font-display");
+    expect(container.innerHTML).toContain("bg-forest-950");
+    expect(screen.getByText("Deskripsi layanan.")).toBeInTheDocument();
   });
+});
 ```
 
 - [ ] **Step 2: Jalankan tes, pastikan gagal**
@@ -1363,18 +1403,18 @@ Expected: FAIL — `font-display` / `bg-forest-950` belum ada di `HeroSection`.
 Baca `components/sections/HeroSection.tsx` lebih dulu untuk mempertahankan signature propsnya, lalu ganti bagian render menjadi struktur ini (pertahankan prop opsional yang sudah ada; jangan mengubah nama prop):
 
 ```tsx
-    <section className="bg-forest-950 text-white">
-      <div className="mx-auto max-w-[1200px] px-6 pb-20 pt-28 md:px-10 md:pb-28 md:pt-36">
-        <h1 className="font-display text-display max-w-4xl text-balance">
-          {title}
-        </h1>
-        {subtitle && (
-          <p className="mt-7 max-w-2xl text-pretty text-base leading-8 text-white/70">
-            {subtitle}
-          </p>
-        )}
-      </div>
-    </section>
+<section className="bg-forest-950 text-white">
+  <div className="mx-auto max-w-[1200px] px-6 pb-20 pt-28 md:px-10 md:pb-28 md:pt-36">
+    <h1 className="font-display text-display max-w-4xl text-balance">
+      {title}
+    </h1>
+    {subtitle && (
+      <p className="mt-7 max-w-2xl text-pretty text-base leading-8 text-white/70">
+        {subtitle}
+      </p>
+    )}
+  </div>
+</section>
 ```
 
 - [ ] **Step 4: Restyle `Accordion` jadi garis**
@@ -1427,11 +1467,13 @@ git commit -m "feat(services): rebuild services page with hairline rows and seri
 ### Task 8: Halaman Tentang Kami + `OrganizationChart`
 
 **Files:**
+
 - Modify: `app/[locale]/tentang-kami/page.tsx`
 - Modify: `components/sections/OrganizationChart.tsx`
 - Test: `tests/sections.test.tsx`
 
 **Interfaces:**
+
 - Consumes: `HeroSection` (hasil restyle Task 7), `Section`, `SectionHead`, `Rule`, `Button`.
 - Produces: `OrganizationChart` dengan props tidak berubah; dirender sebagai diagram garis di atas kanvas `forest`.
 
@@ -1440,14 +1482,14 @@ git commit -m "feat(services): rebuild services page with hairline rows and seri
 Tambahkan ke `tests/sections.test.tsx`:
 
 ```tsx
-  describe("OrganizationChart", () => {
-    test("renders divisions as hairline nodes without cards", () => {
-      const { container } = render(<OrganizationChart />);
-      expect(container.innerHTML).not.toContain("rounded-2xl");
-      expect(container.innerHTML).not.toContain("shadow");
-      expect(container.innerHTML).not.toContain("dark:");
-    });
+describe("OrganizationChart", () => {
+  test("renders divisions as hairline nodes without cards", () => {
+    const { container } = render(<OrganizationChart />);
+    expect(container.innerHTML).not.toContain("rounded-2xl");
+    expect(container.innerHTML).not.toContain("shadow");
+    expect(container.innerHTML).not.toContain("dark:");
   });
+});
 ```
 
 Tambahkan import:
@@ -1504,11 +1546,13 @@ git commit -m "feat(about): rebuild about page and line-based organization chart
 ### Task 9: Halaman Kontak + `ContactForm` field underline
 
 **Files:**
+
 - Modify: `app/[locale]/kontak/page.tsx`
 - Modify: `components/forms/ContactForm.tsx`
 - Test: `tests/contact-form.test.tsx`
 
 **Interfaces:**
+
 - Consumes: `HeroSection`, `Section`, `SectionHead`, `Button`.
 - Produces: `ContactForm` dengan perilaku submit dan validasi **tidak berubah** — hanya kelas presentational yang diganti.
 
@@ -1522,12 +1566,12 @@ Expected: PASS sebelum perubahan. Catat nama tesnya; semuanya harus tetap lulus 
 Tambahkan ke `tests/contact-form.test.tsx`:
 
 ```tsx
-  test("inputs use underline styling instead of boxed borders", () => {
-    const { container } = render(<ContactForm />);
-    const input = container.querySelector("input");
-    expect(input?.className).toContain("border-b");
-    expect(input?.className).not.toContain("rounded-lg");
-  });
+test("inputs use underline styling instead of boxed borders", () => {
+  const { container } = render(<ContactForm />);
+  const input = container.querySelector("input");
+  expect(input?.className).toContain("border-b");
+  expect(input?.className).not.toContain("rounded-lg");
+});
 ```
 
 Kalau `describe` di file itu memakai nama lain, sisipkan tes ini di dalam blok yang sudah ada dan pakai cara render yang sama seperti tes tetangganya.
@@ -1579,12 +1623,14 @@ git commit -m "feat(contact): split contact page and restyle form with underline
 ### Task 10: Portofolio — index dan detail
 
 **Files:**
+
 - Modify: `app/[locale]/portofolio/page.tsx`
 - Modify: `app/[locale]/portofolio/[slug]/page.tsx`
 - Modify: `app/components/sections/PortfolioCard.tsx`
 - Test: `tests/portfolio-card.test.tsx`
 
 **Interfaces:**
+
 - Consumes: `HeroSection`, `Section`, `SectionHead`, `Rule`, `Button`.
 - Produces: `PortfolioCard` dengan signature tetap `React.FC<{ portfolio: PortfolioCardData }>`; dirender sebagai "record" bergaris, bukan kartu bershadow. `PortfolioCardData` sudah diekspor dan tidak berubah.
 
@@ -1671,6 +1717,7 @@ Di `app/[locale]/portofolio/page.tsx`: pertahankan seluruh pengambilan data dan 
 - [ ] **Step 6: Tulis ulang halaman detail portofolio**
 
 Di `app/[locale]/portofolio/[slug]/page.tsx`: pertahankan pengambilan data, `generateMetadata`, dan `notFound()`. Ganti markup jadi:
+
 - `<HeroSection title={portfolio.title} subtitle={...} />`
 - Gambar utama full-bleed `aspect-[16/7]` tanpa radius.
 - Isi di `<Section tone="canvas">` dengan kolom `max-w-[68ch] text-[1.0625rem] leading-8`.
@@ -1696,6 +1743,7 @@ git commit -m "feat(portfolio): render portfolio as hairline records"
 ### Task 11: Artikel — index editorial dan halaman baca
 
 **Files:**
+
 - Modify: `app/[locale]/artikel/page.tsx`
 - Modify: `app/[locale]/artikel/[slug]/page.tsx`
 - Modify: `app/components/sections/ArticleCard.tsx`
@@ -1703,6 +1751,7 @@ git commit -m "feat(portfolio): render portfolio as hairline records"
 - Test: `tests/article-card.test.tsx`
 
 **Interfaces:**
+
 - Consumes: `HeroSection`, `Section`, `SectionHead`, `Rule`, `Button`.
 - Produces: `ArticleCard` dengan signature `React.FC<{ post: PostPreview; featured?: boolean }>` (`featured` default `false`, merender varian lebar untuk artikel teratas), dan tipe `PostPreview` yang kini diekspor dari file yang sama.
 
@@ -1784,6 +1833,7 @@ Di `app/[locale]/artikel/page.tsx`: pertahankan pengambilan data, paginasi, dan 
 - [ ] **Step 6: Tulis ulang halaman baca artikel**
 
 Di `app/[locale]/artikel/[slug]/page.tsx`: pertahankan pengambilan data, `generateMetadata`, JSON-LD, dan `notFound()`. Markup baru:
+
 - Header artikel di band `forest`: eyebrow kategori, `<h1 className="font-display text-display max-w-4xl">`, meta tanggal/penulis di `text-white/60`.
 - Gambar utama `aspect-[16/7]` tanpa radius.
 - `<Section tone="canvas">` dengan `<div className="mx-auto max-w-[68ch]">` membungkus `<ArticleContent />`.
@@ -1821,11 +1871,13 @@ git commit -m "feat(articles): editorial index and reading layout"
 ### Task 12: Bersih-bersih dan verifikasi akhir
 
 **Files:**
+
 - Modify: `app/[locale]/not-found.tsx`
 - Modify: file publik mana pun yang masih menyisakan `dark:`
 - Test: `tests/no-dark-classes.test.ts` (baru)
 
 **Interfaces:**
+
 - Consumes: semua task sebelumnya.
 - Produces: jaminan tidak ada kelas `dark:` tersisa di kode publik.
 

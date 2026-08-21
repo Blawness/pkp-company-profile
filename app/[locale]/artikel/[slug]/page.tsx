@@ -26,14 +26,19 @@ export async function generateMetadata({
 
   return {
     title: post.metaTitle ?? post.title,
-    description: post.metaDescription ?? post.excerpt ?? `Artikel: ${post.title}`,
+    description:
+      post.metaDescription ?? post.excerpt ?? `Artikel: ${post.title}`,
     alternates: buildAlternates(locale, `artikel/${slug}`),
     openGraph: {
       type: "article",
       title: post.title,
       description: post.excerpt ?? undefined,
       publishedTime: post.publishedAt?.toISOString(),
-      images: post.ogImage ? [post.ogImage] : post.coverImageUrl ? [post.coverImageUrl] : [],
+      images: post.ogImage
+        ? [post.ogImage]
+        : post.coverImageUrl
+          ? [post.coverImageUrl]
+          : [],
     },
   };
 }

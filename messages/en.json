@@ -7,7 +7,11 @@
       "contact": "Contact",
       "articles": "Articles",
       "services": "Services",
-      "portfolio": "Portfolio"
+      "portfolio": "Portfolio",
+      "menu": "Menu",
+      "openMenu": "Open menu",
+      "mobileMenuDescription": "Main navigation for mobile devices",
+      "closeMenu": "Close menu"
     },
     "buttons": {
       "contact": "Contact Us",
@@ -25,7 +29,9 @@
       "menu": "Menu",
       "contact": "Contact",
       "rights": "© {year} PT Presisi Konsulindo Prima. All rights reserved."
-    }
+    },
+    "languageLabel": "Choose language",
+    "languageUnavailable": "This page is available in one language only"
   },
   "Company": {
     "name": "PT Presisi Konsulindo Prima",
@@ -81,7 +87,6 @@
     },
     "organization": {
       "title": "Organizational Structure",
-      "footer": "Organizational structure can be adjusted according to official company documents.",
       "chart": {
         "title": "President Director",
         "children": [
@@ -247,12 +252,13 @@
       "messagePlaceholder": "Explain your needs...",
       "success": "Message sent. Thank you!",
       "error": "Failed to send message. Please try again later.",
-      "missing": "Form not active: set `NEXT_PUBLIC_FORMSPREE_ID` in `.env.local`.",
+      "missing": "The form is not connected yet. Sending will open your email app with the message pre-filled.",
       "validation": {
         "nameMin": "Name must be at least 2 characters",
         "emailInvalid": "Invalid email",
         "messageMin": "Message must be at least 10 characters"
-      }
+      },
+      "mailtoSubject": "Consultation request from {name}"
     },
     "info": {
       "title": "Contact Information",

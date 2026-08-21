@@ -72,8 +72,6 @@ describe("IndexedItem", () => {
     expect(screen.getByText("Deskripsi layanan.")).toBeInTheDocument();
     const heading = screen.getByRole("heading", { level: 3 });
     expect(heading.textContent).toContain("Pengukuran");
-    expect(screen.getByRole("link").getAttribute("href")).toBe(
-      "/layanan#ukur",
-    );
+    expect(screen.getByRole("link").getAttribute("href")).toBe("/layanan#ukur");
   });
 });

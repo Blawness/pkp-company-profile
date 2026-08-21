@@ -43,7 +43,7 @@ jobs:
             # Tentukan path project
             TARGET_DIR="${{ secrets.DEPLOY_PATH }}"
             TARGET_DIR="${TARGET_DIR/#\~/$HOME}"
-            
+
             # Jika secret kosong, gunakan default path CloudPanel
             if [ -z "$TARGET_DIR" ]; then
               TARGET_DIR="$HOME/htdocs/www.presisikonsulindoprima.com"
@@ -51,14 +51,14 @@ jobs:
 
             echo "📂 Navigating to: $TARGET_DIR"
             cd "$TARGET_DIR" || { echo "❌ Folder tidak ditemukan!"; exit 1; }
-            
+
             # Update source code
             echo "📥 Fetching latest changes..."
             git fetch origin master
-            
+
             echo "🔄 Resetting to latest version..."
             git reset --hard origin/master
-            
+
             # Jalankan script deployment
             echo "🚀 Starting deployment script..."
             chmod +x scripts/deploy.sh

@@ -48,6 +48,15 @@ export async function searchPexelsPhotos(query: string, perPage = 1) {
   }
 }
 
+/**
+ * Last resort for page heroes. Pexels is fetched at request time, so a missing
+ * `PEXELS_API_KEY`, a rate limit or an outage otherwise leaves a hero as a flat
+ * empty slab of forest green. Callers that render a hero should fall back to
+ * this rather than to `undefined`.
+ */
+export const FALLBACK_HERO_IMAGE =
+  "https://images.pexels.com/photos/3184338/pexels-photo-3184338.jpeg";
+
 export async function getHeroImageUrl(
   query: string | undefined,
 ): Promise<string | undefined> {

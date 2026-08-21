@@ -21,14 +21,14 @@ runtime. Revamp ini murni presentational.
 
 ## Keputusan yang sudah diambil
 
-| Keputusan | Pilihan |
-| --- | --- |
-| Arah visual | Institutional Gravitas (hijau tua dominan, serif display) |
-| Cakupan | Seluruh halaman publik + header/footer |
-| Dark mode | Dibuang dari situs publik |
-| Tipografi | Tambah serif via `next/font/google`, body tetap Geist Sans |
-| Angka & kredensial | Placeholder di config, tidak dirender sampai diisi |
-| Pendekatan | Token-first rewrite + primitif komponen |
+| Keputusan          | Pilihan                                                    |
+| ------------------ | ---------------------------------------------------------- |
+| Arah visual        | Institutional Gravitas (hijau tua dominan, serif display)  |
+| Cakupan            | Seluruh halaman publik + header/footer                     |
+| Dark mode          | Dibuang dari situs publik                                  |
+| Tipografi          | Tambah serif via `next/font/google`, body tetap Geist Sans |
+| Angka & kredensial | Placeholder di config, tidak dirender sampai diisi         |
+| Pendekatan         | Token-first rewrite + primitif komponen                    |
 
 ## Fondasi visual
 
@@ -36,17 +36,17 @@ runtime. Revamp ini murni presentational.
 
 Menggantikan isi `@theme` di `app/globals.css`.
 
-| Token | Nilai | Peran |
-| --- | --- | --- |
-| `--color-forest-950` | `#0B2A1E` | Kanvas gelap: hero, footer, CTA band |
-| `--color-forest-900` | `#123A2A` | Permukaan gelap sekunder |
-| `--color-forest-700` | `#1A5C42` | Aksen di kanvas terang, link |
-| `--color-canvas` | `#FBFAF7` | Latar halaman (ivory) |
-| `--color-paper` | `#FFFFFF` | Kartu/panel di atas ivory |
-| `--color-ink` | `#111812` | Teks utama |
-| `--color-ink-muted` | `#5A6560` | Teks sekunder |
-| `--color-brass` | `#A8792C` | Aksen langka: rule, angka, hover |
-| `--color-hairline` | `rgba(17,24,18,.12)` | Garis 1px |
+| Token                | Nilai                | Peran                                |
+| -------------------- | -------------------- | ------------------------------------ |
+| `--color-forest-950` | `#0B2A1E`            | Kanvas gelap: hero, footer, CTA band |
+| `--color-forest-900` | `#123A2A`            | Permukaan gelap sekunder             |
+| `--color-forest-700` | `#1A5C42`            | Aksen di kanvas terang, link         |
+| `--color-canvas`     | `#FBFAF7`            | Latar halaman (ivory)                |
+| `--color-paper`      | `#FFFFFF`            | Kartu/panel di atas ivory            |
+| `--color-ink`        | `#111812`            | Teks utama                           |
+| `--color-ink-muted`  | `#5A6560`            | Teks sekunder                        |
+| `--color-brass`      | `#A8792C`            | Aksen langka: rule, angka, hover     |
+| `--color-hairline`   | `rgba(17,24,18,.12)` | Garis 1px                            |
 
 Token lama (`--color-pkp-*`, `--color-navy`, `--color-brand`, `--color-gold`) dan
 blok `.dark` **tetap dipertahankan** karena `@blawness/admin-kit` merender area
@@ -73,14 +73,14 @@ admin dengan token tersebut lewat `app/globals.css` yang sama.
 
 Semua di `components/ui/`.
 
-| Komponen | Props | Fungsi |
-| --- | --- | --- |
-| `Section` | `tone: "canvas" \| "forest" \| "paper"`, `bleed?` | Padding vertikal, container, dan inversi warna otomatis |
-| `SectionHead` | `eyebrow`, `title`, `lead?`, `align?` | Eyebrow + rule brass + heading serif + lead |
-| `Rule` | `tone?` | Hairline 1px dengan segmen brass opsional |
-| `Button` | `variant: "solid" \| "outline" \| "link"`, `tone` | Menggantikan tombol yang kini di-inline per halaman |
-| `StatBlock` | `items[]` | Baris angka + label dipisah hairline vertikal |
-| `IndexedItem` | `index`, `title`, `children` | Item bernomor `01/02/03` serif brass |
+| Komponen      | Props                                             | Fungsi                                                  |
+| ------------- | ------------------------------------------------- | ------------------------------------------------------- |
+| `Section`     | `tone: "canvas" \| "forest" \| "paper"`, `bleed?` | Padding vertikal, container, dan inversi warna otomatis |
+| `SectionHead` | `eyebrow`, `title`, `lead?`, `align?`             | Eyebrow + rule brass + heading serif + lead             |
+| `Rule`        | `tone?`                                           | Hairline 1px dengan segmen brass opsional               |
+| `Button`      | `variant: "solid" \| "outline" \| "link"`, `tone` | Menggantikan tombol yang kini di-inline per halaman     |
+| `StatBlock`   | `items[]`                                         | Baris angka + label dipisah hairline vertikal           |
+| `IndexedItem` | `index`, `title`, `children`                      | Item bernomor `01/02/03` serif brass                    |
 
 `StatBlock` hanya merender jika `credentials.enabled === true`.
 
@@ -111,10 +111,10 @@ Semua di `components/ui/`.
 
 ```ts
 export const credentials = {
-  enabled: false,          // set true setelah legal mengonfirmasi
-  foundedYear: null,       // number
-  legalEntities: [],       // { label, value }[]
-  stats: [],               // { value, label }[]
+  enabled: false, // set true setelah legal mengonfirmasi
+  foundedYear: null, // number
+  legalEntities: [], // { label, value }[]
+  stats: [], // { value, label }[]
 } as const;
 ```
 

@@ -44,7 +44,9 @@ const DEFAULT_SETTINGS: AiSettings = {
   fieldOverrides: [],
 };
 
-const parseFieldOverrides = (rows: string[] | null | undefined): AiFieldOverride[] => {
+const parseFieldOverrides = (
+  rows: string[] | null | undefined,
+): AiFieldOverride[] => {
   if (!rows || rows.length === 0) return [];
   const out: AiFieldOverride[] = [];
   for (const raw of rows) {
@@ -52,9 +54,13 @@ const parseFieldOverrides = (rows: string[] | null | undefined): AiFieldOverride
       const parsed = JSON.parse(raw) as Partial<AiFieldOverride>;
       out.push({
         documentType:
-          typeof parsed.documentType === "string" ? parsed.documentType : undefined,
-        fieldName: typeof parsed.fieldName === "string" ? parsed.fieldName : undefined,
-        enabled: typeof parsed.enabled === "boolean" ? parsed.enabled : undefined,
+          typeof parsed.documentType === "string"
+            ? parsed.documentType
+            : undefined,
+        fieldName:
+          typeof parsed.fieldName === "string" ? parsed.fieldName : undefined,
+        enabled:
+          typeof parsed.enabled === "boolean" ? parsed.enabled : undefined,
         promptTemplate:
           typeof parsed.promptTemplate === "string"
             ? parsed.promptTemplate
@@ -102,6 +108,7 @@ export function findFieldOverride(
 ) {
   if (!settings.fieldOverrides || !documentType || !fieldName) return undefined;
   return settings.fieldOverrides.find(
-    (item) => item?.documentType === documentType && item?.fieldName === fieldName,
+    (item) =>
+      item?.documentType === documentType && item?.fieldName === fieldName,
   );
 }

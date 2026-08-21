@@ -42,9 +42,9 @@ describe("Layout Components", () => {
     test("renders the main navigation links", () => {
       render(<Header />);
       expect(screen.getAllByText("Common.nav.home").length).toBeGreaterThan(0);
-      expect(
-        screen.getAllByText("Common.nav.contact").length,
-      ).toBeGreaterThan(0);
+      expect(screen.getAllByText("Common.nav.contact").length).toBeGreaterThan(
+        0,
+      );
     });
 
     test("no longer renders a theme toggle", () => {
@@ -60,9 +60,9 @@ describe("Layout Components", () => {
     test("renders contact details and menu links", () => {
       render(<Footer />);
       expect(screen.getByText("Common.footer.menu")).toBeInTheDocument();
-      expect(
-        screen.getAllByText("Common.nav.contact").length,
-      ).toBeGreaterThan(0);
+      expect(screen.getAllByText("Common.nav.contact").length).toBeGreaterThan(
+        0,
+      );
     });
 
     test("hides legal credentials while they are unconfirmed", () => {

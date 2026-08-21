@@ -10,9 +10,5 @@ export default async function EditArticlePage({
   const { id } = await params;
   const sp = await searchParams;
   // ArticlesForm reads `?id=` from searchParams to decide edit vs new.
-  return (
-    <ArticlesForm
-      searchParams={Promise.resolve({ ...sp, id })}
-    />
-  );
+  return <ArticlesForm searchParams={Promise.resolve({ ...sp, id })} />;
 }

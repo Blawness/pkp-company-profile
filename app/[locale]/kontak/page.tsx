@@ -6,7 +6,7 @@ import { ContactForm } from "@/components/forms/ContactForm";
 import { HeroSection } from "@/components/sections/HeroSection";
 import { Section } from "@/components/ui/Section";
 import { SectionHead } from "@/components/ui/SectionHead";
-import { getHeroImageUrl } from "@/lib/api/pexels";
+import { FALLBACK_HERO_IMAGE, getHeroImageUrl } from "@/lib/api/pexels";
 import { buildAlternates, localizedUrl } from "@/lib/seo/site";
 
 export async function generateMetadata({
@@ -119,7 +119,9 @@ async function ContactImage() {
 }
 
 async function KontakHero() {
-  const imageUrl = await getHeroImageUrl("customer service office desk");
+  const imageUrl =
+    (await getHeroImageUrl("customer service office desk")) ??
+    FALLBACK_HERO_IMAGE;
   const t = await getTranslations("Contact.hero");
   const tButtons = await getTranslations("Common.buttons");
 

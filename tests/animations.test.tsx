@@ -71,12 +71,22 @@ describe("MaskedText", () => {
 });
 
 /**
- * Regression guard. Framer Motion propagates a parent's variant state down the
- * tree; a child holding only inline initial/animate objects cannot resolve an
- * inherited "visible" and stays parked at its initial offset — invisible behind
- * the mask. That is exactly how the hero headline went blank. The rendered DOM
- * cannot show this (the test mock drops motion props), so assert on the element
- * tree the component returns.
+ * Regression guard for two separate ways this component went blank.
+ *
+ * First: Framer Motion propagates a parent's variant state down the tree; a
+ * child holding only inline initial/animate objects cannot resolve an inherited
+ * "visible" and stays parked at its initial offset, hidden behind the mask.
+ *
+ * Second, and the one that shipped: the scroll trigger sat on the word itself.
+ * `whileInView` is an IntersectionObserver, and an observed element's
+ * intersection rect is clipped by its ancestors' overflow — a word parked at
+ * 130% inside `overflow-hidden` has zero visible area, so it could never report
+ * itself in view and every h2 on the site stayed invisible forever. The trigger
+ * therefore belongs on the unclipped heading, and the words follow by variant
+ * propagation.
+ *
+ * The rendered DOM cannot show any of this (the test mock drops motion props),
+ * so assert on the element tree the component returns.
  */
 describe("MaskedText variant contract", () => {
   const wordSpans = (node: any): any[] => {
@@ -93,8 +103,8 @@ describe("MaskedText variant contract", () => {
     const spans = wordSpans(tree);
 
     expect(spans.length).toBe(2);
+    expect(tree.props.initial).toBe("hidden");
     for (const span of spans) {
-      expect(span.props.initial).toBe("hidden");
       expect(span.props.variants.hidden).toBeDefined();
       expect(span.props.variants.visible).toBeDefined();
     }
@@ -106,18 +116,30 @@ describe("MaskedText variant contract", () => {
       as: "h1",
       trigger: "mount",
     });
-    const [span] = wordSpans(tree);
 
-    expect(span.props.animate).toBe("visible");
-    expect(span.props.whileInView).toBeUndefined();
+    expect(tree.props.initial).toBe("hidden");
+    expect(tree.props.animate).toBe("visible");
+    expect(tree.props.whileInView).toBeUndefined();
   });
 
   test("view trigger waits for the element to scroll in", () => {
     const tree: any = MaskedText({ text: "Judul", as: "h2" });
-    const [span] = wordSpans(tree);
 
-    expect(span.props.whileInView).toBe("visible");
-    expect(span.props.animate).toBeUndefined();
+    expect(tree.props.initial).toBe("hidden");
+    expect(tree.props.whileInView).toBe("visible");
+    expect(tree.props.animate).toBeUndefined();
+  });
+
+  test("the scroll trigger never sits on the clipped word", () => {
+    // A word parked below its `overflow-hidden` mask has an empty intersection
+    // rect, so an observer attached to it can never fire.
+    const tree: any = MaskedText({ text: "Judul Panjang", as: "h2" });
+
+    for (const span of wordSpans(tree)) {
+      expect(span.props.whileInView).toBeUndefined();
+      expect(span.props.animate).toBeUndefined();
+      expect(span.props.viewport).toBeUndefined();
+    }
   });
 });
 
@@ -125,7 +147,9 @@ describe("MaskedText typography", () => {
   test("word gaps live outside the mask, not inside it", () => {
     // A trailing space inside an inline-block mask is stripped by CSS
     // white-space handling, so words collide unpredictably.
-    const { container } = render(<MaskedText as="h2" text="Konsultasi Pertanahan" />);
+    const { container } = render(
+      <MaskedText as="h2" text="Konsultasi Pertanahan" />,
+    );
     const masks = [...container.querySelectorAll("[data-word]")];
 
     expect(masks.length).toBe(2);
@@ -149,4 +173,3 @@ describe("MaskedText typography", () => {
     expect(mask.className).toContain("-mb-[0.2em]");
   });
 });
-
