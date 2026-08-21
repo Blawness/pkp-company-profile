@@ -7,7 +7,11 @@
       "contact": "Kontak",
       "articles": "Artikel",
       "services": "Layanan",
-      "portfolio": "Portofolio"
+      "portfolio": "Portofolio",
+      "menu": "Menu",
+      "openMenu": "Buka menu",
+      "mobileMenuDescription": "Navigasi utama untuk perangkat seluler",
+      "closeMenu": "Tutup menu"
     },
     "buttons": {
       "contact": "Hubungi",
@@ -25,7 +29,9 @@
       "menu": "Menu",
       "contact": "Kontak",
       "rights": "© {year} PT Presisi Konsulindo Prima. All rights reserved."
-    }
+    },
+    "languageLabel": "Pilih bahasa",
+    "languageUnavailable": "Halaman ini hanya tersedia dalam satu bahasa"
   },
   "Company": {
     "name": "PT Presisi Konsulindo Prima",
@@ -81,7 +87,6 @@
     },
     "organization": {
       "title": "Struktur Organisasi",
-      "footer": "Struktur organisasi dapat disesuaikan sesuai dokumen resmi perusahaan.",
       "chart": {
         "title": "Direktur Utama",
         "children": [
@@ -247,12 +252,13 @@
       "messagePlaceholder": "Jelaskan kebutuhan Anda...",
       "success": "Pesan terkirim. Terima kasih!",
       "error": "Gagal mengirim pesan. Coba lagi beberapa saat.",
-      "missing": "Form belum aktif: set `NEXT_PUBLIC_FORMSPREE_ID` di `.env.local`.",
+      "missing": "Formulir belum terhubung. Tombol kirim akan membuka aplikasi email Anda dengan pesan yang sudah terisi.",
       "validation": {
         "nameMin": "Nama minimal 2 karakter",
         "emailInvalid": "Email tidak valid",
         "messageMin": "Pesan minimal 10 karakter"
-      }
+      },
+      "mailtoSubject": "Permintaan konsultasi dari {name}"
     },
     "info": {
       "title": "Informasi Kontak",

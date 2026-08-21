@@ -29,6 +29,13 @@ type Tag = "h1" | "h2" | "h3" | "div";
  *
  * `trigger="mount"` is for headlines above the fold, where waiting on an
  * intersection is pointless; "view" is the default for everything below.
+ *
+ * The scroll trigger lives on the heading, never on the words. `whileInView`
+ * is backed by an IntersectionObserver, and an observed element's intersection
+ * rect is clipped by its ancestors' overflow — a word parked at 130% inside
+ * `overflow-hidden` is clipped to zero area, so it can never report itself as
+ * in view and the reveal would never fire. The heading is unclipped, so it
+ * sees the viewport; the words follow it through variant propagation.
  */
 export function MaskedText({
   text,
@@ -51,16 +58,18 @@ export function MaskedText({
     return <Tag className={className}>{text}</Tag>;
   }
 
+  const MotionTag = motion[Tag];
+
   const motionState =
     trigger === "mount"
       ? { animate: "visible" as const }
       : {
           whileInView: "visible" as const,
-          viewport: { once: true, margin: "-60px" },
+          viewport: { once: true, margin: "-60px" as const },
         };
 
   return (
-    <Tag className={className}>
+    <MotionTag className={className} initial="hidden" {...motionState}>
       {words.map((word, i) => (
         <Fragment key={`${word}-${i}`}>
           {i > 0 ? " " : null}
@@ -78,14 +87,12 @@ export function MaskedText({
                   transition: { duration: 0.6, delay: delay + i * 0.045, ease },
                 },
               }}
-              initial="hidden"
-              {...motionState}
             >
               {word}
             </motion.span>
           </span>
         </Fragment>
       ))}
-    </Tag>
+    </MotionTag>
   );
 }

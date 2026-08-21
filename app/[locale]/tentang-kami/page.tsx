@@ -10,7 +10,7 @@ import { Section } from "@/components/ui/Section";
 import { SectionHead } from "@/components/ui/SectionHead";
 import { Button } from "@/components/ui/Button";
 import { FrameReveal } from "@/components/animations/FrameReveal";
-import { getHeroImageUrl } from "@/lib/api/pexels";
+import { FALLBACK_HERO_IMAGE, getHeroImageUrl } from "@/lib/api/pexels";
 import { buildAlternates, localizedUrl } from "@/lib/seo/site";
 
 export async function generateMetadata({
@@ -127,9 +127,9 @@ function AboutImage() {
 }
 
 async function TentangKamiHero() {
-  const imageUrl = await getHeroImageUrl(
-    "legal consultation meeting handshake",
-  );
+  const imageUrl =
+    (await getHeroImageUrl("legal consultation meeting handshake")) ??
+    FALLBACK_HERO_IMAGE;
   const t = await getTranslations("About.hero");
   const tButtons = await getTranslations("Common.buttons");
 

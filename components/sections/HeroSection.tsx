@@ -32,7 +32,15 @@ export function HeroSection({
           />
           <div className="absolute inset-0 bg-gradient-to-r from-forest-950 via-forest-950/90 to-forest-950/60" />
         </div>
-      ) : null}
+      ) : (
+        // Not every hero has a photograph — index pages deliberately go without.
+        // Left bare that reads as an unfinished slab, so the empty right half
+        // gets a wash of light and a brass hairline to give the band some depth.
+        <div className="absolute inset-0" aria-hidden>
+          <div className="absolute inset-0 bg-[radial-gradient(120%_100%_at_85%_0%,var(--color-forest-700)_0%,transparent_55%)] opacity-40" />
+          <div className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-brass/50 via-brass/10 to-transparent" />
+        </div>
+      )}
 
       <div
         className={

@@ -1,5 +1,3 @@
-import { useTranslations } from "next-intl";
-
 export type OrgNode = {
   title: string;
   name?: string;
@@ -15,7 +13,10 @@ function Node({ node, level }: { node: OrgNode; level: number }) {
         className={
           isRoot
             ? "font-display mx-auto w-fit border border-white/25 px-8 py-5 text-2xl"
-            : "border-t border-white/20 pt-5 text-sm font-semibold uppercase tracking-[0.12em]"
+            : // Stacked on phones each division carries its own rule. Side by
+              // side the rule moves up to the grid container so the branch
+              // reads as one continuous line instead of three loose segments.
+              "border-t border-white/20 pt-5 text-sm font-semibold uppercase tracking-[0.12em] md:border-t-0"
         }
       >
         {node.title}
@@ -29,15 +30,12 @@ function Node({ node, level }: { node: OrgNode; level: number }) {
       {node.children?.length ? (
         <>
           {isRoot && (
-            <span
-              aria-hidden
-              className="mx-auto block h-10 w-px bg-white/25"
-            />
+            <span aria-hidden className="mx-auto block h-10 w-px bg-white/25" />
           )}
           <div
             className={
               isRoot
-                ? "grid gap-10 text-left md:grid-cols-3"
+                ? "grid gap-10 text-left md:grid-cols-3 md:border-t md:border-white/20"
                 : "mt-4 grid gap-3"
             }
           >
@@ -61,14 +59,5 @@ function Node({ node, level }: { node: OrgNode; level: number }) {
 }
 
 export function OrganizationChart({ data }: { data: OrgNode }) {
-  const t = useTranslations("About.organization");
-
-  return (
-    <div>
-      <Node node={data} level={0} />
-      <div className="mt-14 border-t border-white/10 pt-6 text-xs text-white/50">
-        {t("footer")}
-      </div>
-    </div>
-  );
+  return <Node node={data} level={0} />;
 }

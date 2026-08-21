@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/cn";
+import { company } from "@/lib/data/company";
 import { useTranslations } from "next-intl";
 
 export function ContactForm() {
@@ -20,8 +21,12 @@ export function ContactForm() {
 
   type ContactValues = z.infer<typeof ContactSchema>;
 
+  // Without a Formspree endpoint the form still has to work for a visitor, so
+  // it falls back to handing the composed message to their mail client. What it
+  // must never do is print the missing env var name onto a public page.
   const formspreeId = process.env.NEXT_PUBLIC_FORMSPREE_ID;
   const action = formspreeId ? `https://formspree.io/f/${formspreeId}` : "";
+  const usesMailto = !action;
 
   const {
     register,
@@ -33,13 +38,19 @@ export function ContactForm() {
     defaultValues: { name: "", email: "", message: "" },
   });
 
-  const [status, setStatus] = React.useState<
-    "idle" | "success" | "error" | "missing"
-  >(action ? "idle" : "missing");
+  const [status, setStatus] = React.useState<"idle" | "success" | "error">(
+    "idle",
+  );
 
   async function onSubmit(values: ContactValues) {
-    if (!action) {
-      setStatus("missing");
+    if (usesMailto) {
+      const subject = encodeURIComponent(
+        t("mailtoSubject", { name: values.name }),
+      );
+      const body = encodeURIComponent(
+        `${values.message}\n\n---\n${values.name}\n${values.email}`,
+      );
+      window.location.href = `mailto:${company.contact.email}?subject=${subject}&body=${body}`;
       return;
     }
 
@@ -157,7 +168,7 @@ export function ContactForm() {
         <motion.button
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
-          disabled={isSubmitting || status === "missing"}
+          disabled={isSubmitting}
           className={cn(
             "inline-flex min-h-11 items-center justify-center rounded-full px-8 text-sm font-semibold text-white transition",
             "bg-forest-950 hover:bg-forest-900 disabled:opacity-50 disabled:hover:bg-forest-950",
@@ -168,10 +179,11 @@ export function ContactForm() {
         </motion.button>
       </div>
 
+      {usesMailto ? (
+        <div className="text-sm text-ink-muted">{t("missing")}</div>
+      ) : null}
+
       <div aria-live="polite">
-        {status === "missing" ? (
-          <div className="text-sm text-ink-muted">{t("missing")}</div>
-        ) : null}
         {status === "success" ? (
           <div className="text-sm text-forest-700">{t("success")}</div>
         ) : null}

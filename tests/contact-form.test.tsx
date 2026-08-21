@@ -11,8 +11,8 @@ global.fetch = mockFetch as any;
 describe("ContactForm", () => {
   beforeEach(() => {
     mockFetch.mockClear();
-    // The submit button is disabled while no Formspree ID is configured, and a
-    // disabled button never fires submit — so validation would never run.
+    // Without an ID the form takes the mailto path instead of posting, so the
+    // POST-based cases below need one configured.
     process.env.NEXT_PUBLIC_FORMSPREE_ID = "test-id";
   });
 
@@ -67,6 +67,56 @@ describe("ContactForm", () => {
       expect(mockFetch).toHaveBeenCalled();
       expect(screen.getByText("Contact.form.success")).toBeInTheDocument();
     });
+  });
+
+  test("stays usable without a Formspree endpoint, via mailto", async () => {
+    // A public page must never be told to go set an env var, and the submit
+    // button must not sit there dead — the message goes to the mail client.
+    process.env.NEXT_PUBLIC_FORMSPREE_ID = "";
+
+    const assigned: string[] = [];
+    const original = Object.getOwnPropertyDescriptor(window, "location");
+    Object.defineProperty(window, "location", {
+      configurable: true,
+      value: {
+        set href(value: string) {
+          assigned.push(value);
+        },
+        get href() {
+          return assigned[assigned.length - 1] ?? "";
+        },
+      },
+    });
+
+    try {
+      render(<ContactForm />);
+
+      const button = screen.getByRole("button", {
+        name: "Common.buttons.send",
+      });
+      expect((button as HTMLButtonElement).disabled).toBe(false);
+      expect(screen.getByText("Contact.form.missing")).toBeInTheDocument();
+
+      fireEvent.change(screen.getByLabelText("Contact.form.name"), {
+        target: { value: "John Doe" },
+      });
+      fireEvent.change(screen.getByLabelText("Contact.form.email"), {
+        target: { value: "john@example.com" },
+      });
+      fireEvent.change(screen.getByLabelText("Contact.form.message"), {
+        target: { value: "This is a test message that is long enough." },
+      });
+      fireEvent.click(button);
+
+      await waitFor(() => {
+        expect(assigned.length).toBe(1);
+      });
+      expect(assigned[0]).toStartWith("mailto:presisikonsulindo@gmail.com?");
+      expect(assigned[0]).toContain("John%20Doe");
+      expect(mockFetch).not.toHaveBeenCalled();
+    } finally {
+      if (original) Object.defineProperty(window, "location", original);
+    }
   });
 
   test("inputs use underline styling instead of boxed borders", () => {
