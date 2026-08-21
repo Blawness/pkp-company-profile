@@ -24,10 +24,7 @@ export const organization: OrgNode = {
     },
     {
       title: "Divisi Pengukuran & Survei",
-      children: [
-        { title: "Surveyor" },
-        { title: "Teknisi Pengukuran" },
-      ],
+      children: [{ title: "Surveyor" }, { title: "Teknisi Pengukuran" }],
     },
   ],
 };

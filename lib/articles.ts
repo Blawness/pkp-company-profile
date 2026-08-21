@@ -76,9 +76,7 @@ export async function getPublishedArticleBySlug(
     .from(articles)
     .leftJoin(categories, eq(articles.categoryId, categories.id))
     .leftJoin(users, eq(articles.authorId, users.id))
-    .where(
-      and(eq(articles.slug, slug), eq(articles.status, "published")),
-    )
+    .where(and(eq(articles.slug, slug), eq(articles.status, "published")))
     .limit(1);
   return rows[0] ?? null;
 }
@@ -95,9 +93,7 @@ export async function getArticleBySlugForRender(
   slug: string,
   preview: boolean,
 ): Promise<ArticleDetail | null> {
-  const statusFilter = preview
-    ? undefined
-    : eq(articles.status, "published");
+  const statusFilter = preview ? undefined : eq(articles.status, "published");
   const rows = await db
     .select({
       id: articles.id,

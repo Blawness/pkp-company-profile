@@ -30,7 +30,7 @@ export const ArticleCard: React.FC<{
     (post.coverImage &&
     typeof post.coverImage === "object" &&
     "asset" in post.coverImage
-      ? post.coverImage.asset?.url ?? undefined
+      ? (post.coverImage.asset?.url ?? undefined)
       : undefined);
 
   const published = post.publishedAt

@@ -16,17 +16,14 @@ mock.module("@blawness/admin-kit/auth", () => ({
   auth: async () => null,
 }));
 
-const { fenceUntrusted, SECURITY_PREAMBLE } = await import(
-  "../lib/security/prompt"
-);
+const { fenceUntrusted, SECURITY_PREAMBLE } =
+  await import("../lib/security/prompt");
 
-const { getClientIp, checkRateLimit } = await import(
-  "../lib/security/rate-limit"
-);
+const { getClientIp, checkRateLimit } =
+  await import("../lib/security/rate-limit");
 
-const { verifyAiAuth, __resetAiAuthCacheForTests } = await import(
-  "../lib/security/ai-auth"
-);
+const { verifyAiAuth, __resetAiAuthCacheForTests } =
+  await import("../lib/security/ai-auth");
 
 // ─── Prompt injection helpers ──────────────────────────────────────────────
 describe("prompt injection helpers", () => {

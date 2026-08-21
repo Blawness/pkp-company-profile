@@ -1,10 +1,17 @@
 import { NextIntlClientProvider } from "next-intl";
-import { getMessages, setRequestLocale, getTranslations } from "next-intl/server";
+import {
+  getMessages,
+  setRequestLocale,
+  getTranslations,
+} from "next-intl/server";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { PageTransition } from "@/components/animations/PageTransition";
 import { JsonLd } from "@/components/seo/JsonLd";
-import { buildOrganizationSchema, buildProfessionalServiceSchema } from "@/lib/seo/schema";
+import {
+  buildOrganizationSchema,
+  buildProfessionalServiceSchema,
+} from "@/lib/seo/schema";
 import { company } from "@/lib/data/company";
 import { siteUrl } from "@/lib/seo/site";
 

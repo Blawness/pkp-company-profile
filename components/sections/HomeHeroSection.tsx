@@ -73,9 +73,7 @@ export function HomeHeroSection({
     >
       <motion.div
         className="absolute inset-0 -z-10"
-        style={
-          reduceMotion ? undefined : { y: bgY, willChange: "transform" }
-        }
+        style={reduceMotion ? undefined : { y: bgY, willChange: "transform" }}
       >
         {/* One settle, then still. A permanently running scale on a
             full-viewport image competes with the scroll parallax for the
@@ -110,9 +108,7 @@ export function HomeHeroSection({
       <motion.div
         className="relative z-10 mx-auto grid min-h-[min(96vh,940px)] max-w-[1200px] px-6 md:px-10 lg:grid-cols-12 lg:gap-0"
         style={
-          reduceMotion
-            ? undefined
-            : { y: contentY, willChange: "transform" }
+          reduceMotion ? undefined : { y: contentY, willChange: "transform" }
         }
       >
         <div className="flex flex-col justify-center py-24 lg:col-span-8 lg:py-32">

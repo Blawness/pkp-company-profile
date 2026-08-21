@@ -67,7 +67,10 @@ export async function listPublishedPortfolios(): Promise<PortfolioPreview[]> {
     .from(portfolios)
     .leftJoin(categories, eq(portfolios.categoryId, categories.id))
     .where(
-      and(eq(portfolios.status, "published"), isNotNull(portfolios.publishedAt)),
+      and(
+        eq(portfolios.status, "published"),
+        isNotNull(portfolios.publishedAt),
+      ),
     )
     .orderBy(desc(portfolios.publishedAt));
   return rows;

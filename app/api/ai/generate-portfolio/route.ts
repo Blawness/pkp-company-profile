@@ -23,7 +23,7 @@ export async function POST(req: Request) {
     console.error("GOOGLE_API_KEY is not configured");
     return NextResponse.json(
       { error: "AI service is not configured" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 
@@ -58,14 +58,17 @@ export async function POST(req: Request) {
     if (!parsed.success) {
       return NextResponse.json(
         { error: parsed.error.issues[0]?.message ?? "Invalid request body" },
-        { status: 400 }
+        { status: 400 },
       );
     }
     const { prompt, context } = parsed.data;
 
     const settings = await getAiSettings();
     if (!settings.enabled) {
-      return NextResponse.json({ error: "AI is disabled in settings" }, { status: 403 });
+      return NextResponse.json(
+        { error: "AI is disabled in settings" },
+        { status: 403 },
+      );
     }
 
     const model = genAI.getGenerativeModel({
@@ -77,7 +80,8 @@ export async function POST(req: Request) {
       },
     });
 
-    const language = settings.defaultLanguage === "en" ? "English" : "Bahasa Indonesia";
+    const language =
+      settings.defaultLanguage === "en" ? "English" : "Bahasa Indonesia";
     const companyContext = settings.companyContext
       ? fenceUntrusted("company_context", settings.companyContext)
       : "";
@@ -131,7 +135,7 @@ Penting:
     `.trim();
 
     const text = await generateTextWithRetry(() =>
-      model.generateContent(systemPrompt)
+      model.generateContent(systemPrompt),
     );
     const data = parseJsonResponse<Record<string, unknown>>(text);
 
@@ -161,7 +165,7 @@ Penting:
     console.error("AI Portfolio Generation Error:", error);
     return NextResponse.json(
       { error: "Failed to generate content. Please try again later." },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

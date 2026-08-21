@@ -31,7 +31,10 @@ export function SectionHead({
           </div>
         </Reveal>
       )}
-      <Rule accent className={cn("mt-4", align === "center" && "mx-auto w-24")} />
+      <Rule
+        accent
+        className={cn("mt-4", align === "center" && "mx-auto w-24")}
+      />
       <MaskedText
         as="h2"
         text={title}

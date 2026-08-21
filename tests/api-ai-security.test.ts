@@ -76,15 +76,9 @@ mock.module("@google/generative-ai", () => ({
 }));
 
 // ─── Route imports (mocked deps in place) ─────────────────────────────────
-const { POST: generatePost } = await import(
-  "../app/api/ai/generate/route"
-);
-const { POST: planPost } = await import(
-  "../app/api/ai/plan-post-ideas/route"
-);
-const { POST: fieldPost } = await import(
-  "../app/api/ai/field-generate/route"
-);
+const { POST: generatePost } = await import("../app/api/ai/generate/route");
+const { POST: planPost } = await import("../app/api/ai/plan-post-ideas/route");
+const { POST: fieldPost } = await import("../app/api/ai/field-generate/route");
 
 // ─── Authenticated path: input validation ──────────────────────────────────
 describe("AI endpoints (authenticated): input validation", () => {
@@ -112,58 +106,46 @@ describe("AI endpoints (authenticated): input validation", () => {
   });
 
   it("rejects oversized seed (1000 chars) on /api/ai/plan-post-ideas with 400", async () => {
-    const req = new Request(
-      "http://localhost/api/ai/plan-post-ideas",
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json", "X-AI-Session": "tok" },
-        body: JSON.stringify({ seed: "x".repeat(1000) }),
-      },
-    );
+    const req = new Request("http://localhost/api/ai/plan-post-ideas", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "X-AI-Session": "tok" },
+      body: JSON.stringify({ seed: "x".repeat(1000) }),
+    });
     const res = await planPost(req);
     expect(res.status).toBe(400);
   });
 
   it("rejects count > 10 on /api/ai/plan-post-ideas with 400", async () => {
-    const req = new Request(
-      "http://localhost/api/ai/plan-post-ideas",
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json", "X-AI-Session": "tok" },
-        body: JSON.stringify({ count: 100 }),
-      },
-    );
+    const req = new Request("http://localhost/api/ai/plan-post-ideas", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "X-AI-Session": "tok" },
+      body: JSON.stringify({ count: 100 }),
+    });
     const res = await planPost(req);
     expect(res.status).toBe(400);
   });
 
   it("rejects oversized instruction on /api/ai/field-generate with 400", async () => {
-    const req = new Request(
-      "http://localhost/api/ai/field-generate",
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json", "X-AI-Session": "tok" },
-        body: JSON.stringify({
-          documentType: "post",
-          fieldName: "title",
-          fieldType: "string",
-          instruction: "x".repeat(2000),
-        }),
-      },
-    );
+    const req = new Request("http://localhost/api/ai/field-generate", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "X-AI-Session": "tok" },
+      body: JSON.stringify({
+        documentType: "post",
+        fieldName: "title",
+        fieldType: "string",
+        instruction: "x".repeat(2000),
+      }),
+    });
     const res = await fieldPost(req);
     expect(res.status).toBe(400);
   });
 
   it("rejects missing required fields on /api/ai/field-generate with 400", async () => {
-    const req = new Request(
-      "http://localhost/api/ai/field-generate",
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json", "X-AI-Session": "tok" },
-        body: JSON.stringify({ documentType: "post" }),
-      },
-    );
+    const req = new Request("http://localhost/api/ai/field-generate", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "X-AI-Session": "tok" },
+      body: JSON.stringify({ documentType: "post" }),
+    });
     const res = await fieldPost(req);
     expect(res.status).toBe(400);
   });
@@ -221,31 +203,25 @@ describe("AI endpoints (unauthenticated): 401", () => {
   });
 
   it("returns 401 on /api/ai/plan-post-ideas without auth", async () => {
-    const req = new Request(
-      "http://localhost/api/ai/plan-post-ideas",
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ seed: "x" }),
-      },
-    );
+    const req = new Request("http://localhost/api/ai/plan-post-ideas", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ seed: "x" }),
+    });
     const res = await planPost(req);
     expect(res.status).toBe(401);
   });
 
   it("returns 401 on /api/ai/field-generate without auth", async () => {
-    const req = new Request(
-      "http://localhost/api/ai/field-generate",
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          documentType: "post",
-          fieldName: "title",
-          fieldType: "string",
-        }),
-      },
-    );
+    const req = new Request("http://localhost/api/ai/field-generate", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        documentType: "post",
+        fieldName: "title",
+        fieldType: "string",
+      }),
+    });
     const res = await fieldPost(req);
     expect(res.status).toBe(401);
   });
