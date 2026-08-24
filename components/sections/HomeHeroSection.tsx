@@ -9,7 +9,7 @@ import {
 } from "framer-motion";
 import Image from "next/image";
 import { Button } from "@/components/ui/Button";
-import { StatBlock } from "@/components/ui/StatBlock";
+import { StatBlock, hasStats } from "@/components/ui/StatBlock";
 import { MaskedText } from "@/components/animations/MaskedText";
 
 const ease = [0.22, 1, 0.36, 1] as const;
@@ -148,9 +148,11 @@ export function HomeHeroSection({
               </Button>
             </motion.div>
 
-            <motion.div variants={fadeIn} className="mt-16">
-              <StatBlock tone="light" />
-            </motion.div>
+            {hasStats() && (
+              <motion.div variants={fadeIn} className="mt-16">
+                <StatBlock tone="light" />
+              </motion.div>
+            )}
           </motion.div>
         </div>
 

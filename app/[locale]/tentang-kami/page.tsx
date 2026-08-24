@@ -63,7 +63,7 @@ export default function TentangKamiPage() {
           title={tCompany("vision")}
         />
 
-        <div className="mt-16">
+        <div className="mt-12">
           <div className="text-xs font-semibold uppercase tracking-[0.18em] text-brass">
             {t("visionMission.mission")}
           </div>

@@ -44,7 +44,7 @@ export default function KontakPage() {
           lead={t("pageDescription")}
         />
 
-        <div className="mt-16 grid gap-0 md:grid-cols-12">
+        <div className="mt-12 grid gap-0 md:grid-cols-12">
           <div className="border border-hairline bg-paper p-8 md:col-span-7 md:p-12">
             <ContactForm />
           </div>

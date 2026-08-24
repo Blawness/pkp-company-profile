@@ -1,6 +1,15 @@
 import { credentials, type StatItem } from "@/lib/data/credentials";
 import { cn } from "@/lib/cn";
 
+/**
+ * Whether a StatBlock would render anything at all. Callers need this because a
+ * wrapper carrying the block's spacing renders regardless of what the block
+ * decides — a hidden StatBlock otherwise leaves a visible hole in the layout.
+ */
+export function hasStats(items?: StatItem[]) {
+  return (items ?? (credentials.enabled ? credentials.stats : [])).length > 0;
+}
+
 export function StatBlock({
   items,
   tone = "light",

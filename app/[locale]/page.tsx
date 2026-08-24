@@ -67,7 +67,7 @@ export default function Home() {
           title={t("services.title")}
           lead={t("services.lead")}
         />
-        <div className="mt-16">
+        <div className="mt-12">
           {services.map((s, i) => (
             <IndexedItem
               key={s.id}
@@ -87,7 +87,7 @@ export default function Home() {
           title={t("visionMission.vision")}
           lead={tCompany("vision")}
         />
-        <div className="mt-16">
+        <div className="mt-12">
           <div className="text-xs font-semibold uppercase tracking-[0.18em] text-brass">
             {t("visionMission.mission")}
           </div>

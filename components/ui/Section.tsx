@@ -24,7 +24,9 @@ export function Section({
   return (
     <section
       id={id}
-      className={cn("py-24 md:py-32", toneClass[tone], className)}
+      // 128px top and bottom stacked to 256px between adjacent section
+      // contents — on the shorter bands that was more padding than content.
+      className={cn("py-20 md:py-24", toneClass[tone], className)}
     >
       {bleed ? (
         children
