@@ -20,7 +20,9 @@ export async function generateMetadata({
   const t = await getTranslations({ locale, namespace: "Home" });
 
   return {
-    title: t("title"),
+    // `absolute` melewati title.template dari layout; template tidak berlaku
+    // untuk page.js pada route segment yang sama, jadi judul ditulis penuh.
+    title: { absolute: t("title") },
     description: t("description"),
     alternates: buildAlternates(locale, ""),
     openGraph: {

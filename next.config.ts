@@ -20,6 +20,23 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  async redirects() {
+    return [
+      // Konsolidasi sinyal SEO: www dan apex sama-sama melayani 200, sedangkan
+      // canonical menunjuk apex. 301 permanen menyatukan keduanya.
+      {
+        source: "/:path*",
+        has: [
+          {
+            type: "host",
+            value: "www.presisikonsulindoprima.com",
+          },
+        ],
+        destination: "https://presisikonsulindoprima.com/:path*",
+        permanent: true,
+      },
+    ];
+  },
   async headers() {
     return [
       {
