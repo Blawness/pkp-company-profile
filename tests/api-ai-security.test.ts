@@ -6,7 +6,15 @@
  *   - Malformed / oversized bodies are rejected with 400.
  *   - Rate limit returns 429 with proper headers.
  */
-import { describe, it, expect, mock, beforeAll, beforeEach } from "bun:test";
+import {
+  describe,
+  it,
+  expect,
+  mock,
+  beforeAll,
+  beforeEach,
+  afterAll,
+} from "bun:test";
 
 // ─── Environment ───────────────────────────────────────────────────────────
 process.env.GOOGLE_API_KEY = "dummy_key";
@@ -15,6 +23,16 @@ process.env.GOOGLE_API_KEY = "dummy_key";
 let mockAuthAllowed = true;
 let mockRateAllowed = true;
 const rateCalls: Array<{ ip: string; authenticated: boolean }> = [];
+
+// ─── Implementasi asli, ditangkap sebelum di-mock ─────────────────────────
+// `mock.module` berlaku global untuk seluruh proses `bun test`, bukan per
+// berkas. Urutan berkas ditentukan filesystem sehingga berbeda antar mesin:
+// ketika berkas ini berjalan sebelum tests/lib-security.test.ts, mock di
+// bawah membajak modul yang justru ingin diuji secara asli di sana. Rujukan
+// asli disimpan lalu didaftarkan ulang pada afterAll agar urutan tidak lagi
+// menentukan hasil.
+const realAiAuth = await import("@/lib/security/ai-auth");
+const realRateLimit = await import("@/lib/security/rate-limit");
 
 // ─── Mocks ─────────────────────────────────────────────────────────────────
 mock.module("@/lib/security/ai-auth", () => ({
@@ -255,4 +273,9 @@ describe("article draft status handled by admin-kit", () => {
   it("articles table carries draft/published status (no custom Sanity endpoint)", () => {
     expect(true).toBe(true);
   });
+});
+
+afterAll(() => {
+  mock.module("@/lib/security/ai-auth", () => realAiAuth);
+  mock.module("@/lib/security/rate-limit", () => realRateLimit);
 });
