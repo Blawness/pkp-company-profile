@@ -13,7 +13,6 @@ import {
   NavigationMenuLink,
   NavigationMenuList,
 } from "@/components/ui/NavigationMenu";
-import { LanguageSwitcher } from "@/components/layout/LanguageSwitcher";
 import { useTranslations } from "next-intl";
 
 export function Header() {
@@ -109,13 +108,9 @@ export function Header() {
               })}
             </NavigationMenuList>
           </NavigationMenu>
-          <div className="flex items-center gap-4 border-l border-white/20 pl-4">
-            <LanguageSwitcher />
-          </div>
         </div>
 
         <div className="flex shrink-0 items-center gap-3 lg:hidden">
-          <LanguageSwitcher />
           <Dialog.Root>
             <Dialog.Trigger asChild>
               <button

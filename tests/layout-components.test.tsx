@@ -1,8 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { expect, test, describe, mock } from "bun:test";
-import { render, screen, fireEvent } from "./test-utils";
+import { render, screen } from "./test-utils";
 import React from "react";
-import { LanguageSwitcher } from "@/components/layout/LanguageSwitcher";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 
@@ -18,26 +17,11 @@ mock.module("@/i18n/routing", () => ({
     </a>
   ),
   routing: {
-    locales: ["id", "en"],
+    locales: ["id"],
   },
 }));
 
 describe("Layout Components", () => {
-  describe("LanguageSwitcher", () => {
-    test("renders language select", () => {
-      render(<LanguageSwitcher />);
-      const select = screen.getByRole("combobox");
-      expect(select).toBeInTheDocument();
-    });
-
-    test("calls router.replace on change", () => {
-      render(<LanguageSwitcher />);
-      const select = screen.getByRole("combobox");
-      fireEvent.change(select, { target: { value: "en" } });
-      expect(mockReplace).toHaveBeenCalled();
-    });
-  });
-
   describe("Header", () => {
     test("renders the main navigation links", () => {
       render(<Header />);

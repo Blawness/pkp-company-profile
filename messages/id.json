@@ -29,9 +29,7 @@
       "menu": "Menu",
       "contact": "Kontak",
       "rights": "© {year} PT Presisi Konsulindo Prima. All rights reserved."
-    },
-    "languageLabel": "Pilih bahasa",
-    "languageUnavailable": "Halaman ini hanya tersedia dalam satu bahasa"
+    }
   },
   "Company": {
     "name": "PT Presisi Konsulindo Prima",

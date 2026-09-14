@@ -22,8 +22,21 @@ const nextConfig: NextConfig = {
   },
   async redirects() {
     return [
+      // Locale "en" dihapus. URL /en/* sudah terindeks Google, jadi arahkan
+      // permanen ke padanan bahasa Indonesia agar peringkatnya tidak hangus.
+      // Redirect di next.config dievaluasi sebelum middleware next-intl.
+      {
+        source: "/en",
+        destination: "/",
+        permanent: true,
+      },
+      {
+        source: "/en/:path*",
+        destination: "/:path*",
+        permanent: true,
+      },
       // Konsolidasi sinyal SEO: www dan apex sama-sama melayani 200, sedangkan
-      // canonical menunjuk apex. 301 permanen menyatukan keduanya.
+      // canonical menunjuk apex. Redirect permanen menyatukan keduanya.
       {
         source: "/:path*",
         has: [

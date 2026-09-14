@@ -12,7 +12,7 @@ export const siteUrl =
  * Build an absolute URL for a given locale + path that matches the actual
  * routing (localePrefix: "as-needed" → the default locale has NO prefix).
  *
- * @param locale current locale (e.g. "id" | "en")
+ * @param locale current locale (saat ini hanya "id")
  * @param path   path WITHOUT leading slash and WITHOUT locale (e.g. "" | "tentang-kami")
  */
 export function localizedUrl(locale: string, path = ""): string {
@@ -24,23 +24,15 @@ export function localizedUrl(locale: string, path = ""): string {
 }
 
 /**
- * Build `alternates` metadata (self-referencing canonical + hreflang languages)
- * so Google understands the id/en variants are the same page and doesn't treat
- * them as duplicates.
+ * Build `alternates` metadata. Situs hanya melayani satu bahasa (id), jadi
+ * cukup canonical yang menunjuk ke dirinya sendiri — hreflang butuh minimal
+ * dua variasi bahasa untuk punya arti.
  */
 export function buildAlternates(
   locale: string,
   path = "",
 ): NonNullable<Metadata["alternates"]> {
-  const languages: Record<string, string> = {
-    "x-default": localizedUrl(routing.defaultLocale, path),
-  };
-  for (const l of routing.locales) {
-    languages[l] = localizedUrl(l, path);
-  }
-
   return {
     canonical: localizedUrl(locale, path),
-    languages,
   };
 }

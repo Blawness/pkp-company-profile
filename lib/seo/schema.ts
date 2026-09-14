@@ -30,7 +30,7 @@ export function buildOrganizationSchema(
         email: data.email,
         telephone: data.phone,
         areaServed: "ID",
-        availableLanguage: ["id", "en"],
+        availableLanguage: ["id"],
       },
     ],
     address: {
