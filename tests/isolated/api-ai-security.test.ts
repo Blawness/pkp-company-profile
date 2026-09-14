@@ -1,4 +1,17 @@
 /**
+ * BERKAS INI SENGAJA DIISOLASI DI tests/isolated/.
+ *
+ * `mock.module` berlaku global untuk satu proses `bun test`, bukan per
+ * berkas, dan urutan berkas ditentukan filesystem sehingga berbeda antar
+ * mesin. Bila berkas ini berjalan sebelum tests/lib-security.test.ts, mock
+ * getClientIp/verifyAiAuth di bawah membajak modul yang di sana justru diuji
+ * sebagai implementasi asli. Memulihkan mock lewat afterAll tidak menolong
+ * karena badan modul berkas lain sudah dievaluasi lebih dulu.
+ *
+ * Karena itu `bun run test` menjalankan folder ini sebagai proses terpisah.
+ * Jangan pindahkan kembali ke tests/ dan jangan jalankan `bun test` polos.
+ */
+/**
  * Security regression tests for the AI API routes.
  *
  * Tests that:
@@ -6,15 +19,7 @@
  *   - Malformed / oversized bodies are rejected with 400.
  *   - Rate limit returns 429 with proper headers.
  */
-import {
-  describe,
-  it,
-  expect,
-  mock,
-  beforeAll,
-  beforeEach,
-  afterAll,
-} from "bun:test";
+import { describe, it, expect, mock, beforeAll, beforeEach } from "bun:test";
 
 // ─── Environment ───────────────────────────────────────────────────────────
 process.env.GOOGLE_API_KEY = "dummy_key";
@@ -23,16 +28,6 @@ process.env.GOOGLE_API_KEY = "dummy_key";
 let mockAuthAllowed = true;
 let mockRateAllowed = true;
 const rateCalls: Array<{ ip: string; authenticated: boolean }> = [];
-
-// ─── Implementasi asli, ditangkap sebelum di-mock ─────────────────────────
-// `mock.module` berlaku global untuk seluruh proses `bun test`, bukan per
-// berkas. Urutan berkas ditentukan filesystem sehingga berbeda antar mesin:
-// ketika berkas ini berjalan sebelum tests/lib-security.test.ts, mock di
-// bawah membajak modul yang justru ingin diuji secara asli di sana. Rujukan
-// asli disimpan lalu didaftarkan ulang pada afterAll agar urutan tidak lagi
-// menentukan hasil.
-const realAiAuth = await import("@/lib/security/ai-auth");
-const realRateLimit = await import("@/lib/security/rate-limit");
 
 // ─── Mocks ─────────────────────────────────────────────────────────────────
 mock.module("@/lib/security/ai-auth", () => ({
@@ -94,9 +89,11 @@ mock.module("@google/generative-ai", () => ({
 }));
 
 // ─── Route imports (mocked deps in place) ─────────────────────────────────
-const { POST: generatePost } = await import("../app/api/ai/generate/route");
-const { POST: planPost } = await import("../app/api/ai/plan-post-ideas/route");
-const { POST: fieldPost } = await import("../app/api/ai/field-generate/route");
+const { POST: generatePost } = await import("../../app/api/ai/generate/route");
+const { POST: planPost } =
+  await import("../../app/api/ai/plan-post-ideas/route");
+const { POST: fieldPost } =
+  await import("../../app/api/ai/field-generate/route");
 
 // ─── Authenticated path: input validation ──────────────────────────────────
 describe("AI endpoints (authenticated): input validation", () => {
@@ -273,9 +270,4 @@ describe("article draft status handled by admin-kit", () => {
   it("articles table carries draft/published status (no custom Sanity endpoint)", () => {
     expect(true).toBe(true);
   });
-});
-
-afterAll(() => {
-  mock.module("@/lib/security/ai-auth", () => realAiAuth);
-  mock.module("@/lib/security/rate-limit", () => realRateLimit);
 });

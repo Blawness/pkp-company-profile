@@ -28,11 +28,11 @@ jobs:
         run: bun run typecheck
 
       - name: Test
-        run: bun test
+        # `bun run test`, bukan `bun test` polos: tests/isolated harus
+        # dijalankan sebagai proses terpisah (lihat berkas di dalamnya).
+        run: bun run test
         env:
-          # db/index.ts melempar error saat di-import kalau DATABASE_URL kosong.
-          # tests/api-ai-security.test.ts menarik modul itu lewat route AI, jadi
-          # tanpa nilai ini file tersebut mati di tengah pemuatan — tes-tesnya
-          # hilang dan mock.module yang sudah terdaftar bocor ke berkas lain.
+          # db/index.ts melempar error saat di-import kalau DATABASE_URL kosong,
+          # dan tests/isolated/api-ai-security.test.ts menariknya lewat route AI.
           # Tes unit tidak pernah membuka koneksi, jadi nilai palsu sudah cukup.
           DATABASE_URL: postgresql://ci:ci@localhost:5432/ci
