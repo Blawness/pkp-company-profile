@@ -25,14 +25,16 @@ const nextConfig: NextConfig = {
       // Locale "en" dihapus. URL /en/* sudah terindeks Google, jadi arahkan
       // permanen ke padanan bahasa Indonesia agar peringkatnya tidak hangus.
       // Redirect di next.config dievaluasi sebelum middleware next-intl.
+      // Tujuan ditulis absolut ke apex supaya www.../en/* selesai dalam satu
+      // hop, bukan menumpuk ke aturan www di bawah.
       {
         source: "/en",
-        destination: "/",
+        destination: "https://presisikonsulindoprima.com/",
         permanent: true,
       },
       {
         source: "/en/:path*",
-        destination: "/:path*",
+        destination: "https://presisikonsulindoprima.com/:path*",
         permanent: true,
       },
       // Konsolidasi sinyal SEO: www dan apex sama-sama melayani 200, sedangkan
